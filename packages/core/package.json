@@ -86,97 +86,24 @@
 		"test": "bun test"
 	},
 	"peerDependencies": {
-		"@deepkit/core": "^1.0.1-alpha.97",
-		"@effect/io": "^0.40.3",
-		"@sinclair/typebox": "^0.31.15",
 		"@sveltejs/kit": "^1.27.6",
-		"ajv": "^8.12.0",
-		"arktype": "^1.0.21-alpha",
-		"fp-ts": "^2.16.1",
-		"io-ts": "^2.2.20",
-		"joi": "^17.0.0",
-		"ow": "^0.28.2",
-		"runtypes": "^6.7.0",
-		"superstruct": "^1.0.3",
 		"svelte": "^5.0.0-next.1",
-		"typia": "^5.0.5",
-		"valibot": "^0.17.0",
-		"yup": "^1.2.0",
 		"zod": "^3.22.2"
 	},
 	"peerDependenciesMeta": {
-		"@deepkit/type": {
-			"optional": true
-		},
-		"@effect/data": {
-			"optional": true
-		},
-		"@effect/schema": {
-			"optional": true
-		},
-		"@sinclair/typebox": {
-			"optional": true
-		},
 		"@sveltejs/kit": {
-			"optional": true
-		},
-		"ajv": {
-			"optional": true
-		},
-		"arktype": {
-			"optional": true
-		},
-		"fp-ts": {
-			"optional": true
-		},
-		"io-ts": {
-			"optional": true
-		},
-		"joi": {
-			"optional": true
-		},
-		"ow": {
-			"optional": true
-		},
-		"runtypes": {
-			"optional": true
-		},
-		"superstruct": {
 			"optional": true
 		},
 		"svelte": {
 			"optional": false
-		},
-		"valibot": {
-			"optional": true
-		},
-		"yup": {
-			"optional": true
 		},
 		"zod": {
 			"optional": true
 		}
 	},
 	"dependencies": {
-		"@deepkit/core": "^1.0.1-alpha.97",
-		"@effect/io": "^0.40.3",
-		"@sinclair/typebox": "^0.31.15",
 		"@sveltejs/kit": "^1.27.6",
-		"ajv": "^8.12.0",
-		"arktype": "^1.0.21-alpha",
-		"fp-ts": "^2.16.1",
-		"io-ts": "^2.2.20",
-		"joi": "^17.0.0",
-		"ow": "^0.28.2",
-		"runtypes": "^6.7.0",
-		"superstruct": "^1.0.3",
 		"svelte": "^5.0.0-next.4",
-		"typia": "^5.0.5",
-		"valibot": "^0.17.0",
-		"yup": "^1.2.0",
 		"zod": "^3.22.2"
-	},
-	"devDependencies": {
-		"@decs/typeschema": "0.12.1"
 	}
 }

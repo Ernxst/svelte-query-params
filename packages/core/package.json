@@ -126,6 +126,8 @@
 		"zod": "^3.22.2"
 	},
 	"devDependencies": {
-		"tslib": "2.6.2"
+		"@sveltejs/adapter-static": "2.0.3",
+		"tslib": "2.6.2",
+		"vite": "5.0.0"
 	}
 }

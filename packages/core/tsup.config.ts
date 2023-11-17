@@ -6,7 +6,7 @@ export default defineConfig({
 	sourcemap: true,
 	bundle: true,
 	clean: true,
-	external: ["$app/stores", "$app/navigation"],
+	external: ["$app/stores", "$app/navigation", "$app/environment"],
 	entryPoints: {
 		"index.svelte": "src/lib/index.ts",
 		"adapters/index": "src/lib/adapters/index.ts",

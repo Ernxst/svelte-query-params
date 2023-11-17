@@ -9,7 +9,7 @@ export interface Adapter {
 	/**
 	 * A custom function to retrieve the query string
 	 *
-	 * @default () => {@linkcode windowObj.location}
+	 * @default () => {@linkcode window.location}
 	 */
 	getBrowserUrl: QueryFetcher;
 }

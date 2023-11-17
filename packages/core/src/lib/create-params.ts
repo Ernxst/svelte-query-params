@@ -22,7 +22,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	options: QueryParamsOptions = {}
 ): () => QueryParams<TShape> {
 	const {
-		windowObj = window,
+		windowObj = typeof window === "undefined" ? undefined : window,
 		adapter = dom({ windowObj }),
 		serialise = createDefaultSerializer(),
 	} = options;
@@ -86,24 +86,29 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		return entriesToRecord(Array.from(queryParams));
 	}
 
-	const replaceState = windowObj.history.replaceState.bind(windowObj.history);
-	const pushState = windowObj.history.pushState.bind(windowObj.history);
+	let replaceState: History["replaceState"];
+	let pushState: History["pushState"];
 
-	/**
-	 * Listening for popstate only works when back/forward button pressed,
-	 * so we track things ourselves
-	 */
-	windowObj.history.replaceState = function (...args) {
-		replaceState(...args);
-		updateQueryParams();
-	};
+	if (windowObj) {
+		replaceState = windowObj.history.replaceState.bind(windowObj.history);
+		pushState = windowObj.history.pushState.bind(windowObj.history);
 
-	windowObj.history.pushState = function (...args) {
-		pushState(...args);
-		updateQueryParams();
-	};
+		/**
+		 * Listening for popstate only works when back/forward button pressed,
+		 * so we track things ourselves
+		 */
+		windowObj.history.replaceState = function (...args) {
+			replaceState(...args);
+			updateQueryParams();
+		};
 
-	windowObj.addEventListener("popstate", updateQueryParams);
+		windowObj.history.pushState = function (...args) {
+			pushState(...args);
+			updateQueryParams();
+		};
+
+		windowObj.addEventListener("popstate", updateQueryParams);
+	}
 
 	const keys = $derived(Object.keys(query));
 	const entries = $derived<any>(Object.entries(reactive));
@@ -147,9 +152,11 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		},
 
 		dispose() {
-			windowObj.removeEventListener("popstate", updateQueryParams);
-			windowObj.history.pushState = pushState;
-			windowObj.history.replaceState = replaceState;
+			if (windowObj) {
+				windowObj.removeEventListener("popstate", updateQueryParams);
+				windowObj.history.pushState = pushState;
+				windowObj.history.replaceState = replaceState;
+			}
 		},
 
 		[Symbol.dispose]() {

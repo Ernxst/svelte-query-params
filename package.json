@@ -1,0 +1,60 @@
+{
+	"name": "root",
+	"version": "0.0.0",
+	"private": true,
+	"packageManager": "bun@1.0.12",
+	"engines": {
+		"node": ">=18.12.1",
+		"bun": "1.0.12"
+	},
+	"workspaces": [
+		"examples/*",
+		"packages/*"
+	],
+	"scripts": {
+		"------------------------------------------------------------------------------": "",
+		"build": "turbo run build",
+		"-------------------------------------------------------------------------------": "",
+		"dts": "turbo run dts --continue",
+		"typecheck": "turbo run typecheck",
+		"--------------------------------------------------------------------------------": "",
+		"lint": "eslint --cache .",
+		"lint:fix": "eslint . --fix --cache",
+		"format": "prettier --cache --write \"**/*.@(svelte|js|ts|tsx|cjs|mjs|json|md|toml)\"",
+		"---------------------------------------------------------------------------------": "",
+		"test": "turbo run test",
+		"----------------------------------------------------------------------------------": "",
+		"prepare": "husky install",
+		"-----------------------------------------------------------------------------------": "",
+		"prepublishOnly": "bun run build",
+		"release": "bun run build && changeset publish",
+		"version": "changeset version && bun install --no-frozen-lockfile && bun run format"
+	},
+	"dependencies": {
+		"publint": "0.2.2",
+		"tsup": "7.2.0",
+		"typescript": "5.2.2"
+	},
+	"devDependencies": {
+		"@antfu/eslint-config": "0.43.1",
+		"@changesets/changelog-github": "0.4.8",
+		"@changesets/cli": "2.26.2",
+		"@commitlint/cli": "18.4.2",
+		"@commitlint/config-conventional": "18.4.2",
+		"bun-types": "1.0.12",
+		"eslint": "8.53.0",
+		"eslint-config-turbo": "1.10.16",
+		"eslint-plugin-import": "2.29.0",
+		"husky": "8.0.3",
+		"nano-staged": "0.8.0",
+		"prettier": "3.1.0",
+		"prettier-plugin-svelte": "3.1.0",
+		"turbo": "1.10.16"
+	},
+	"nano-staged": {
+		"*": [
+			"eslint --fix",
+			"prettier --cache --write **/*.@(svelte|js|ts|tsx|cjs|mjs|json|md|toml)"
+		]
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"globalDependencies": ["tsconfig.json", "tsconfig.base.json"],
+	"pipeline": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**"]
+		},
+		"dts": {
+			"dependsOn": ["^dts"],
+			"outputs": ["dist/**"]
+		},
+		"typecheck": {
+			"dependsOn": ["^typecheck"],
+			"outputs": ["dist/**"]
+		},
+		"test": {
+			"dependsOn": ["^test"],
+			"outputs": ["coverage/**"]
+		}
+	}
+}

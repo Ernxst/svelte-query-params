@@ -34,8 +34,11 @@ export type inferShape<TShape extends QuerySchema> = {
 	// eslint-disable-next-line @typescript-eslint/ban-types
 } & {};
 
-export type QueryUpdater = (search: string) => void;
-export type QueryFetcher = () => string;
+/**
+ * @param search Includes the `?` prefix
+ */
+export type QueryUpdater = (search: string, hash: string) => void;
+export type QueryFetcher = () => { search: string; hash: string };
 export type Serializer = (value: unknown) => string;
 
 export interface QueryParamsOptions {

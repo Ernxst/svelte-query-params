@@ -43,7 +43,9 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			// We need to assign it so it updates, property updates do nothing
 			raw = { ...raw, [key]: serialise(value) };
 		}
-		tick().then(() => adapter.updateBrowserQuery(search));
+		tick().then(() =>
+			adapter.updateBrowserUrl(search, adapter.getBrowserUrl().hash)
+		);
 	};
 
 	const reactive = $derived(
@@ -79,7 +81,8 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	}
 
 	function getBrowserQueryParams() {
-		const queryParams = new URLSearchParams(adapter.getBrowserQuery());
+		const { search } = adapter.getBrowserUrl();
+		const queryParams = new URLSearchParams(search);
 		return entriesToRecord(Array.from(queryParams));
 	}
 
@@ -130,7 +133,9 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 
 		set(params) {
 			raw = mapValues(params, serialise);
-			tick().then(() => adapter.updateBrowserQuery(search));
+			tick().then(() =>
+				adapter.updateBrowserUrl(search, adapter.getBrowserUrl().hash)
+			);
 		},
 
 		toJSON() {

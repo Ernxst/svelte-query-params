@@ -15,20 +15,19 @@ export interface DomAdapterOptions
 	replace?: boolean;
 }
 
-function createDefaultQueryFetcher(
+function createQueryFetcher(
 	windowObj: Pick<typeof window, "location">
 ): QueryFetcher {
-	return () => windowObj.location.search;
+	return () => windowObj.location;
 }
 
-function createDefaultQueryUpdater(
+function createQueryUpdater(
 	replace: boolean,
 	{ replaceState, pushState }: Pick<History, "replaceState" | "pushState">
 ): QueryUpdater {
+	const update = replace ? replaceState : pushState;
 	/** Get the function ahead of time so we don't need an if statement every call */
-	return replace
-		? (search) => replaceState(null, "", search)
-		: (search) => pushState(null, "", search);
+	return (search, hash) => update(null, "", `${search}${hash}`);
 }
 
 export function dom(options: DomAdapterOptions = {}): Adapter {
@@ -38,10 +37,7 @@ export function dom(options: DomAdapterOptions = {}): Adapter {
 	const pushState = windowObj.history.pushState.bind(windowObj.history);
 
 	return {
-		getBrowserQuery: createDefaultQueryFetcher(windowObj),
-		updateBrowserQuery: createDefaultQueryUpdater(replace, {
-			replaceState,
-			pushState,
-		}),
+		getBrowserUrl: createQueryFetcher(windowObj),
+		updateBrowserUrl: createQueryUpdater(replace, { replaceState, pushState }),
 	};
 }

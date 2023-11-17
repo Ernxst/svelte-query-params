@@ -4,6 +4,7 @@
 
 .svelte-kit
 .turbo
+build
 
 # Logs
 

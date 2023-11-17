@@ -1,3 +1,4 @@
+import { parse } from "valibot";
 import type { QuerySchema, Serializer, inferShape } from "./types";
 
 export function parseQueryParams<TSchema extends QuerySchema>(
@@ -10,9 +11,20 @@ export function parseQueryParams<TSchema extends QuerySchema>(
 	for (const [key, value] of Object.entries(params)) {
 		if (key in schemas) {
 			const schema = schemas[key];
+
 			// TODO: @decs/typeschema isn't tree-shaking, ballooning bundle size, support zod only for now
-			const parsed =
-				typeof schema === "function" ? schema(value) : schema.parse(value);
+			let parsed;
+
+			if (typeof schema === "function") {
+				parsed = schema(value);
+			} else if ("parse" in schema) {
+				parsed = schema.parse(value);
+			} else if ("async" in schema) {
+				parsed = parse(schema, value);
+			} else {
+				parsed = value;
+			}
+
 			clone[key as keyof TSchema] = parsed;
 		} else {
 			/** Value wasn't defined in the schema, pass through as-is */

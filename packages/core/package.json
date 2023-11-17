@@ -88,6 +88,7 @@
 	"peerDependencies": {
 		"@sveltejs/kit": "^1.27.6",
 		"svelte": "^5.0.0-next.1",
+		"valibot": "^0.17.0",
 		"zod": "^3.22.2"
 	},
 	"peerDependenciesMeta": {
@@ -97,6 +98,9 @@
 		"svelte": {
 			"optional": false
 		},
+		"valibot": {
+			"optional": true
+		},
 		"zod": {
 			"optional": true
 		}
@@ -104,6 +108,7 @@
 	"dependencies": {
 		"@sveltejs/kit": "^1.27.6",
 		"svelte": "^5.0.0-next.4",
+		"valibot": "^0.17.0",
 		"zod": "^3.22.2"
 	}
 }

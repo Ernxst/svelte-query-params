@@ -2,6 +2,7 @@
 /// <reference lib="dom.iterable" />
 import type { z } from "zod";
 import type { FormEventHandler } from "svelte/elements";
+import type { AnySchema, Output } from "valibot";
 import type { Adapter } from "./adapters/types";
 
 type ZodValidator =
@@ -10,17 +11,21 @@ type ZodValidator =
 	| z.ZodDefault<ZodValidator>
 	| z.ZodOptional<ZodValidator>;
 
+type ValibotValidator = AnySchema;
+
 // TODO: @decs/typeschema isn't tree-shaking, ballooning bundle size, support zod only for now
-export type Validator = FunctionValidator | ZodValidator;
+export type Validator = FunctionValidator | ZodValidator | ValibotValidator;
 
 export type FunctionValidator<TOut = any> = (value?: string) => TOut;
 
 export type inferFromValidator<TValidator extends Validator> =
 	TValidator extends ZodValidator
-	? z.infer<TValidator>
-	: TValidator extends FunctionValidator
-	? ReturnType<TValidator>
-	: never;
+		? z.infer<TValidator>
+		: TValidator extends ValibotValidator
+		  ? Output<TValidator>
+		  : TValidator extends FunctionValidator
+		    ? ReturnType<TValidator>
+		    : never;
 
 export type QuerySchema = Record<string, Validator>;
 

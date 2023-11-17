@@ -2,7 +2,7 @@ import { get } from "svelte/store";
 import type { Adapter } from "./types";
 import { goto } from "$app/navigation";
 import { page } from "$app/stores";
-import { browser } from "$app/environment";
+import { browser, building } from "$app/environment";
 
 interface SvelteKitAdapterOptions {
 	/**
@@ -14,7 +14,11 @@ interface SvelteKitAdapterOptions {
 export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 	const { replace = false } = options;
 	return {
-		getBrowserUrl: () => (browser ? window.location : get(page).url),
+		getBrowserUrl: () => {
+			// Query params aren't pre-renderable
+			if (building) return { hash: "", search: "" };
+			return browser ? window.location : get(page).url;
+		},
 		updateBrowserUrl: (search, hash) =>
 			goto(`${search}${hash}`, {
 				keepFocus: true,

@@ -143,7 +143,6 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		},
 
 		toString() {
-			console.log("aaa", JSON.stringify(query));
 			return JSON.stringify(query);
 		},
 

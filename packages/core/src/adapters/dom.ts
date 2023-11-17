@@ -31,7 +31,7 @@ function createDefaultQueryUpdater(
 		: (search) => pushState(null, "", search);
 }
 
-export function dom(options: DomAdapterOptions): Adapter {
+export function dom(options: DomAdapterOptions = {}): Adapter {
 	const { windowObj = window, replace = false } = options;
 
 	const replaceState = windowObj.history.replaceState.bind(windowObj.history);

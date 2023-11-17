@@ -1,8 +1,15 @@
 {
-	"extends": "../../tsconfig.base.json",
+	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"baseUrl": ".",
-		"outDir": "./dist"
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"allowJs": true,
+		"checkJs": true,
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["./dist", "node_modules"]

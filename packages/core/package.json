@@ -66,6 +66,17 @@
 				"types": "./dist/adapters/dom/index.d.cts",
 				"import": "./dist/adapters/dom/index.cjs"
 			}
+		},
+		"./adapters/sveltekit": {
+			"svelte": "./dist/adapters/sveltekit/index.js",
+			"import": {
+				"types": "./dist/adapters/sveltekit/index.d.ts",
+				"default": "./dist/adapters/sveltekit/index.js"
+			},
+			"require": {
+				"types": "./dist/adapters/sveltekit/index.d.cts",
+				"import": "./dist/adapters/sveltekit/index.cjs"
+			}
 		}
 	},
 	"main": "dist/index.svelte.cjs",
@@ -82,8 +93,11 @@
 		"postbuild": "publint",
 		"-------------------------------------------------------------------------------": "",
 		"typecheck": "tsc",
+		"svelte:sync": "svelte-kit sync",
 		"--------------------------------------------------------------------------------": "",
-		"test": "bun test"
+		"test": "bun test",
+		"---------------------------------------------------------------------------------": "",
+		"postinstall": "svelte-kit sync"
 	},
 	"peerDependencies": {
 		"@sveltejs/kit": "^1.27.6",
@@ -110,5 +124,8 @@
 		"svelte": "^5.0.0-next.4",
 		"valibot": "^0.17.0",
 		"zod": "^3.22.2"
+	},
+	"devDependencies": {
+		"tslib": "2.6.2"
 	}
 }

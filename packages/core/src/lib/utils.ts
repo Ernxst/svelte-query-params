@@ -53,3 +53,15 @@ export function mapValues<TObj extends Record<string, any>, TReturn>(
 		Object.entries(object).map(([key, value]) => [key, mapFn(value)])
 	);
 }
+
+export function debounce(func: (...args: any[]) => any, delay: number) {
+	let timeoutId: ReturnType<typeof setTimeout>;
+
+	return function (...args: any[]) {
+		clearTimeout(timeoutId);
+
+		timeoutId = setTimeout(() => {
+			func(...args);
+		}, delay);
+	};
+}

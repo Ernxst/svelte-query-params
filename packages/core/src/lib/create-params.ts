@@ -9,6 +9,7 @@ import type {
 } from "./types";
 import {
 	createDefaultSerializer,
+	debounce,
 	entriesToRecord,
 	mapValues,
 	parseQueryParams,
@@ -22,6 +23,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	options: QueryParamsOptions = {}
 ): () => QueryParams<TShape> {
 	const {
+		debounce: delay = 0,
 		windowObj = typeof window === "undefined" ? undefined : window,
 		adapter = dom({ windowObj }),
 		serialise = createDefaultSerializer(),
@@ -34,7 +36,25 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		Object.keys(query).length ? `?${new URLSearchParams(query)}` : ""
 	);
 
-	const set = (key: string, value: any) => {
+	function getBrowserQueryParams() {
+		const { search } = adapter.getBrowserUrl();
+		const queryParams = new URLSearchParams(search);
+		return entriesToRecord(Array.from(queryParams));
+	}
+
+	async function updateAfterTick() {
+		await tick();
+		adapter.updateBrowserUrl(search, adapter.getBrowserUrl().hash);
+	}
+
+	const updateBrowserUrl =
+		delay === 0 ? updateAfterTick : debounce(updateAfterTick, delay);
+
+	function updateQueryParams() {
+		raw = getBrowserQueryParams();
+	}
+
+	function setQueryParam(key: string, value: any) {
 		if (value === undefined) {
 			// We need to assign it so it updates, property updates do nothing
 			const { [key]: _, ...rest } = raw;
@@ -43,14 +63,13 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			// We need to assign it so it updates, property updates do nothing
 			raw = { ...raw, [key]: serialise(value) };
 		}
-		tick().then(() =>
-			adapter.updateBrowserUrl(search, adapter.getBrowserUrl().hash)
-		);
-	};
+		updateBrowserUrl();
+	}
 
 	const reactive = $derived(
 		Object.fromEntries(
-			Object.keys(query).map((key) => {
+			Object.keys(validators).map((key) => {
+				console.log(query, key);
 				return [
 					key,
 					{
@@ -65,26 +84,16 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 						},
 						oninput(event: Parameters<FormEventHandler<any>>[0]) {
 							const value = (event.target as any)?.value;
-							set(key, value);
+							setQueryParam(key, value);
 						},
 						set(value: any) {
-							set(key, value);
+							setQueryParam(key, value);
 						},
 					},
 				];
 			})
 		)
 	);
-
-	function updateQueryParams() {
-		raw = getBrowserQueryParams();
-	}
-
-	function getBrowserQueryParams() {
-		const { search } = adapter.getBrowserUrl();
-		const queryParams = new URLSearchParams(search);
-		return entriesToRecord(Array.from(queryParams));
-	}
 
 	let replaceState: History["replaceState"];
 	let pushState: History["pushState"];
@@ -138,9 +147,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 
 		set(params) {
 			raw = mapValues(params, serialise);
-			tick().then(() =>
-				adapter.updateBrowserUrl(search, adapter.getBrowserUrl().hash)
-			);
+			updateBrowserUrl();
 		},
 
 		toJSON() {

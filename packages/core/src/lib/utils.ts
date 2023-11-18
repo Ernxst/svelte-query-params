@@ -12,7 +12,6 @@ export function parseQueryParams<TSchema extends QuerySchema>(
 		if (key in schemas) {
 			const schema = schemas[key];
 
-			// TODO: @decs/typeschema isn't tree-shaking, ballooning bundle size, support zod only for now
 			let parsed;
 
 			if (typeof schema === "function") {

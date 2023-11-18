@@ -13,7 +13,6 @@ type ZodValidator =
 
 type ValibotValidator = AnySchema;
 
-// TODO: @decs/typeschema isn't tree-shaking, ballooning bundle size, support zod only for now
 export type Validator = FunctionValidator | ZodValidator | ValibotValidator;
 
 export type FunctionValidator<TOut = any> = (value?: string) => TOut;
@@ -54,7 +53,13 @@ export interface QueryParamsOptions {
 		"location" | "history" | "addEventListener" | "removeEventListener"
 	>;
 
-	/** Control how query params are serialised to the browser query params */
+	/**
+	 * Control how query params are serialised to the browser query params
+	 *
+	 * **Note**: this is NOT for encoding values into URI components - it is
+	 * for serialising values into strings, which will then be encoded
+	 * internally.
+	 */
 	serialise?: Serializer;
 
 	adapter?: Adapter;

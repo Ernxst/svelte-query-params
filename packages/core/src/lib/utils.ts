@@ -1,5 +1,17 @@
 import { parse } from "valibot";
-import type { QuerySchema, Serializer, inferShape } from "./types";
+import type { QuerySchema, Serializer, Validator, inferShape } from "./types";
+
+function parseValue(schema: Validator, value: string | undefined) {
+	if (typeof schema === "function") {
+		return schema(value);
+	} else if ("parse" in schema) {
+		return schema.parse(value);
+	} else if ("async" in schema) {
+		return parse(schema, value);
+	}
+
+	return value;
+}
 
 export function parseQueryParams<TSchema extends QuerySchema>(
 	params: Record<string, string | undefined>,
@@ -7,28 +19,16 @@ export function parseQueryParams<TSchema extends QuerySchema>(
 ): inferShape<TSchema> {
 	// TODO: If an error is thrown, it breaks reactivity for object side
 	const clone = {} as inferShape<TSchema>;
+	const keys = new Set([...Object.keys(params), ...Object.keys(schemas)]);
 
-	for (const [key, value] of Object.entries(params)) {
-		if (key in schemas) {
-			const schema = schemas[key];
+	for (const key of keys) {
+		const value = params[key];
 
-			let parsed;
-
-			if (typeof schema === "function") {
-				parsed = schema(value);
-			} else if ("parse" in schema) {
-				parsed = schema.parse(value);
-			} else if ("async" in schema) {
-				parsed = parse(schema, value);
-			} else {
-				parsed = value;
-			}
-
-			clone[key as keyof TSchema] = parsed;
-		} else {
-			/** Value wasn't defined in the schema, pass through as-is */
-			clone[key as keyof TSchema] = value as any;
-		}
+		clone[key as keyof TSchema] =
+			key in schemas
+				? parseValue(schemas[key], value)
+				: /** Value wasn't defined in the schema, pass through as-is */
+				  value;
 	}
 
 	return clone;

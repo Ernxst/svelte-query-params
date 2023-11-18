@@ -69,7 +69,6 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	const reactive = $derived(
 		Object.fromEntries(
 			Object.keys(validators).map((key) => {
-				console.log(query, key);
 				return [
 					key,
 					{

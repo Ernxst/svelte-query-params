@@ -94,14 +94,14 @@ interface Params<TShape extends object> {
 	dispose(): void;
 	/** Return the query keys. Unlike {@linkcode Object.keys}, this is type-safe */
 	keys(): (keyof TShape)[];
-	entries(): [keyof TShape, EnhanceParam<TShape[keyof TShape]>][];
+	entries(): [keyof TShape, QueryParam<TShape[keyof TShape]>][];
 }
 
 type EnhanceParams<TShape> = {
-	[K in keyof TShape]: EnhanceParam<TShape[K]>;
+	[K in keyof TShape]: QueryParam<TShape[K]>;
 };
 
-export type EnhanceParam<TValue> = TValue & {
+export type QueryParam<TValue> = TValue & {
 	/** Replace the value of this query param */
 	set(value: TValue): void;
 	/**

@@ -17,7 +17,6 @@ export function parseQueryParams<TSchema extends QuerySchema>(
 	params: Record<string, string | undefined>,
 	schemas: TSchema
 ): inferShape<TSchema> {
-	// TODO: If an error is thrown, it breaks reactivity for object side
 	const clone = {} as inferShape<TSchema>;
 	const keys = new Set([...Object.keys(params), ...Object.keys(schemas)]);
 

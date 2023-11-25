@@ -5,7 +5,7 @@
 	const params = useQueryParams();
 
 	function increment() {
-		params.count.set(params.count + 1);
+		params.count += 1;
 	}
 
 	const submit: EventHandler<SubmitEvent, HTMLFormElement> =
@@ -26,10 +26,10 @@
 </button>
 
 <section>
-	{#each params.entries() as [key, value]}
+	{#each params.keys() as key}
 		<label>
 			{key}
-			<input name={key} bind:value oninput={value.oninput} />
+			<input name={key} bind:value={params[key]} />
 		</label>
 	{/each}
 </section>

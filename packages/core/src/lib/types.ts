@@ -1,8 +1,7 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
-import type { z } from "zod";
-import type { FormEventHandler } from "svelte/elements";
 import type { AnySchema, Output } from "valibot";
+import type { z } from "zod";
 import type { Adapter } from "./adapters/types";
 
 type ZodValidator =
@@ -19,12 +18,12 @@ export type FunctionValidator<TOut = any> = (value?: string) => TOut;
 
 export type inferFromValidator<TValidator extends Validator> =
 	TValidator extends ZodValidator
-		? z.infer<TValidator>
-		: TValidator extends ValibotValidator
-		  ? Output<TValidator>
-		  : TValidator extends FunctionValidator
-		    ? ReturnType<TValidator>
-		    : never;
+	? z.infer<TValidator>
+	: TValidator extends ValibotValidator
+	? Output<TValidator>
+	: TValidator extends FunctionValidator
+	? ReturnType<TValidator>
+	: never;
 
 export type QuerySchema = Record<string, Validator>;
 
@@ -76,12 +75,10 @@ export interface QueryParamsOptions {
 	adapter?: Adapter;
 }
 
-export type QueryParams<TShape extends QuerySchema> = EnhanceParams<
-	inferShape<TShape>
-> &
+export type QueryParams<TShape extends QuerySchema> = inferShape<TShape> &
 	Params<inferShape<TShape>>;
 
-interface Params<TShape extends object> {
+export interface Params<TShape extends object> {
 	/** The raw query params, parsed from {@linkcode windowObj.location.href} */
 	readonly raw: Record<string, string>;
 	/** The unmodified query params parsed from the {@linkcode raw} params */
@@ -91,22 +88,9 @@ interface Params<TShape extends object> {
 	/** Replace _ALL_ query params, triggering a reactive and browser update */
 	set(params: TShape): void;
 	/** Manually unset unregister all event listeners */
-	dispose(): void;
+	unsubscribe(): void;
 	/** Return the query keys. Unlike {@linkcode Object.keys}, this is type-safe */
 	keys(): (keyof TShape)[];
-	entries(): [keyof TShape, QueryParam<TShape[keyof TShape]>][];
+	entries(): [keyof TShape, TShape[keyof TShape]][];
+	[Symbol.dispose]: () => void;
 }
-
-type EnhanceParams<TShape> = {
-	[K in keyof TShape]: QueryParam<TShape[K]>;
-};
-
-export type QueryParam<TValue> = TValue & {
-	/** Replace the value of this query param */
-	set(value: TValue): void;
-	/**
-	 * A shorthand function allowing you to update the query param
-	 * when an input value changes (i.e., the `oninput` event)
-	 */
-	oninput: FormEventHandler<EventTarget>;
-};

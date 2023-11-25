@@ -4,7 +4,6 @@ export type {
 	FunctionValidator,
 	QueryFetcher,
 	QueryParams,
-	QueryParam,
 	QuerySchema,
 	QueryUpdater,
 	Serializer,

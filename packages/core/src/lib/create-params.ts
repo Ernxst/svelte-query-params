@@ -1,7 +1,7 @@
 import { tick } from "svelte";
-import type { FormEventHandler } from "svelte/elements";
 import { dom } from "./adapters/dom";
 import type {
+	Params,
 	QueryParams,
 	QueryParamsOptions,
 	QuerySchema,
@@ -66,34 +66,6 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		updateBrowserUrl();
 	}
 
-	const reactive = $derived(
-		Object.fromEntries(
-			Object.keys(validators).map((key) => {
-				return [
-					key,
-					{
-						valueOf() {
-							return query[key];
-						},
-						toString() {
-							return `${query[key]}`;
-						},
-						toJSON() {
-							return query[key];
-						},
-						oninput(event: Parameters<FormEventHandler<any>>[0]) {
-							const value = (event.target as any)?.value;
-							setQueryParam(key, value);
-						},
-						set(value: any) {
-							setQueryParam(key, value);
-						},
-					},
-				];
-			})
-		)
-	);
-
 	let replaceState: History["replaceState"];
 	let pushState: History["pushState"];
 
@@ -118,12 +90,19 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		windowObj.addEventListener("popstate", updateQueryParams);
 	}
 
-	const keys = $derived(Object.keys(query));
-	const entries = $derived<any>(Object.entries(reactive));
+	const reactive = {} as inferShape<TShape>;
+	Object.keys(validators).forEach((key) => {
+		Object.defineProperty(reactive, key, {
+			get() {
+				return query[key];
+			},
+			set(newValue) {
+				setQueryParam(key, newValue);
+			},
+		});
+	});
 
-	return () => ({
-		...(reactive as inferShape<TShape>),
-
+	return () => Object.assign(reactive, {
 		get raw() {
 			return raw;
 		},
@@ -137,27 +116,19 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		},
 
 		keys() {
-			return keys;
+			return Object.keys(validators);
 		},
 
 		entries() {
-			return entries;
+			return Object.entries(validators).map(([key]) => [key, query[key]] as any)
 		},
 
-		set(params) {
+		set(params: inferShape<TShape>) {
 			raw = mapValues(params, serialise);
 			updateBrowserUrl();
 		},
 
-		toJSON() {
-			return query;
-		},
-
-		toString() {
-			return JSON.stringify(query);
-		},
-
-		dispose() {
+		unsubscribe() {
 			if (windowObj) {
 				windowObj.removeEventListener("popstate", updateQueryParams);
 				windowObj.history.pushState = pushState;
@@ -166,7 +137,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		},
 
 		[Symbol.dispose]() {
-			this.dispose();
-		},
-	});
+			this.unsubscribe();
+		}
+	} satisfies Params<inferShape<TShape>>)
 }

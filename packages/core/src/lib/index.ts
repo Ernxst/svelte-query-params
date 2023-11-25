@@ -1,4 +1,4 @@
-export { createUseQueryParams } from "./create-params";
+export { createUseQueryParams } from "./create-params.svelte.ts";
 export type {
 	QueryParamsOptions,
 	FunctionValidator,
@@ -10,4 +10,4 @@ export type {
 	inferFromValidator,
 	inferShape,
 	Validator,
-} from "./types";
+} from "./types.ts";

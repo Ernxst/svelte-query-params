@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import type { Adapter } from "./types";
+import type { Adapter } from "./types.ts";
 import { goto } from "$app/navigation";
 import { page } from "$app/stores";
 import { browser, building } from "$app/environment";

@@ -1,1 +1,1 @@
-export type { Adapter } from "./types";
+export type { Adapter } from "./types.ts";

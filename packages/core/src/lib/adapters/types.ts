@@ -1,4 +1,4 @@
-import type { QueryFetcher, QueryUpdater } from "../types";
+import type { QueryFetcher, QueryUpdater } from "../types.ts";
 
 export interface Adapter {
 	/**

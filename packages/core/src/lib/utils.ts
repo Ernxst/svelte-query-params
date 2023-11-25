@@ -1,5 +1,10 @@
 import { parse } from "valibot";
-import type { QuerySchema, Serializer, Validator, inferShape } from "./types";
+import type {
+	QuerySchema,
+	Serializer,
+	Validator,
+	inferShape,
+} from "./types.ts";
 
 function parseValue(schema: Validator, value: string | undefined) {
 	if (typeof schema === "function") {

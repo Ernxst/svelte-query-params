@@ -1,6 +1,10 @@
 /// <reference lib="dom" />
-import type { QueryFetcher, QueryParamsOptions, QueryUpdater } from "../types";
-import type { Adapter } from "./types";
+import type {
+	QueryFetcher,
+	QueryParamsOptions,
+	QueryUpdater,
+} from "../types.ts";
+import type { Adapter } from "./types.ts";
 
 export interface DomAdapterOptions
 	extends Pick<QueryParamsOptions, "windowObj"> {

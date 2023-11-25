@@ -2,7 +2,7 @@
 /// <reference lib="dom.iterable" />
 import type { AnySchema, Output } from "valibot";
 import type { z } from "zod";
-import type { Adapter } from "./adapters/types";
+import type { Adapter } from "./adapters/types.ts";
 
 type ZodValidator =
 	| z.ZodString

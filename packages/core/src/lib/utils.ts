@@ -25,6 +25,26 @@ export function parseQueryParams<TSchema extends QuerySchema>(
 	const clone = {} as inferShape<TSchema>;
 	const keys = new Set([...Object.keys(params), ...Object.keys(schemas)]);
 
+	/**
+	 * I think this might be the most hideous hack I've implemented yet.
+	 *
+	 * The issue is when validation fails, for some reason unknown to me, Svelte stops
+	 * reacting to the updates (it still calls the parser again, but the consumer
+	 * visible state does not change)
+	 *
+	 * I noticed this and added logs (below) and noticed it started working. Removing
+	 * the logs breaks it again. Not even a raw expression fixes it.
+	 *
+	 * So, we just make console.log a noop and then put it back so it isn't
+	 * logged to the console
+	 *
+	 * Maybe someone else can fix this
+	 */
+	const log = console.log;
+	console.log = () => {};
+	console.log({ params });
+	console.log = log;
+
 	for (const key of keys) {
 		const value = params[key];
 

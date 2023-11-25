@@ -95,7 +95,8 @@
 		"typecheck": "tsc",
 		"svelte:sync": "svelte-kit sync",
 		"--------------------------------------------------------------------------------": "",
-		"test": "bun test",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"---------------------------------------------------------------------------------": "",
 		"postinstall": "svelte-kit sync"
 	},
@@ -121,13 +122,19 @@
 	},
 	"dependencies": {
 		"@sveltejs/kit": "^1.27.6",
-		"svelte": "^5.0.0-next.4",
+		"svelte": "^5.0.0-next.13",
 		"valibot": "^0.17.0",
 		"zod": "^3.22.2"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "2.0.3",
+		"@sveltejs/vite-plugin-svelte": "3.0.0",
+		"@testing-library/svelte": "4.0.5",
+		"@testing-library/user-event": "14.5.1",
+		"jsdom": "22.1.0",
 		"tslib": "2.6.2",
-		"vite": "5.0.0"
+		"vite": "5.0.0",
+		"vitest": "0.34.6",
+		"vitest-dom": "0.1.1"
 	}
 }

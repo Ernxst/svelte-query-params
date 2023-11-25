@@ -1,0 +1,17 @@
+diff --git a/node_modules/@testing-library/svelte/src/pure.js b/node_modules/@testing-library/svelte/src/pure.js
+index 04d3cb0..a49108e 100644
+--- a/node_modules/@testing-library/svelte/src/pure.js
++++ b/node_modules/@testing-library/svelte/src/pure.js
+@@ -62,9 +62,9 @@ const render = (
+   containerCache.add({ container, target, component })
+   componentCache.add(component)
+ 
+-  component.$$.on_destroy.push(() => {
+-    componentCache.delete(component)
+-  })
++  // component.$$.on_destroy.push(() => {
++  //   componentCache.delete(component)
++  // })
+ 
+   return {
+     container,

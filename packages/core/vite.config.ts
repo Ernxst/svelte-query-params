@@ -4,11 +4,12 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	plugins: [
-		process.env.VITEST ? svelte({
-			compilerOptions: {
-				legacy: { componentApi: true },
-			},
-		})
+		process.env.VITEST
+			? svelte({
+					compilerOptions: {
+						legacy: { componentApi: true },
+					},
+			  })
 			: sveltekit(),
 	],
 	test: {

@@ -8,4 +8,4 @@
 	const params = useQueryParams();
 </script>
 
-<input name="number" bind:value={params.count} type="number">
+<input name="number" bind:value={params.count} type="number" />

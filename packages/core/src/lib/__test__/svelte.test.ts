@@ -91,13 +91,13 @@ describe("createUseQueryParams", () => {
 		beforeEach(() => {
 			params.count = 0;
 			params.id = 0;
-		})
+		});
 
 		afterEach(() => {
 			params.count = 0;
 			params.id = 0;
 			cleanup();
-		})
+		});
 
 		test("should apply full updates", async () => {
 			render(FullUpdate, { useQueryParams });

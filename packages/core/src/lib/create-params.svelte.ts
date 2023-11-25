@@ -93,7 +93,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		windowObj.addEventListener("popstate", updateQueryParams);
 	}
 
-	const reactive = {} as QueryParams<TShape>
+	const reactive = {} as QueryParams<TShape>;
 	Object.keys(validators).forEach((key) => {
 		Object.defineProperty(reactive, key, {
 			get() {
@@ -114,14 +114,14 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		query: {
 			get() {
 				return query;
-			}
+			},
 		},
 		search: {
 			get() {
 				return search;
 			},
-		}
-	})
+		},
+	});
 
 	return () =>
 		Object.assign(reactive, {

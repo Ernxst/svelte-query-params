@@ -89,6 +89,8 @@ export interface Params<TShape extends object> {
 	set(params: TShape): void;
 	/** Update a subset of the query params, triggering a reactive and browser update */
 	update(params: Partial<TShape>): void;
+	/** Remove query params. Note that this may cause your validation check to fail */
+	remove(...params: (keyof TShape)[]): void;
 	/** Manually unset unregister all event listeners */
 	unsubscribe(): void;
 	/** Return the query keys. Unlike {@linkcode Object.keys}, this is type-safe */

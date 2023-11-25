@@ -139,6 +139,12 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 				updateBrowserUrl();
 			},
 
+			remove(...params) {
+				raw = Object.fromEntries(
+					Object.entries(raw).filter(([key]) => !params.includes(key))
+				);
+			},
+
 			unsubscribe() {
 				if (windowObj) {
 					windowObj.removeEventListener("popstate", updateQueryParams);

@@ -93,7 +93,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		windowObj.addEventListener("popstate", updateQueryParams);
 	}
 
-	const reactive = {} as inferShape<TShape>;
+	const reactive = {} as QueryParams<TShape>
 	Object.keys(validators).forEach((key) => {
 		Object.defineProperty(reactive, key, {
 			get() {
@@ -105,20 +105,26 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		});
 	});
 
-	return () =>
-		Object.assign(reactive, {
-			get raw() {
+	Object.defineProperties(reactive, {
+		raw: {
+			get() {
 				return raw;
 			},
-
-			get query() {
+		},
+		query: {
+			get() {
 				return query;
-			},
-
-			get search() {
+			}
+		},
+		search: {
+			get() {
 				return search;
 			},
+		}
+	})
 
+	return () =>
+		Object.assign(reactive, {
 			keys() {
 				return Object.keys(validators);
 			},
@@ -156,5 +162,5 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			[Symbol.dispose]() {
 				this.unsubscribe();
 			},
-		} satisfies Params<inferShape<TShape>>);
+		} satisfies Omit<Params<inferShape<TShape>>, "query" | "raw" | "search">);
 }

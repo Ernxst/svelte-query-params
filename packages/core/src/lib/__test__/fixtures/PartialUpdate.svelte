@@ -12,7 +12,7 @@
 	}
 </script>
 
-<input name="count" value={params.count} disabled />
-<input name="id" value={params.id} disabled />
+<input name="count" value={params.count} disabled type="number" />
+<input name="id" value={params.id} disabled type="number" />
 
 <button onclick={updateOne}> Click here to update count </button>

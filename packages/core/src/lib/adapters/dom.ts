@@ -1,5 +1,4 @@
 /// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
 import type { QueryFetcher, QueryParamsOptions, QueryUpdater } from "../types";
 import type { Adapter } from "./types";
 
@@ -29,6 +28,8 @@ function createQueryUpdater(
 	/** Get the function ahead of time so we don't need an if statement every call */
 	return (search, hash) => update(null, "", `${search}${hash}`);
 }
+
+// Called it the dom adapter as there's noting svelte about it
 
 export function dom(options: DomAdapterOptions = {}): Adapter {
 	const { windowObj = window, replace = false } = options;

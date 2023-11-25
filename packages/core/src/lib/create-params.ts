@@ -16,6 +16,8 @@ import {
 } from "./utils";
 
 /**
+ * This returns a function (a hook) rather than a reactive object as the
+ * reactivity is lost when importing the underlying reactive object around
  * @returns A hook, returning a reactive {@linkcode QueryParams} instance
  */
 export function createUseQueryParams<TShape extends QuerySchema>(
@@ -102,42 +104,50 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		});
 	});
 
-	return () => Object.assign(reactive, {
-		get raw() {
-			return raw;
-		},
+	return () =>
+		Object.assign(reactive, {
+			get raw() {
+				return raw;
+			},
 
-		get query() {
-			return query;
-		},
+			get query() {
+				return query;
+			},
 
-		get search() {
-			return search;
-		},
+			get search() {
+				return search;
+			},
 
-		keys() {
-			return Object.keys(validators);
-		},
+			keys() {
+				return Object.keys(validators);
+			},
 
-		entries() {
-			return Object.entries(validators).map(([key]) => [key, query[key]] as any)
-		},
+			entries() {
+				return Object.entries(validators).map(
+					([key]) => [key, query[key]] as any
+				);
+			},
 
-		set(params: inferShape<TShape>) {
-			raw = mapValues(params, serialise);
-			updateBrowserUrl();
-		},
+			set(params) {
+				raw = mapValues(params, serialise);
+				updateBrowserUrl();
+			},
 
-		unsubscribe() {
-			if (windowObj) {
-				windowObj.removeEventListener("popstate", updateQueryParams);
-				windowObj.history.pushState = pushState;
-				windowObj.history.replaceState = replaceState;
-			}
-		},
+			update(params) {
+				raw = { ...raw, ...mapValues(params, serialise) };
+				updateBrowserUrl();
+			},
 
-		[Symbol.dispose]() {
-			this.unsubscribe();
-		}
-	} satisfies Params<inferShape<TShape>>)
+			unsubscribe() {
+				if (windowObj) {
+					windowObj.removeEventListener("popstate", updateQueryParams);
+					windowObj.history.pushState = pushState;
+					windowObj.history.replaceState = replaceState;
+				}
+			},
+
+			[Symbol.dispose]() {
+				this.unsubscribe();
+			},
+		} satisfies Params<inferShape<TShape>>);
 }

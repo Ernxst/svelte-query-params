@@ -18,12 +18,12 @@ export type FunctionValidator<TOut = any> = (value?: string) => TOut;
 
 export type inferFromValidator<TValidator extends Validator> =
 	TValidator extends ZodValidator
-	? z.infer<TValidator>
-	: TValidator extends ValibotValidator
-	? Output<TValidator>
-	: TValidator extends FunctionValidator
-	? ReturnType<TValidator>
-	: never;
+		? z.infer<TValidator>
+		: TValidator extends ValibotValidator
+		  ? Output<TValidator>
+		  : TValidator extends FunctionValidator
+		    ? ReturnType<TValidator>
+		    : never;
 
 export type QuerySchema = Record<string, Validator>;
 
@@ -87,6 +87,8 @@ export interface Params<TShape extends object> {
 	readonly search: string;
 	/** Replace _ALL_ query params, triggering a reactive and browser update */
 	set(params: TShape): void;
+	/** Update a subset of the query params, triggering a reactive and browser update */
+	update(params: Partial<TShape>): void;
 	/** Manually unset unregister all event listeners */
 	unsubscribe(): void;
 	/** Return the query keys. Unlike {@linkcode Object.keys}, this is type-safe */

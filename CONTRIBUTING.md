@@ -70,8 +70,8 @@ though, please make sure to take a moment and read through the following guideli
 ### Prerequisite
 
 ```shell
-node: ">= 14.16.0"
-bun: "^8.6.10"
+node: ">= 18.12.0"
+bun: "^1.0.6"
 # otherwise, your build will fail
 ```
 
@@ -79,7 +79,7 @@ bun: "^8.6.10"
 
 ```shell
 git clone && cd ...
-bun install
+bun install --y
 bun run build
 ```
 
@@ -87,7 +87,7 @@ bun run build
 
 ```shell
 # starts a file-watching, live-reloading dev script for active development
-bun run watch
+bun run dev
 # build the entire project, one time.
 bun run build
 ```
@@ -127,18 +127,15 @@ bunx changeset
 
 This project has a simple structure,
 
-- [`src/index.ts`](../src/index.ts) contains code that should be exposed to consumers of this library
-- [`src/core.ts`](../src/core.ts) contains the core code of the library
-- [`src/types.ts`](../src/types.ts) contains TypeScript definitions to ensure type-safety
-- [`src/__tests__/`](../src/__tests__) contains Vitest test suites
+<!-- TODO: Code structure  -->
 
 ## Releases
 
-_Note: Only [core maintainers (L3+)](https://github.com/Ernxst/queria/blob/main/GOVERNANCE.md#level-3-l3---core-maintainer) can release new versions of `queria`._
+_Note: Only [core maintainers (L3+)](https://github.com/Ernxst/svelte-query-rune/blob/main/GOVERNANCE.md#level-3-l3---core-maintainer) can release new versions of `svelte-query-rune`._
 
 The repo is set up with automatic releases, using the changeset GitHub action & bot.
 
-To release a new version of `queria`, find the `Version Packages` PR, read it over, and merge it.
+To release a new version of `svelte-query-rune`, find the `Version Packages` PR, read it over, and merge it.
 
 ### Releasing PR preview snapshots
 
@@ -159,15 +156,15 @@ bun run release --tag next--XXX
 git reset --hard
 ```
 
-Full documentation: https://github.com/atlassian/changesets/blob/main/docs/snapshot-releases.md
+Full documentation: <https://github.com/atlassian/changesets/blob/main/docs/snapshot-releases.md>
 
-### Releasing `queria@next` (aka "prerelease mode")
+### Releasing `svelte-query-rune@next` (aka "prerelease mode")
 
 Sometimes, the repo will enter into "prerelease mode". In prerelease mode, our normal release process will publish npm versions under the `next` dist-tag, instead of the default `latest` tag. We do this from time-to-time to test large features before sharing them with the larger audience.
 
-While in prerelease mode, follow the normal release process to release `queria@next` instead of `queria@latest`. To release `queria@latest` instead, see [Releasing `queria@latest` while in prerelease mode](#releasing-querialatest-while-in-prerelease-mode).
+While in prerelease mode, follow the normal release process to release `svelte-query-rune@next` instead of `svelte-query-rune@latest`. To release `svelte-query-rune@latest` instead, see [Releasing `svelte-query-rune@latest` while in prerelease mode](#releasing-svelte-query-runelatest-while-in-prerelease-mode).
 
-Full documentation: https://github.com/atlassian/changesets/blob/main/docs/prereleases.md
+Full documentation: <https://github.com/atlassian/changesets/blob/main/docs/prereleases.md>
 
 ### Entering prerelease mode
 
@@ -180,16 +177,16 @@ If you have gotten permission from the core contributors, you can enter into pre
 
 ### Exiting prerelease mode
 
-Exiting prerelease mode should happen once an experimental release is ready to go from `npm install queria@next` to `npm install queria`. Only a core contributor run these steps. These steps should be run before
+Exiting prerelease mode should happen once an experimental release is ready to go from `npm install svelte-query-rune@next` to `npm install svelte-query-rune`. Only a core contributor run these steps. These steps should be run before
 
 - Run: `bunx changeset pre exit` in the project root
 - Create a new PR from the changes created by this command.
 - Review, approve, and more the PR to enter prerelease mode.
 - If successful, The "Version Packages (next)" PR (if one exists) will now say "Version Packages".
 
-### Releasing `queria@latest` while in prerelease mode
+### Releasing `svelte-query-rune@latest` while in prerelease mode
 
-When in prerelease mode, the automatic PR release process will no longer release `queria@latest`, and will instead release `queria@next`. That means that releasing to `latest` becomes a manual process. To release latest manually while in prerelease mode:
+When in prerelease mode, the automatic PR release process will no longer release `svelte-query-rune@latest`, and will instead release `svelte-query-rune@next`. That means that releasing to `latest` becomes a manual process. To release latest manually while in prerelease mode:
 
 1. _In the code snippets below, replace `0.X` with your version (ex: `0.18`, `release/0.18`, etc.)._
 2. Create a new `release/0.X` branch, if none exists.
@@ -200,9 +197,9 @@ When in prerelease mode, the automatic PR release process will no longer release
 7. Run `bunx release` to publish your new release.
 8. Run `git push && git push --tags` to push your new release to GitHub.
 9. Run `git push release/0.X:latest` to push your release branch to `latest`.
-10. Go to https://github.com/Ernxst/queria/releases/new and create a new release. Copy the new changelog entry from https://github.com/Ernxst/queria/blob/latest/CHANGELOG.md.
+10. Go to <https://github.com/Ernxst/svelte-query-rune/releases/new> and create a new release. Copy the new changelog entry from <https://github.com/Ernxst/svelte-query-rune/blob/latest/CHANGELOG.md>.
 11. Post in Discord #announcements channel, if needed!
 
 ## Documentation
 
-Since this library is tiny, documentation should go in the main [README](../README.md) file.
+Since this library is tiny, documentation should go in the main [README](./README.md) file.

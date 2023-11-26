@@ -75,7 +75,7 @@ jobs:
           cache: bun
 
       - name: 📤 Install dependencies
-        run: bun install --y
+        run: bun install -y
 
       - name: 🧪 Run Tests
         run: bun run test

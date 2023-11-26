@@ -79,7 +79,7 @@ bun: "^1.0.6"
 
 ```shell
 git clone && cd ...
-bun install --y
+bun install -y
 bun run build
 ```
 

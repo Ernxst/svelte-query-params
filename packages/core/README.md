@@ -46,7 +46,7 @@ import { createUseQueryParams } from "svelte-query-params";
 // Define validators for query parameters
 const validators = {
   page: (value) => typeof value === "number" && value > 0,
-  search: (value) => typeof value === "string",
+  q: (value) => typeof value === "string",
 };
 
 // Create the hook
@@ -65,20 +65,20 @@ Then you can use this hook in your Svelte components:
 
   // Access query parameters
   console.log(params.page); // Current 'page' value
-  console.log(params.search); // Current 'search' value
+  console.log(params.q); // Current 'q' value
 
   // Set query parameters
   params.page = 1;
-  params.search = "example";
+  params.q = "example";
 
   // Update all query parameters in bulk
-  params.update({ page: 2, search: 'shoes' });
+  params.update({ page: 2, q: 'shoes' });
 
   // Apply partial updates to query params
   params.update({ page: 3 });
 
   // Remove query parameters
-  params.remove("search");
+  params.remove("q");
 
   // Unsubscribe from popstate events
   params.unsubscribe();
@@ -91,11 +91,11 @@ Then you can use this hook in your Svelte components:
 </script>
 
 <p>
-  Currently on page {params.page}, searching for {param.search}
+  Currently on page {params.page}, searching for {params.q}
 </p>
 
-<!-- Bind the 'search' query param to the input -->
-<input name="search" bind:value={params.search}>
+<!-- Bind the 'q' query param to the input -->
+<input name="search" bind:value={params.q}>
 ```
 
 ## Validators
@@ -111,7 +111,7 @@ import { createUseQueryParams } from "svelte-query-params";
 
 const useQueryParams = createUseQueryParams({
   page: z.number(),
-  search: z.string()
+  q: z.string()
 });
 ```
 
@@ -125,7 +125,7 @@ import { createUseQueryParams } from "svelte-query-params";
 const useQueryParams = createUseQueryParams({
   page: (value) => typeof value === "number" && value > 0,
   sort: string(),
-  search: z.string()
+  q: z.string()
 });
 ```
 

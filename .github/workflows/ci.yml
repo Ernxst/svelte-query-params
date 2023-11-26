@@ -39,7 +39,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 18
-          cache: bun
 
       - name: 📤 Install dependencies
         run: bun install
@@ -72,7 +71,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          cache: bun
 
       - name: 📤 Install dependencies
         run: bun install -y

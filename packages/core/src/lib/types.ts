@@ -1,8 +1,11 @@
 /// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
-import type { AnySchema, Output } from "valibot";
+import type { BaseSchema, Output } from "valibot";
 import type { z } from "zod";
 import type { Adapter } from "./adapters/types.ts";
+
+/** Use this over valibot AnySchema type as we need to widen the type of `schema` to be any string */
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+type AnySchema<TOutput = any> = BaseSchema<any, TOutput> & { schema: string };
 
 type ZodValidator =
 	| z.ZodString

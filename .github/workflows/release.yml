@@ -5,7 +5,6 @@ on:
     paths-ignore:
       - ".vscode/**"
       - ".husky/**"
-      - ".prettierignore"
       - "LICENSE"
       - "**/README.md"
       - ".github/ISSUE_TEMPLATE/**"
@@ -15,13 +14,11 @@ on:
       - ".github/settings.yml"
       - ".editorconfig"
       - ".commitlintrc.json"
-      - ".prettierrc.json"
   pull_request:
     types: [opened, synchronize]
     paths-ignore:
       - ".vscode/**"
       - ".husky/**"
-      - ".prettierignore"
       - "LICENSE"
       - "**/README.md"
       - ".github/ISSUE_TEMPLATE/**"
@@ -31,7 +28,6 @@ on:
       - ".github/settings.yml"
       - ".editorconfig"
       - ".commitlintrc.json"
-      - ".prettierrc.json"
 
 # Automatically cancel in-progress actions on the same branch
 concurrency:

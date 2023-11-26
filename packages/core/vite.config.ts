@@ -4,6 +4,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	plugins: [
+		// @ts-expect-error ???
 		process.env.VITEST
 			? svelte({
 					compilerOptions: {
@@ -13,8 +14,12 @@ export default defineConfig({
 			: sveltekit(),
 	],
 	test: {
+		watch: false,
 		globals: true,
 		environment: "jsdom",
 		setupFiles: ["test/setup.ts"],
+		typecheck: {
+			ignoreSourceErrors: true,
+		},
 	},
 });

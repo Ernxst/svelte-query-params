@@ -7,22 +7,17 @@
 		"node": ">=18.12.1",
 		"bun": "1.0.12"
 	},
-	"workspaces": [
-		"examples/*",
-		"packages/*"
-	],
+	"workspaces": ["examples/*", "packages/*"],
 	"scripts": {
-		"------------------------------------------------------------------------------": "",
-		"build": "turbo run build",
 		"-------------------------------------------------------------------------------": "",
-		"dts": "turbo run dts --continue",
-		"typecheck": "turbo run typecheck",
+		"build": "turbo run build",
 		"--------------------------------------------------------------------------------": "",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --apply",
 		"format": "biome format . --write",
 		"---------------------------------------------------------------------------------": "",
 		"test": "turbo run test",
+		"test:types": "turbo run test:types",
 		"----------------------------------------------------------------------------------": "",
 		"prepare": "husky install",
 		"postinstall": "bunx patch-package",
@@ -49,8 +44,6 @@
 		"turbo": "1.10.16"
 	},
 	"nano-staged": {
-		"*": [
-			"bunx @biomejs/biome check --apply ."
-		]
+		"*": ["bunx @biomejs/biome check --apply ."]
 	}
 }

@@ -4,13 +4,13 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	plugins: [
-		// @ts-expect-error ???
 		process.env.VITEST
-			? svelte({
+			? (svelte({
 					compilerOptions: {
 						legacy: { componentApi: true },
 					},
-			  })
+					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			  }) as any)
 			: sveltekit(),
 	],
 	test: {

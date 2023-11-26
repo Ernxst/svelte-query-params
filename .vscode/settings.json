@@ -32,6 +32,9 @@
 	"workbench.editor.labelFormat": "short",
 	"workbench.tree.indent": 20,
 	"[typescriptreact]": {
-		"editor.defaultFormatter": "vscode.typescript-language-features"
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
 	},
 }

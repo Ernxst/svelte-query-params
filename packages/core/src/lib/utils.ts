@@ -69,18 +69,20 @@ export function entriesToRecord(entries: [string, string][]) {
 	}, {});
 }
 
-export function mapValues<TObj extends Record<string, any>, TReturn>(
-	object: TObj,
-	mapFn: (value: TObj[keyof TObj]) => TReturn
+export function mapValues<TKeys extends string, TValues, TReturn>(
+	object: Record<TKeys, TValues>,
+	mapFn: (value: TValues) => TReturn
 ) {
 	return Object.fromEntries(
-		Object.entries(object).map(([key, value]) => [key, mapFn(value)])
+		Object.entries(object).map(([key, value]) => [key, mapFn(value as TValues)])
 	);
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function debounce(func: (...args: any[]) => any, delay: number) {
 	let timeoutId: ReturnType<typeof setTimeout>;
 
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	return function (...args: any[]) {
 		clearTimeout(timeoutId);
 

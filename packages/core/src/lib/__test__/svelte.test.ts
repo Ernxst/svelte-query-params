@@ -1,12 +1,12 @@
 import { cleanup, render, screen } from "@testing-library/svelte";
-import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { z } from "zod";
 import { createUseQueryParams } from "../create-params.svelte.ts";
+import Button from "./fixtures/Button.svelte";
+import FullUpdate from "./fixtures/FullUpdate.svelte";
 import Input from "./fixtures/Input.svelte";
 import PartialUpdate from "./fixtures/PartialUpdate.svelte";
-import FullUpdate from "./fixtures/FullUpdate.svelte";
-import Button from "./fixtures/Button.svelte";
 
 describe("createUseQueryParams", () => {
 	const user = userEvent.setup();
@@ -28,13 +28,13 @@ describe("createUseQueryParams", () => {
 
 			await user.type(input, "123");
 
-			expect(window.location.search).toEqual(`?count=123`);
+			expect(window.location.search).toEqual("?count=123");
 			expect(params.count).toEqual(123);
 			expect(params.entries()).toEqual([["count", 123]]);
 
 			expect(params.query).toEqual({ count: 123 });
 			expect(params.raw).toEqual({ count: "123" });
-			expect(params.search).toEqual(`?count=123`);
+			expect(params.search).toEqual("?count=123");
 		});
 
 		test("should update input when search params updated externally", async () => {
@@ -48,7 +48,7 @@ describe("createUseQueryParams", () => {
 
 			expect(params.query).toEqual({ count: 123 });
 			expect(params.raw).toEqual({ count: "123" });
-			expect(params.search).toEqual(`?count=123`);
+			expect(params.search).toEqual("?count=123");
 		});
 	});
 
@@ -70,13 +70,13 @@ describe("createUseQueryParams", () => {
 			await user.click(button);
 
 			expect(button).toHaveTextContent("count is 1");
-			expect(window.location.search).toEqual(`?count=1`);
+			expect(window.location.search).toEqual("?count=1");
 			expect(params.count).toEqual(1);
 			expect(params.entries()).toEqual([["count", 1]]);
 
 			expect(params.query).toEqual({ count: 1 });
 			expect(params.raw).toEqual({ count: "1" });
-			expect(params.search).toEqual(`?count=1`);
+			expect(params.search).toEqual("?count=1");
 		});
 	});
 
@@ -107,7 +107,7 @@ describe("createUseQueryParams", () => {
 
 			await user.click(button);
 
-			expect(window.location.search).toEqual(`?count=1&id=1`);
+			expect(window.location.search).toEqual("?count=1&id=1");
 			expect(countInput).toHaveValue(1);
 			expect(idInput).toHaveValue(1);
 
@@ -120,7 +120,7 @@ describe("createUseQueryParams", () => {
 
 			expect(params.query).toEqual({ count: 1, id: 1 });
 			expect(params.raw).toEqual({ count: "1", id: "1" });
-			expect(params.search).toEqual(`?count=1&id=1`);
+			expect(params.search).toEqual("?count=1&id=1");
 		});
 
 		test("should apply partial updates", async () => {
@@ -131,7 +131,7 @@ describe("createUseQueryParams", () => {
 
 			await user.click(button);
 
-			expect(window.location.search).toEqual(`?count=1&id=0`);
+			expect(window.location.search).toEqual("?count=1&id=0");
 			expect(countInput).toHaveValue(1);
 			expect(idInput).toHaveValue(0);
 
@@ -144,7 +144,7 @@ describe("createUseQueryParams", () => {
 
 			expect(params.query).toEqual({ count: 1, id: 0 });
 			expect(params.raw).toEqual({ count: "1", id: "0" });
-			expect(params.search).toEqual(`?count=1&id=0`);
+			expect(params.search).toEqual("?count=1&id=0");
 		});
 	});
 });

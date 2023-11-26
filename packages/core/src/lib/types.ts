@@ -14,22 +14,21 @@ type ValibotValidator = AnySchema;
 
 export type Validator = FunctionValidator | ZodValidator | ValibotValidator;
 
-export type FunctionValidator<TOut = any> = (value?: string) => TOut;
+export type FunctionValidator<TOut = unknown> = (value?: string) => TOut;
 
 export type inferFromValidator<TValidator extends Validator> =
 	TValidator extends ZodValidator
 		? z.infer<TValidator>
 		: TValidator extends ValibotValidator
-		  ? Output<TValidator>
-		  : TValidator extends FunctionValidator
-		    ? ReturnType<TValidator>
-		    : never;
+		? Output<TValidator>
+		: TValidator extends FunctionValidator
+		? ReturnType<TValidator>
+		: never;
 
 export type QuerySchema = Record<string, Validator>;
 
 export type inferShape<TShape extends QuerySchema> = {
 	[K in keyof TShape]: inferFromValidator<TShape[K]>;
-	// eslint-disable-next-line @typescript-eslint/ban-types
 } & {};
 
 /**

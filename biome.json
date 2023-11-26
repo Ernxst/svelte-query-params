@@ -50,5 +50,11 @@
 		"formatter": {
 			"trailingComma": "es5"
 		}
+	},
+	"json": {
+		"parser": {
+			"allowComments": true,
+			"allowTrailingCommas": true
+		}
 	}
 }

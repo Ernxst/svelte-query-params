@@ -67,7 +67,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		raw = getQueryParams();
 	}
 
-	function setQueryParam(key: string, value: any) {
+	function setQueryParam(key: string, value: unknown) {
 		if (value === undefined) {
 			// We need to assign it so it updates, property updates do nothing
 			const { [key]: _, ...rest } = raw;
@@ -104,7 +104,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	}
 
 	const reactive = {} as QueryParams<inferShape<TShape>>;
-	Object.keys(validators).forEach((key) => {
+	for (const key of Object.keys(validators)) {
 		Object.defineProperty(reactive, key, {
 			get() {
 				return query[key];
@@ -113,7 +113,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 				setQueryParam(key, newValue);
 			},
 		});
-	});
+	}
 
 	Object.defineProperties(reactive, {
 		raw: {
@@ -140,9 +140,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			},
 
 			entries() {
-				return Object.entries(validators).map(
-					([key]) => [key, query[key]] as any
-				);
+				return Object.entries(validators).map(([key]) => [key, query[key]]);
 			},
 
 			set(params) {

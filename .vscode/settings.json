@@ -9,23 +9,16 @@
 		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"cSpell.words": [
-		"antfu",
 		"biomejs",
 		"bunx",
 		"commitlint",
-		"decs",
-		"effectio",
 		"linkcode",
-		"originjs",
 		"popstate",
 		"postbuild",
 		"publint",
-		"superstruct",
 		"tsup",
-		"typebox",
 		"typecheck",
 		"typeof",
-		"typeschema",
 		"valibot"
 	],
 	"editor.codeActionsOnSave": {},

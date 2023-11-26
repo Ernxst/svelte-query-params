@@ -32,29 +32,35 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		serialise = createDefaultSerializer(),
 	} = options;
 
-	let raw = $state(getBrowserQueryParams());
+	let raw = $state(getQueryParams());
 
 	const query = $derived(parseQueryParams(raw, validators));
 	const search = $derived(
 		Object.keys(query).length ? `?${new URLSearchParams(query)}` : ""
 	);
 
-	function getBrowserQueryParams() {
-		const { search } = adapter.getBrowserUrl();
+	function getQueryParams() {
+		const getParams = adapter.isBrowser() ? adapter.getBrowserUrl : adapter.getServerUrl;
+		const { search } = getParams();
 		const queryParams = new URLSearchParams(search);
 		return entriesToRecord(Array.from(queryParams));
 	}
 
-	async function updateAfterTick() {
+	async function updateParamsAfterTick() {
 		await tick();
-		adapter.updateBrowserUrl(search, adapter.getBrowserUrl().hash);
+
+		if (adapter.isBrowser()) {
+			adapter.updateBrowserUrl(search, adapter.getBrowserUrl().hash);
+		} else {
+			adapter.updateServerUrl(search, adapter.getServerUrl().hash);
+		}
 	}
 
-	const updateBrowserUrl =
-		delay === 0 ? updateAfterTick : debounce(updateAfterTick, delay);
+	const updateUrl =
+		delay === 0 ? updateParamsAfterTick : debounce(updateParamsAfterTick, delay);
 
 	function updateQueryParams() {
-		raw = getBrowserQueryParams();
+		raw = getQueryParams();
 	}
 
 	function setQueryParam(key: string, value: any) {
@@ -66,7 +72,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			// We need to assign it so it updates, property updates do nothing
 			raw = { ...raw, [key]: serialise(value) };
 		}
-		updateBrowserUrl();
+		updateUrl();
 	}
 
 	let replaceState: History["replaceState"];
@@ -137,12 +143,12 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 
 			set(params) {
 				raw = mapValues(params, serialise);
-				updateBrowserUrl();
+				updateUrl();
 			},
 
 			update(params) {
 				raw = { ...raw, ...mapValues(params, serialise) };
-				updateBrowserUrl();
+				updateUrl();
 			},
 
 			remove(...params) {

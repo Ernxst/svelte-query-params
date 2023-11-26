@@ -14,12 +14,24 @@ interface SvelteKitAdapterOptions {
 export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 	const { replace = false } = options;
 	return {
+		isBrowser: () => browser,
 		getBrowserUrl: () => {
 			// Query params aren't pre-renderable
 			if (building) return { hash: "", search: "" };
-			return browser ? window.location : get(page).url;
+			return window.location
 		},
 		updateBrowserUrl: (search, hash) =>
+			goto(`${search}${hash}`, {
+				keepFocus: true,
+				noScroll: true,
+				replaceState: replace,
+			}),
+		getServerUrl: () => {
+			// Query params aren't pre-renderable
+			if (building) return { hash: "", search: "" };
+			return get(page).url;
+		},
+		updateServerUrl: (search, hash) =>
 			goto(`${search}${hash}`, {
 				keepFocus: true,
 				noScroll: true,

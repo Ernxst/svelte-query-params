@@ -1,0 +1,8 @@
+# See https://github.com/actions/labeler
+
+🚨 action:
+  - .github/workflows/**
+
+test:
+  - packages/**/*.test.ts
+  - packages/**/*.spec.ts

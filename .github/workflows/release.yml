@@ -1,0 +1,133 @@
+name: 📤 Release
+
+on:
+  push:
+    paths-ignore:
+      - ".vscode/**"
+      - ".husky/**"
+      - ".prettierignore"
+      - "LICENSE"
+      - "**/README.md"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/*.md"
+      - ".github/CODEOWNERS"
+      - ".github/FUNDING.yml"
+      - ".github/settings.yml"
+      - ".editorconfig"
+      - ".commitlintrc.json"
+      - ".prettierrc.json"
+  pull_request:
+    types: [opened, synchronize]
+    paths-ignore:
+      - ".vscode/**"
+      - ".husky/**"
+      - ".prettierignore"
+      - "LICENSE"
+      - "**/README.md"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/*.md"
+      - ".github/CODEOWNERS"
+      - ".github/FUNDING.yml"
+      - ".github/settings.yml"
+      - ".editorconfig"
+      - ".commitlintrc.json"
+      - ".prettierrc.json"
+
+# Automatically cancel in-progress actions on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  CI: true
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  FORCE_COLOR: 1
+
+jobs:
+  lint:
+    name: ⬣ ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 📤 Install dependencies
+        uses: ./.github/actions/deps
+
+      - name: 🔬 Lint
+        run: pnpm run lint
+
+  typecheck:
+    name: ʦ TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 📤 Install dependencies
+        uses: ./.github/actions/deps
+
+      - name: 🔎 Type check
+        run: pnpm run typecheck
+
+  test:
+    name: '🧪 Test: ${{ matrix.os }} (node@${{ matrix.node_version }})'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node_version: [14, 16, 18, 19]
+      fail-fast: false
+    needs: [lint, typecheck]
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 📤 Install dependencies
+        uses: ./.github/actions/deps
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🧪 Run Tests
+        run: pnpm run test
+
+      - name: 🧪 Run Type Tests
+        run: pnpm run test:types
+
+  release:
+    name: 🌍 Release
+    needs: [test]
+        # only deploy main branch on pushes
+    if: ${{ github.repository_owner == 'Ernxst' && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: 📤 Install dependencies
+        uses: ./.github/actions/deps
+
+      - name: 🛠 Build Packages
+        run: pnpm run build
+
+      - name: 🪢 Create Release Pull Request
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: pnpm run version
+          publish: pnpm exec changeset publish
+          commit: 'chore(ci): release'
+          title: 'chore(ci): release'
+        env:
+          # Needs access to push to main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Needs access to publish to npm
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -8,7 +8,7 @@ on:
 jobs:
   label_issues:
     runs-on: ubuntu-latest
-    if: github.repository == 'Ernxst/svelte-query-rune'
+    if: github.repository == 'Ernxst/svelte-query-params'
     permissions:
       issues: write
     steps:

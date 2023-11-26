@@ -131,11 +131,11 @@ This project has a simple structure,
 
 ## Releases
 
-_Note: Only [core maintainers (L3+)](https://github.com/Ernxst/svelte-query-rune/blob/main/GOVERNANCE.md#level-3-l3---core-maintainer) can release new versions of `svelte-query-rune`._
+_Note: Only [core maintainers (L3+)](https://github.com/Ernxst/svelte-query-params/blob/main/GOVERNANCE.md#level-3-l3---core-maintainer) can release new versions of `svelte-query-params`._
 
 The repo is set up with automatic releases, using the changeset GitHub action & bot.
 
-To release a new version of `svelte-query-rune`, find the `Version Packages` PR, read it over, and merge it.
+To release a new version of `svelte-query-params`, find the `Version Packages` PR, read it over, and merge it.
 
 ### Releasing PR preview snapshots
 
@@ -158,11 +158,11 @@ git reset --hard
 
 Full documentation: <https://github.com/atlassian/changesets/blob/main/docs/snapshot-releases.md>
 
-### Releasing `svelte-query-rune@next` (aka "prerelease mode")
+### Releasing `svelte-query-params@next` (aka "prerelease mode")
 
 Sometimes, the repo will enter into "prerelease mode". In prerelease mode, our normal release process will publish npm versions under the `next` dist-tag, instead of the default `latest` tag. We do this from time-to-time to test large features before sharing them with the larger audience.
 
-While in prerelease mode, follow the normal release process to release `svelte-query-rune@next` instead of `svelte-query-rune@latest`. To release `svelte-query-rune@latest` instead, see [Releasing `svelte-query-rune@latest` while in prerelease mode](#releasing-svelte-query-runelatest-while-in-prerelease-mode).
+While in prerelease mode, follow the normal release process to release `svelte-query-params@next` instead of `svelte-query-params@latest`. To release `svelte-query-params@latest` instead, see [Releasing `svelte-query-params@latest` while in prerelease mode](#releasing-svelte-query-paramslatest-while-in-prerelease-mode).
 
 Full documentation: <https://github.com/atlassian/changesets/blob/main/docs/prereleases.md>
 
@@ -177,16 +177,16 @@ If you have gotten permission from the core contributors, you can enter into pre
 
 ### Exiting prerelease mode
 
-Exiting prerelease mode should happen once an experimental release is ready to go from `npm install svelte-query-rune@next` to `npm install svelte-query-rune`. Only a core contributor run these steps. These steps should be run before
+Exiting prerelease mode should happen once an experimental release is ready to go from `npm install svelte-query-params@next` to `npm install svelte-query-params`. Only a core contributor run these steps. These steps should be run before
 
 - Run: `bunx changeset pre exit` in the project root
 - Create a new PR from the changes created by this command.
 - Review, approve, and more the PR to enter prerelease mode.
 - If successful, The "Version Packages (next)" PR (if one exists) will now say "Version Packages".
 
-### Releasing `svelte-query-rune@latest` while in prerelease mode
+### Releasing `svelte-query-params@latest` while in prerelease mode
 
-When in prerelease mode, the automatic PR release process will no longer release `svelte-query-rune@latest`, and will instead release `svelte-query-rune@next`. That means that releasing to `latest` becomes a manual process. To release latest manually while in prerelease mode:
+When in prerelease mode, the automatic PR release process will no longer release `svelte-query-params@latest`, and will instead release `svelte-query-params@next`. That means that releasing to `latest` becomes a manual process. To release latest manually while in prerelease mode:
 
 1. _In the code snippets below, replace `0.X` with your version (ex: `0.18`, `release/0.18`, etc.)._
 2. Create a new `release/0.X` branch, if none exists.
@@ -197,7 +197,7 @@ When in prerelease mode, the automatic PR release process will no longer release
 7. Run `bunx release` to publish your new release.
 8. Run `git push && git push --tags` to push your new release to GitHub.
 9. Run `git push release/0.X:latest` to push your release branch to `latest`.
-10. Go to <https://github.com/Ernxst/svelte-query-rune/releases/new> and create a new release. Copy the new changelog entry from <https://github.com/Ernxst/svelte-query-rune/blob/latest/CHANGELOG.md>.
+10. Go to <https://github.com/Ernxst/svelte-query-params/releases/new> and create a new release. Copy the new changelog entry from <https://github.com/Ernxst/svelte-query-params/blob/latest/CHANGELOG.md>.
 11. Post in Discord #announcements channel, if needed!
 
 ## Documentation

@@ -7,22 +7,22 @@ The easiest way to reactively manage query params in Svelte _and_ SvelteKit appl
 Since Svelte Query Params uses runes, [`svelte^5`](https://svelte-5-preview.vercel.app/docs/introduction) is required:
 
 ```bash
-npm install svelte-query-rune svelte@next
+npm install svelte-query-params svelte@next
 ```
 
 ```bash
-pnpm install svelte-query-rune svelte@next
+pnpm install svelte-query-params svelte@next
 ```
 
 ```bash
-yarn add svelte-query-rune svelte@next
+yarn add svelte-query-params svelte@next
 ```
 
 ```bash
-bun install svelte-query-rune svelte@next
+bun install svelte-query-params svelte@next
 ```
 
-By default, `svelte-query-rune` uses [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) to handle interpreting the location string, which means it does not decode `null` and has limited handling of other more advanced URL parameter configurations. If you want access to those features, add a third-party library like query-string and tell [svelte-query-rune to use it](#options).
+By default, `svelte-query-params` uses [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) to handle interpreting the location string, which means it does not decode `null` and has limited handling of other more advanced URL parameter configurations. If you want access to those features, add a third-party library like query-string and tell [svelte-query-params to use it](#options).
 
 ## Features
 
@@ -41,7 +41,7 @@ By default, `svelte-query-rune` uses [`URLSearchParams`](https://developer.mozil
 In some lib file e.g., `src/lib/params.ts`:
 
 ```javascript
-import { createUseQueryParams } from "svelte-query-rune";
+import { createUseQueryParams } from "svelte-query-params";
 
 // Define validators for query parameters
 const validators = {
@@ -100,14 +100,14 @@ Then you can use this hook in your Svelte components:
 
 ## Validators
 
-`svelte-query-rune` supports [`zod`](https://github.com/colinhacks/zod), [`valibot`](https://github.com/colinhacks/zod) and function validators to define the schema for query params. Therefore, you do not need to learn an extra API for validating data.
+`svelte-query-params` supports [`zod`](https://github.com/colinhacks/zod), [`valibot`](https://github.com/colinhacks/zod) and function validators to define the schema for query params. Therefore, you do not need to learn an extra API for validating data.
 
 When using `zod` or `valibot`, you do not need to wrap your schema
 in zod `z.object({ ... })` or valibot `object`:
 
 ```javascript
 import { z } from "zod";
-import { createUseQueryParams } from "svelte-query-rune";
+import { createUseQueryParams } from "svelte-query-params";
 
 const useQueryParams = createUseQueryParams({
   page: z.number(),
@@ -120,7 +120,7 @@ Note that it is possible to mix and match the schemas if needed:
 ```javascript
 import { z } from "zod";
 import { string } from "valibot";
-import { createUseQueryParams } from "svelte-query-rune";
+import { createUseQueryParams } from "svelte-query-params";
 
 const useQueryParams = createUseQueryParams({
   page: (value) => typeof value === "number" && value > 0,
@@ -155,7 +155,7 @@ objects into strings, which will then be encoded internally.
 | `adapter`    | `dom`   | (Optional) Provide a custom adapter that controls fetching/updating the browser query params on both the server and in the browser.                                                                |
 
 ```javascript
-import { createUseQueryParams } from "svelte-query-rune";
+import { createUseQueryParams } from "svelte-query-params";
 
 const useQueryParams = createUseQueryParams({ ... }, { 
   ... // Options here
@@ -176,11 +176,11 @@ As mentioned previously, adapters control how the URL is fetched and updated, bo
 
 - `updateBrowserUrl() => void` - Update the browser URL. Note that the `search` string has the `?` prefixed and the `hash` string has the `#hash` prefixed.
 
-To create your own adapter, you can import the `Adapter` type from `svelte-query-rune/adapter` for intellisense, or use `defineAdapter` also exported by `svelte-query-rune/adapter`:
+To create your own adapter, you can import the `Adapter` type from `svelte-query-params/adapter` for intellisense, or use `defineAdapter` also exported by `svelte-query-params/adapter`:
 
 ```typescript
-import type { Adapter } from 'svelte-query-rune/adapter';
-import { defineAdapter } from 'svelte-query-rune/adapter';
+import type { Adapter } from 'svelte-query-params/adapter';
+import { defineAdapter } from 'svelte-query-params/adapter';
 
 export const myAdapter: Adapter = { ... }
 export const myAdapter = defineAdapter({ ... });
@@ -192,8 +192,8 @@ This is the default adapter when no adapter is specified and can only be used
 in the browser i.e., fetching the URL on the browser returns an empty search string and hash and updating the query params on the server is a no-op.
 
 ```javascript
-import { createUseQueryParams } from "svelte-query-rune";
-import { dom } from "svelte-query-rune/adapters/dom";
+import { createUseQueryParams } from "svelte-query-params";
+import { dom } from "svelte-query-params/adapters/dom";
 
 const useQueryParams = createUseQueryParams({ ... }, { 
   adapter: dom({ ... })  
@@ -217,8 +217,8 @@ For use with SvelteKit, use this adapter, instead of the [`dom`](#dom) adapter f
 Currently, this uses the [`page`](https://kit.svelte.dev/docs/modules#$app-stores-page) store and will be rewritten once the SvelteKit team announce their alternative for Svelte 5.
 
 ```javascript
-import { createUseQueryParams } from "svelte-query-rune";
-import { sveltekit } from "svelte-query-rune/adapters/sveltekit";
+import { createUseQueryParams } from "svelte-query-params";
+import { sveltekit } from "svelte-query-params/adapters/sveltekit";
 
 const useQueryParams = createUseQueryParams({ ... }, { 
   adapter: sveltekit({ ... })  

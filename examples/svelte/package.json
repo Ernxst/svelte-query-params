@@ -10,7 +10,7 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json"
 	},
 	"dependencies": {
-		"svelte-query-rune": "workspace:*",
+		"svelte-query-params": "workspace:*",
 		"zod": "3.22.4"
 	},
 	"devDependencies": {

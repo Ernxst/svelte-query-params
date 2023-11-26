@@ -3,7 +3,7 @@
 	"changelog": [
 		"@changesets/changelog-github",
 		{
-			"repo": "Ernxst/svelte-query-rune"
+			"repo": "Ernxst/svelte-query-params"
 		}
 	],
 	"commit": false,

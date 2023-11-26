@@ -1,9 +1,9 @@
 <svelte:head>
-	<title>svelte-query-rune</title>
+	<title>svelte-query-params</title>
 </svelte:head>
 
 <section>
-	<h1>svelte-query-rune</h1>
+	<h1>svelte-query-params</h1>
 	<p>the fastest way to read and <strong>write</strong> search parameters.</p>
 
 	<section>
@@ -12,8 +12,8 @@
 			<a
 				target="_blank"
 				rel="noreferrer noopener"
-				href="https://github.com/Ernxst/svelte-query-rune"
-				>@Ernxst/svelte-query-rune
+				href="https://github.com/Ernxst/svelte-query-params"
+				>@Ernxst/svelte-query-params
 				<svg
 					height="16"
 					aria-hidden="true"
@@ -30,10 +30,10 @@
 		</h2>
 
 		<div class="npm-wrapper">
-			<code class="npm">npm i svelte-query-rune</code>
-			<code class="yarn">yarn add svelte-query-rune</code>
-			<code class="pnpm">pnpm i svelte-query-rune</code>
-			<code class="bun">bun install svelte-query-rune</code>
+			<code class="npm">npm i svelte-query-params</code>
+			<code class="yarn">yarn add svelte-query-params</code>
+			<code class="pnpm">pnpm i svelte-query-params</code>
+			<code class="bun">bun install svelte-query-params</code>
 		</div>
 	</section>
 

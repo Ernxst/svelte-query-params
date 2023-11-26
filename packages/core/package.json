@@ -1,18 +1,18 @@
 {
-	"name": "svelte-query-rune",
+	"name": "svelte-query-params",
 	"type": "module",
 	"version": "0.0.1",
 	"description": "A lightweight, dead-simple, type-safe reactive query parameter store built for Svelte 5.",
 	"author": "Ernest Nkansah-Badu <ernestjbadu@outlook.com>",
 	"license": "MIT",
-	"homepage": "https://github.com/Ernxst/svelte-query-rune",
+	"homepage": "https://github.com/Ernxst/svelte-query-params",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Ernxst/svelte-query-rune.git",
+		"url": "https://github.com/Ernxst/svelte-query-params.git",
 		"directory": "packages/core"
 	},
 	"bugs": {
-		"url": "https://github.com/Ernxst/svelte-query-rune/issues"
+		"url": "https://github.com/Ernxst/svelte-query-params/issues"
 	},
 	"keywords": [
 		"reactive",

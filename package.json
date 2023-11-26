@@ -5,11 +5,11 @@
 	"private": true,
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Ernxst/svelte-query-rune.git"
+		"url": "https://github.com/Ernxst/svelte-query-params.git"
 	},
 	"scripts": {
 		"-------------------------------------------------------------------------------": "",
-		"build": "turbo run build --filter=svelte-query-rune",
+		"build": "turbo run build --filter=svelte-query-params",
 		"--------------------------------------------------------------------------------": "",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --apply",

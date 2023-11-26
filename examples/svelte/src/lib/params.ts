@@ -1,4 +1,4 @@
-import { createUseQueryParams } from "svelte-query-rune";
+import { createUseQueryParams } from "svelte-query-params";
 import { z } from "zod";
 
 export const useQueryParams = createUseQueryParams({

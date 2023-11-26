@@ -1,8 +1,8 @@
-import { get } from "svelte/store";
-import type { Adapter } from "./types.ts";
+import { browser, building } from "$app/environment";
 import { goto } from "$app/navigation";
 import { page } from "$app/stores";
-import { browser, building } from "$app/environment";
+import { get } from "svelte/store";
+import type { Adapter } from "./types.ts";
 
 interface SvelteKitAdapterOptions {
 	/**

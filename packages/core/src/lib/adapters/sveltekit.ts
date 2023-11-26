@@ -31,11 +31,6 @@ export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 			if (building) return { hash: "", search: "" };
 			return get(page).url;
 		},
-		updateServerUrl: (search, hash) =>
-			goto(`${search}${hash}`, {
-				keepFocus: true,
-				noScroll: true,
-				replaceState: replace,
-			}),
+		updateServerUrl: (_search, _hash) => {},
 	};
 }

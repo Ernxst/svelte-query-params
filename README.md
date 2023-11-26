@@ -71,6 +71,15 @@ Then you can use this hook in your Svelte components:
   params.page = 1;
   params.q = "example";
 
+  // Raw query params from the browser, all as strings
+  params.raw;
+
+  // Parsed query params and nothing else
+  params.query;
+
+  // Readonly search string, with the ? prefix
+  params.search;
+
   // Update all query parameters in bulk
   params.update({ page: 2, q: 'shoes' });
 

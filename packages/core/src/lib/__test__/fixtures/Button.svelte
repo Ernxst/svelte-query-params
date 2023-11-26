@@ -2,7 +2,7 @@
 	import type { QueryParams } from "$lib";
 
 	const { useQueryParams } = $props<{
-		useQueryParams: () => QueryParams<{ count: any }>;
+		useQueryParams: () => QueryParams<{ count: number }>;
 	}>();
 
 	const params = useQueryParams();

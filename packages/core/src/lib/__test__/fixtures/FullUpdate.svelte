@@ -2,7 +2,7 @@
 	import type { QueryParams } from "../../types.ts";
 
 	const { useQueryParams } = $props<{
-		useQueryParams: () => QueryParams<{ count: any; id: any }>;
+		useQueryParams: () => QueryParams<{ count: number; id: number }>;
 	}>();
 
 	const params = useQueryParams();

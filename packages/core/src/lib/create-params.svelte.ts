@@ -24,7 +24,7 @@ import {
 export function createUseQueryParams<TShape extends QuerySchema>(
 	validators: TShape,
 	options: QueryParamsOptions = {}
-): () => QueryParams<TShape> {
+): () => QueryParams<inferShape<TShape>> {
 	const {
 		debounce: delay = 0,
 		windowObj = typeof window === "undefined" ? undefined : window,
@@ -93,7 +93,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		windowObj.addEventListener("popstate", updateQueryParams);
 	}
 
-	const reactive = {} as QueryParams<TShape>;
+	const reactive = {} as QueryParams<inferShape<TShape>>;
 	Object.keys(validators).forEach((key) => {
 		Object.defineProperty(reactive, key, {
 			get() {

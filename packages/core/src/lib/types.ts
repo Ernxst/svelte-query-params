@@ -75,8 +75,8 @@ export interface QueryParamsOptions {
 	adapter?: Adapter;
 }
 
-export type QueryParams<TShape extends QuerySchema> = inferShape<TShape> &
-	Params<inferShape<TShape>>;
+export type QueryParams<TShape extends Record<string, unknown>> = TShape &
+	Params<TShape>;
 
 export interface Params<TShape extends object> {
 	/** The raw query params, parsed from {@linkcode windowObj.location.href} */

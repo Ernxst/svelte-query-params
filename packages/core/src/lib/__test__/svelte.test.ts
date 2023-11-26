@@ -50,6 +50,17 @@ describe("createUseQueryParams", () => {
 			expect(params.raw).toEqual({ count: "123" });
 			expect(params.search).toEqual("?count=123");
 		});
+
+		test("should maintain url hash", async () => {
+			window.location.hash = "#hello-world";
+			const input = screen.getByRole("spinbutton");
+
+			await user.type(input, "123");
+
+			expect(window.location.href).toMatch("?count=123#hello-world");
+			expect(window.location.search).toEqual("?count=123");
+			expect(window.location.hash).toEqual("#hello-world");
+		});
 	});
 
 	describe("when updating params on assignment", () => {

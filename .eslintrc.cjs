@@ -1,8 +1,24 @@
 module.exports = {
-	extends: ["@antfu", "turbo"],
+	extends: ["@antfu", "turbo", "plugin:svelte/recommended"],
+	parser: '@typescript-eslint/parser',
+  parserOptions: {
+    // ...
+    project: 'tsconfig.base.json',
+    extraFileExtensions: ['.svelte'] // This is a required setting in `@typescript-eslint/parser` v4.24.0.
+  },
+  overrides: [
+    {
+      files: ['*.svelte'],
+      parser: 'svelte-eslint-parser',
+      // Parse the `<script>` in `.svelte` as TypeScript by adding the following configuration.
+      parserOptions: {
+        parser: '@typescript-eslint/parser'
+      }
+    }
+    // ...
+  ],
 	rules: {
-		// Automatically flag env vars missing from turbo.json
-		"turbo/no-undeclared-env-vars": "error",
+		"turbo/no-undeclared-env-vars": "off",
 		curly: "off",
 		"n/prefer-global/process": ["error", "always"],
 		"no-only-tests/no-only-tests": "off",

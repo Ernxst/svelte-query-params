@@ -3,6 +3,9 @@
 /dist
 /coverage
 
+/**/.svelte-kit
+/**/build
+
 # Ignore files for Bun, PNPM, NPM and YARN
 pnpm-lock.yaml
 package-lock.json
@@ -17,3 +20,6 @@ LICENSE
 *.svg
 *.json
 *.png
+
+.eslintrc.cjs
+.eslintignore

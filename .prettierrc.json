@@ -1,9 +1,0 @@
-{
-	"printWidth": 80,
-	"semi": true,
-	"useTabs": true,
-	"singleQuote": false,
-	"tabWidth": 2,
-	"trailingComma": "es5",
-	"plugins": ["prettier-plugin-svelte"]
-}

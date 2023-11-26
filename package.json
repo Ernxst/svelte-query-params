@@ -18,9 +18,9 @@
 		"dts": "turbo run dts --continue",
 		"typecheck": "turbo run typecheck",
 		"--------------------------------------------------------------------------------": "",
-		"lint": "eslint --cache .",
-		"lint:fix": "eslint . --fix --cache",
-		"format": "prettier --cache --write \"**/*.@(svelte|js|ts|tsx|cjs|mjs|json|md|toml)\"",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint . --apply",
+		"format": "biome format . --write",
 		"---------------------------------------------------------------------------------": "",
 		"test": "turbo run test",
 		"----------------------------------------------------------------------------------": "",
@@ -37,28 +37,20 @@
 		"typescript": "5.2.2"
 	},
 	"devDependencies": {
-		"@antfu/eslint-config": "0.43.1",
 		"@changesets/changelog-github": "0.4.8",
+		"@biomejs/biome": "1.3.3",
 		"@changesets/cli": "2.26.2",
 		"@commitlint/cli": "18.4.2",
 		"@commitlint/config-conventional": "18.4.2",
 		"bun-types": "1.0.12",
-		"eslint": "8.53.0",
-		"eslint-config-turbo": "1.10.16",
-		"eslint-plugin-import": "2.29.0",
-		"eslint-plugin-svelte": "2.36.0-next.2",
-		"eslint-plugin-testing-library": "6.2.0",
 		"husky": "8.0.3",
 		"nano-staged": "0.8.0",
 		"patch-package": "8.0.0",
-		"prettier": "3.1.0",
-		"prettier-plugin-svelte": "3.1.0",
 		"turbo": "1.10.16"
 	},
 	"nano-staged": {
 		"*": [
-			"eslint --fix",
-			"prettier --cache --write **/*.@(svelte|js|ts|tsx|cjs|mjs|json|md|toml)"
+			"bunx @biomejs/biome check --apply ."
 		]
 	}
 }

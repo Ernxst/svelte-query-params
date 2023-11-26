@@ -6,10 +6,12 @@
 		"editor.formatOnSave": false
 	},
 	"[javascript][typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"cSpell.words": [
 		"antfu",
+		"biomejs",
+		"bunx",
 		"commitlint",
 		"decs",
 		"effectio",
@@ -25,19 +27,17 @@
 		"valibot"
 	],
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
 	},
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.defaultFormatter": "biomejs.biome",
 	"editor.formatOnSave": true,
 	"editor.tabSize": 2,
 	"explorer.compactFolders": false,
 	"explorer.sortOrder": "filesFirst",
-	"prettier.configPath": ".prettierrc.json",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.tsdk": "./node_modules/typescript/lib",
 	"workbench.editor.labelFormat": "short",
 	"workbench.tree.indent": 20,
 	"[typescriptreact]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
-	}
+	},
 }

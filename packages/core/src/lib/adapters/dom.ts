@@ -42,11 +42,11 @@ export function dom(options: DomAdapterOptions = {}): Adapter {
 	const pushState = windowObj.history.pushState.bind(windowObj.history);
 
 	return {
-		isBrowser: () => typeof window !== 'undefined',
+		isBrowser: () => typeof window !== "undefined",
 		getBrowserUrl: createQueryFetcher(windowObj),
 		updateBrowserUrl: createQueryUpdater(replace, { replaceState, pushState }),
 		// Client-side only adapter
-		getServerUrl: () => ({ hash: '', search: '' }),
-		updateServerUrl: () => {}
+		getServerUrl: () => ({ hash: "", search: "" }),
+		updateServerUrl: () => {},
 	};
 }

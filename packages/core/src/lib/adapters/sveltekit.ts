@@ -18,7 +18,7 @@ export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 		getBrowserUrl: () => {
 			// Query params aren't pre-renderable
 			if (building) return { hash: "", search: "" };
-			return window.location
+			return window.location;
 		},
 		updateBrowserUrl: (search, hash) =>
 			goto(`${search}${hash}`, {

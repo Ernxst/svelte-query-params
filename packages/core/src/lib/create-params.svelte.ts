@@ -40,7 +40,9 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	);
 
 	function getQueryParams() {
-		const getParams = adapter.isBrowser() ? adapter.getBrowserUrl : adapter.getServerUrl;
+		const getParams = adapter.isBrowser()
+			? adapter.getBrowserUrl
+			: adapter.getServerUrl;
 		const { search } = getParams();
 		const queryParams = new URLSearchParams(search);
 		return entriesToRecord(Array.from(queryParams));
@@ -57,7 +59,9 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	}
 
 	const updateUrl =
-		delay === 0 ? updateParamsAfterTick : debounce(updateParamsAfterTick, delay);
+		delay === 0
+			? updateParamsAfterTick
+			: debounce(updateParamsAfterTick, delay);
 
 	function updateQueryParams() {
 		raw = getQueryParams();

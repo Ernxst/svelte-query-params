@@ -7,8 +7,8 @@ export interface Adapter {
 	isBrowser(): boolean;
 
 	/**
- * Note: The first param includes the `?` prefix
- */
+	 * Note: The first param includes the `?` prefix
+	 */
 	updateServerUrl: QueryUpdater;
 
 	/**

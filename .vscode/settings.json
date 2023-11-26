@@ -1,12 +1,21 @@
 {
+	"[javascript][typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
 	"[json]": {
 		"editor.formatOnSave": false
 	},
 	"[markdown]": {
 		"editor.formatOnSave": false
 	},
-	"[javascript][typescript]": {
+	"[typescript]": {
 		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[yaml]": {
+		"editor.defaultFormatter": "redhat.vscode-yaml"
 	},
 	"cSpell.words": [
 		"biomejs",
@@ -30,23 +39,5 @@
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.tsdk": "./node_modules/typescript/lib",
 	"workbench.editor.labelFormat": "short",
-	"workbench.tree.indent": 20,
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
-	"[typescript]": {
-		"editor.defaultFormatter": "biomejs.biome"
-	},
-	"[yaml]": {
-		"editor.defaultFormatter": "redhat.vscode-yaml"
-	},
-	"yaml.schemas": {
-		"file:///Users/ernest/.vscode/extensions/atlassian.atlascode-2.8.5/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
-		"file:/Users/ernest/Library/Application Support/Code/User/globalStorage/amazonwebservices.aws-toolkit-vscode/sam.schema.json": [],
-		"file:/root/.vscode-server/data/User/globalStorage/amazonwebservices.aws-toolkit-vscode/sam.schema.json": [
-			"template.yaml"
-		],
-		"https://json.schemastore.org/github-workflow.json": ".github/workflows/*.{yaml,yml}",
-		"https://json.schemastore.org/github-issue-config.json": "file:///Users/ernest/Downloads/js/libraries/svelte-query-params/.github/ISSUE_TEMPLATE/config.yml"
-	},
+	"workbench.tree.indent": 20
 }

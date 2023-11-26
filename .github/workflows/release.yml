@@ -80,7 +80,7 @@ jobs:
         run: bun test
 
       - name: 🧪 Run Type Tests
-        run: pnpm run test:types
+        run: bun run test:types
 
   release:
     name: 🌍 Release

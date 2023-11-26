@@ -50,7 +50,7 @@ env:
 
 jobs:
   lint:
-    name: ⬣ ESLint
+    name: ⬣ Lint
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -60,20 +60,7 @@ jobs:
         uses: ./.github/actions/deps
 
       - name: 🔬 Lint
-        run: pnpm run lint
-
-  typecheck:
-    name: ʦ TypeScript
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
-
-      - name: 📤 Install dependencies
-        uses: ./.github/actions/deps
-
-      - name: 🔎 Type check
-        run: pnpm run typecheck
+        run: bun lint
 
   test:
     name: '🧪 Test: ${{ matrix.os }} (node@${{ matrix.node_version }})'
@@ -81,9 +68,9 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node_version: [14, 16, 18, 19]
+        node_version: [18, 20]
       fail-fast: false
-    needs: [lint, typecheck]
+    needs: [lint]
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
@@ -94,7 +81,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: 🧪 Run Tests
-        run: pnpm run test
+        run: bun test
 
       - name: 🧪 Run Type Tests
         run: pnpm run test:types
@@ -116,14 +103,14 @@ jobs:
         uses: ./.github/actions/deps
 
       - name: 🛠 Build Packages
-        run: pnpm run build
+        run: bun run build
 
       - name: 🪢 Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
         with:
-          version: pnpm run version
-          publish: pnpm exec changeset publish
+          version: bun run version
+          publish: bunx changeset publish
           commit: 'chore(ci): release'
           title: 'chore(ci): release'
         env:

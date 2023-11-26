@@ -5,6 +5,7 @@
 .svelte-kit
 .turbo
 build
+tsconfig.vitest-temp.json
 
 # Logs
 

@@ -1,3 +1,4 @@
+blank_issues_enabled: false
 contact_links:
   - name: 🙌 Contribution Guide
     url: https://github.com/Ernxst/svelte-query-rune/blob/main/.github/CONTRIBUTING.md

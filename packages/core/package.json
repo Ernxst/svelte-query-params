@@ -31,7 +31,7 @@
 	],
 	"sideEffects": false,
 	"publishConfig": {
-		"access": "public"
+		"provenance": true
 	},
 	"exports": {
 		".": {
@@ -82,9 +82,9 @@
 	"main": "dist/index.svelte.cjs",
 	"module": "dist/index.svelte.js",
 	"types": "dist/index.svelte.d.ts",
-	"files": ["dist"],
+	"files": ["dist", "README.md"],
 	"engines": {
-		"node": ">=v18.12.1"
+		"node": ">=v18.14.1"
 	},
 	"scripts": {
 		"build": "tsup",

@@ -4,24 +4,20 @@
 	"pipeline": {
 		"build": {
 			"dependsOn": ["^build"],
-			"outputs": ["dist/**"]
+			"outputs": ["dist/**/*", "build/**/*"],
+			"outputMode": "new-only"
 		},
-		"dts": {
-			"dependsOn": ["^dts"],
-			"outputs": ["dist/**"]
-		},
-		"typecheck": {
-			"dependsOn": ["^typecheck"],
-			"outputs": ["dist/**"]
+		"dev": {
+			"cache": false,
+			"persistent": true
 		},
 		"test": {
-			"dependsOn": ["^test"],
-			"outputs": ["coverage/**"]
+			"env": ["RUNNER_OS", "NODE_VERSION"],
+			"outputMode": "new-only"
 		},
 		"test:types": {
-			"dependsOn": ["^test:types"],
-			"cache": true,
-			"outputs": []
+			"env": ["RUNNER_OS", "NODE_VERSION"],
+			"outputMode": "new-only"
 		}
 	}
 }

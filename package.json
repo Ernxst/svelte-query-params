@@ -1,16 +1,15 @@
 {
 	"name": "root",
+	"type": "module",
 	"version": "0.0.0",
 	"private": true,
-	"packageManager": "bun@1.0.12",
-	"engines": {
-		"node": ">=18.12.1",
-		"bun": "1.0.12"
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Ernxst/svelte-query-rune.git"
 	},
-	"workspaces": ["examples/*", "packages/*"],
 	"scripts": {
 		"-------------------------------------------------------------------------------": "",
-		"build": "turbo run build",
+		"build": "turbo run build --filter=svelte-query-rune",
 		"--------------------------------------------------------------------------------": "",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --apply",
@@ -20,12 +19,19 @@
 		"test:types": "turbo run test:types",
 		"----------------------------------------------------------------------------------": "",
 		"prepare": "husky install",
+		"preinstall": "bunx only-allow bun",
 		"postinstall": "bunx patch-package",
 		"-----------------------------------------------------------------------------------": "",
 		"prepublishOnly": "bun run build",
 		"release": "bun run build && changeset publish",
-		"version": "changeset version && bun install --no-frozen-lockfile && bun run format"
+		"version": "changeset version && bun install && bun run format"
 	},
+	"workspaces": ["examples/*", "packages/*"],
+	"engines": {
+		"node": ">=18.14.1",
+		"bun": ">=1.0.12"
+	},
+	"packageManager": "bun@1.0.12",
 	"dependencies": {
 		"publint": "0.2.2",
 		"tsup": "7.2.0",
@@ -40,6 +46,7 @@
 		"bun-types": "1.0.12",
 		"husky": "8.0.3",
 		"nano-staged": "0.8.0",
+		"only-allow": "1.2.1",
 		"patch-package": "8.0.0",
 		"turbo": "1.10.16"
 	},

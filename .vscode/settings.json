@@ -37,4 +37,16 @@
 	"[typescript]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},
+	"[yaml]": {
+		"editor.defaultFormatter": "redhat.vscode-yaml"
+	},
+	"yaml.schemas": {
+		"file:///Users/ernest/.vscode/extensions/atlassian.atlascode-2.8.5/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
+		"file:/Users/ernest/Library/Application Support/Code/User/globalStorage/amazonwebservices.aws-toolkit-vscode/sam.schema.json": [],
+		"file:/root/.vscode-server/data/User/globalStorage/amazonwebservices.aws-toolkit-vscode/sam.schema.json": [
+			"template.yaml"
+		],
+		"https://json.schemastore.org/github-workflow.json": ".github/workflows/*.{yaml,yml}",
+		"https://json.schemastore.org/github-issue-config.json": "file:///Users/ernest/Downloads/js/libraries/svelte-query-params/.github/ISSUE_TEMPLATE/config.yml"
+	},
 }

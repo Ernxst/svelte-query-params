@@ -1,0 +1,84 @@
+name: 🚀 CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  merge_group:
+  pull_request:
+    paths-ignore:
+      - ".vscode/**"
+      - "**/*.md"
+      - ".github/ISSUE_TEMPLATE/**"
+
+# Automatically cancel older in-progress jobs on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  FORCE_COLOR: true
+
+jobs:
+  lint:
+    name: ⬣ Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 📤 Install Bun
+        uses: oven-sh/setup-bun@v1
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: bun
+
+      - name: 📤 Install dependencies
+        run: bun install
+
+      - name: 🔬 Lint
+        run: bun lint
+
+  test:
+    name: "🧪 Test: ${{ matrix.os }} (node@${{ matrix.node_version }})"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        OS: [ubuntu-latest]
+        NODE_VERSION: [18, 20.5.1]
+        include:
+          - os: macos-latest
+            NODE_VERSION: 18
+          - os: windows-latest
+            NODE_VERSION: 18.17.1
+      fail-fast: false
+    env:
+      NODE_VERSION: ${{ matrix.NODE_VERSION }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 📤 Install Bun
+        uses: oven-sh/setup-bun@v1
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: bun
+
+      - name: 📤 Install dependencies
+        run: bun install --y
+
+      - name: 🧪 Run Tests
+        run: bun run test
+
+      - name: 🧪 Run Type Tests
+        run: bun run test:types

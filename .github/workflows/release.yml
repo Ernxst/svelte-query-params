@@ -2,91 +2,28 @@ name: 📤 Release
 
 on:
   push:
-    paths-ignore:
-      - ".vscode/**"
-      - ".husky/**"
-      - "LICENSE"
-      - "**/README.md"
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/*.md"
-      - ".github/CODEOWNERS"
-      - ".github/FUNDING.yml"
-      - ".github/settings.yml"
-      - ".editorconfig"
-      - ".commitlintrc.json"
-  pull_request:
-    types: [opened, synchronize]
-    paths-ignore:
-      - ".vscode/**"
-      - ".husky/**"
-      - "LICENSE"
-      - "**/README.md"
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/*.md"
-      - ".github/CODEOWNERS"
-      - ".github/FUNDING.yml"
-      - ".github/settings.yml"
-      - ".editorconfig"
-      - ".commitlintrc.json"
-
-# Automatically cancel in-progress actions on the same branch
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
-  cancel-in-progress: true
+    branches:
+      - main
+      - next
 
 defaults:
   run:
     shell: bash
 
 env:
-  CI: true
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  FORCE_COLOR: 1
+  FORCE_COLOR: true
 
 jobs:
-  lint:
-    name: ⬣ Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
-
-      - name: 📤 Install dependencies
-        uses: ./.github/actions/deps
-
-      - name: 🔬 Lint
-        run: bun lint
-
-  test:
-    name: '🧪 Test: ${{ matrix.os }} (node@${{ matrix.node_version }})'
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        node_version: [18, 20]
-      fail-fast: false
-    needs: [lint]
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
-
-      - name: 📤 Install dependencies
-        uses: ./.github/actions/deps
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: 🧪 Run Tests
-        run: bun run test
-
-      - name: 🧪 Run Type Tests
-        run: bun run test:types
-
   release:
     name: 🌍 Release
-    needs: [test]
-        # only deploy main branch on pushes
-    if: ${{ github.repository_owner == 'Ernxst' && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    # prevents this action from running on forks
+    if: ${{ github.repository_owner == 'Ernxst' }}
+    permissions:
+      contents: write # to create release (changesets/action)
+      id-token: write
+      pull-requests: write # to create pull request (changesets/action)
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -95,8 +32,16 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
+      - name: 📤 Install Bun
+        uses: oven-sh/setup-bun@v1
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: bun
+
       - name: 📤 Install dependencies
-        uses: ./.github/actions/deps
+        run: bun install
 
       - name: 🛠 Build Packages
         run: bun run build

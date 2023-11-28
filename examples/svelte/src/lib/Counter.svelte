@@ -40,7 +40,7 @@
 		counter above.
 	</p>
 	<form onsubmit={submit}>
-		{#each Object.entries(params.query) as [key, value]}
+		{#each params.entries() as [key, value]}
 			<label>
 				{key}
 				<input name={key} {value} />

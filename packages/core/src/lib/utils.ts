@@ -79,11 +79,15 @@ export function mapValues<TKeys extends string, TValues, TReturn>(
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export function debounce(func: (...args: any[]) => any, delay: number) {
+export function debounce<TFn extends (...args: any[]) => any>(
+	func: TFn,
+	delay: number
+) {
+	if (delay === 0) return func;
+
 	let timeoutId: ReturnType<typeof setTimeout>;
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	return function (...args: any[]) {
+	return function (...args: Parameters<TFn>) {
 		clearTimeout(timeoutId);
 
 		timeoutId = setTimeout(() => {

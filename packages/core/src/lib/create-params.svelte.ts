@@ -48,7 +48,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		return entriesToRecord(Array.from(queryParams));
 	}
 
-	async function updateParamsAfterTick() {
+	const updateUrl = debounce(async () => {
 		await tick();
 
 		if (adapter.isBrowser()) {
@@ -56,12 +56,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		} else {
 			adapter.updateServerUrl(search, adapter.getServerUrl().hash);
 		}
-	}
-
-	const updateUrl =
-		delay === 0
-			? updateParamsAfterTick
-			: debounce(updateParamsAfterTick, delay);
+	}, delay);
 
 	function updateQueryParams() {
 		raw = getQueryParams();

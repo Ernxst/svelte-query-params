@@ -8,12 +8,7 @@ import type {
 	QuerySchema,
 	inferShape,
 } from "./types";
-import {
-	createDefaultSerializer,
-	debounce,
-	mapValues,
-	parseQueryParams,
-} from "./utils";
+import { debounce, mapValues, parseQueryParams } from "./utils";
 
 /**
  * This returns a function (a hook) rather than a reactive object as the
@@ -28,7 +23,8 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		debounce: delay = 0,
 		windowObj = typeof window === "undefined" ? undefined : window,
 		adapter = dom({ windowObj }),
-		serialise = createDefaultSerializer(),
+		serialise = (value) =>
+			typeof value === "string" ? value : JSON.stringify(value),
 	} = options;
 
 	let raw = $state(getQueryParams());

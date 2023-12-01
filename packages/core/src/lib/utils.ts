@@ -58,10 +58,6 @@ export function parseQueryParams<TSchema extends QuerySchema>(
 	return clone;
 }
 
-export function createDefaultSerializer(): Serializer {
-	return (value) => (typeof value === "string" ? value : JSON.stringify(value));
-}
-
 export function mapValues<TKeys extends string, TValues, TReturn>(
 	object: Record<TKeys, TValues>,
 	mapFn: (value: TValues) => TReturn

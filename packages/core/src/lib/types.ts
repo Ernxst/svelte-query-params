@@ -75,11 +75,23 @@ export type QueryParams<TShape extends Record<string, unknown>> = TShape &
 	Params<TShape>;
 
 export interface Params<TShape extends object> {
-	/** The raw query params, parsed from {@linkcode windowObj.location.href} */
+	/**
+	 * The raw query params, parsed from {@linkcode windowObj.location.href}
+	 *
+	 * Note: this may include query params not defined in your schema
+	 */
 	readonly raw: Record<string, string>;
-	/** The unmodified query params parsed from the {@linkcode raw} params */
+	/**
+	 * The unmodified query params parsed from the {@linkcode raw} params
+	 *
+	 * Note: this may include query params not defined in your schema and will be
+	 * passed through as-is (as strings)
+	 */
 	readonly query: TShape;
-	/** The query string, generated from the {@linkcode query} */
+	/**
+	 * The query string, generated from the {@linkcode query} which may contain
+	 * query params not defined in your schema.
+	 */
 	readonly search: string;
 	/** Replace _ALL_ query params, triggering a reactive and browser update */
 	set(params: TShape): void;

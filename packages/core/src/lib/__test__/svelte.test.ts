@@ -1,3 +1,4 @@
+import type { QueryParams } from "$lib";
 import { cleanup, render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
@@ -10,20 +11,26 @@ import PartialUpdate from "./fixtures/PartialUpdate.svelte";
 
 describe("createUseQueryParams", () => {
 	const user = userEvent.setup();
+	const replaceState = history.replaceState.bind(history);
+
+	beforeEach(() => {
+		replaceState({}, "", "?");
+	});
 
 	describe("when a value is bound to an input", () => {
 		const useQueryParams = createUseQueryParams({
 			count: z.coerce.number().optional().default(0),
 		});
 
-		const params = useQueryParams();
-
 		beforeEach(() => {
-			render(Input, { useQueryParams });
+			const params = useQueryParams();
 			params.count = 0;
+
+			render(Input, { useQueryParams });
 		});
 
 		test("should update browser params when input is changed", async () => {
+			const params = useQueryParams();
 			const input = screen.getByRole("spinbutton");
 
 			await user.type(input, "123");
@@ -38,6 +45,7 @@ describe("createUseQueryParams", () => {
 		});
 
 		test("should update input when search params updated externally", async () => {
+			const params = useQueryParams();
 			const input = screen.getByRole("spinbutton");
 
 			window.history.replaceState({}, "", "?count=123");
@@ -64,18 +72,21 @@ describe("createUseQueryParams", () => {
 	});
 
 	describe("when updating params on assignment", () => {
-		const useQueryParams = createUseQueryParams({
-			count: z.coerce.number().optional().default(0),
-		});
-
-		const params = useQueryParams();
+		let useQueryParams: () => QueryParams<{ count: number }>;
 
 		beforeEach(() => {
-			render(Button, { useQueryParams });
+			useQueryParams = createUseQueryParams({
+				count: z.coerce.number().optional().default(0),
+			});
+
+			const params = useQueryParams();
 			params.count = 0;
+
+			render(Button, { useQueryParams });
 		});
 
 		test("should update params and browser params", async () => {
+			const params = useQueryParams();
 			const button = screen.getByRole("button");
 
 			await user.click(button);
@@ -92,27 +103,22 @@ describe("createUseQueryParams", () => {
 	});
 
 	describe("when bulk updating params", () => {
-		const useQueryParams = createUseQueryParams({
-			count: z.coerce.number().optional().default(0),
-			id: z.coerce.number().optional().default(0),
-		});
-
-		const params = useQueryParams();
+		let useQueryParams: () => QueryParams<{ count: number; id: number }>;
 
 		beforeEach(() => {
-			params.count = 0;
-			params.id = 0;
-		});
+			useQueryParams = createUseQueryParams({
+				count: z.coerce.number().optional().default(0),
+				id: z.coerce.number().optional().default(0),
+			});
 
-		afterEach(() => {
-			params.count = 0;
-			params.id = 0;
-			cleanup();
+			const params = useQueryParams();
+			params.set({ count: 0, id: 0 });
 		});
 
 		test("should apply full updates", async () => {
 			render(FullUpdate, { useQueryParams });
 
+			const params = useQueryParams();
 			const [countInput, idInput] = screen.getAllByRole("spinbutton");
 			const button = screen.getByRole("button");
 
@@ -137,6 +143,7 @@ describe("createUseQueryParams", () => {
 		test("should apply partial updates", async () => {
 			render(PartialUpdate, { useQueryParams });
 
+			const params = useQueryParams();
 			const [countInput, idInput] = screen.getAllByRole("spinbutton");
 			const button = screen.getByRole("button");
 
@@ -156,6 +163,35 @@ describe("createUseQueryParams", () => {
 			expect(params.query).toEqual({ count: 1, id: 0 });
 			expect(params.raw).toEqual({ count: "1", id: "0" });
 			expect(params.search).toEqual("?count=1&id=0");
+		});
+	});
+
+	describe("with query params not defined in the schema", () => {
+		let useQueryParams: () => QueryParams<{ count: number }>;
+
+		beforeEach(() => {
+			replaceState({}, "", "?name=johndoe");
+
+			useQueryParams = createUseQueryParams({
+				count: z.coerce.number().optional().default(0),
+			});
+
+			render(Input, { useQueryParams });
+		});
+
+		test("should maintain unknown query params", async () => {
+			const params = useQueryParams();
+			const input = screen.getByRole("spinbutton");
+
+			await user.type(input, "123");
+
+			expect(window.location.search).toEqual("?name=johndoe&count=123");
+			expect(params.count).toEqual(123);
+			expect(params.entries()).toEqual([["count", 123]]);
+
+			expect(params.query).toEqual({ count: 123, name: "johndoe" });
+			expect(params.raw).toEqual({ count: "123", name: "johndoe" });
+			expect(params.search).toEqual("?name=johndoe&count=123");
 		});
 	});
 });

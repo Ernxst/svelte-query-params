@@ -7,11 +7,7 @@ import type { Adapter } from "./adapters/types.ts";
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type AnySchema<TOutput = any> = BaseSchema<any, TOutput> & { schema: string };
 
-type ZodValidator =
-	| z.ZodString
-	| z.ZodNumber
-	| z.ZodDefault<ZodValidator>
-	| z.ZodOptional<ZodValidator>;
+type ZodValidator = z.ZodType;
 
 type ValibotValidator = AnySchema;
 

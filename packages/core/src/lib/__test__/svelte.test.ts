@@ -1,9 +1,9 @@
-import type { QueryParams } from "$lib";
 import { cleanup, render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { z } from "zod";
 import { createUseQueryParams } from "../create-params.svelte.ts";
+import type { QueryParams } from "../types";
 import Button from "./fixtures/Button.svelte";
 import FullUpdate from "./fixtures/FullUpdate.svelte";
 import Input from "./fixtures/Input.svelte";

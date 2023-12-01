@@ -62,13 +62,6 @@ export function createDefaultSerializer(): Serializer {
 	return (value) => (typeof value === "string" ? value : JSON.stringify(value));
 }
 
-export function entriesToRecord(entries: [string, string][]) {
-	return entries.reduce<Record<string, string>>((acc, [key, value]) => {
-		acc[key] = value;
-		return acc;
-	}, {});
-}
-
 export function mapValues<TKeys extends string, TValues, TReturn>(
 	object: Record<TKeys, TValues>,
 	mapFn: (value: TValues) => TReturn

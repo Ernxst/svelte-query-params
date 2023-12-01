@@ -11,7 +11,6 @@ import type {
 import {
 	createDefaultSerializer,
 	debounce,
-	entriesToRecord,
 	mapValues,
 	parseQueryParams,
 } from "./utils";
@@ -45,7 +44,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			: adapter.getServerUrl;
 		const { search } = getParams();
 		const queryParams = new URLSearchParams(search);
-		return entriesToRecord(Array.from(queryParams));
+		return Object.fromEntries(queryParams.entries());
 	}
 
 	const updateUrl = debounce(async () => {

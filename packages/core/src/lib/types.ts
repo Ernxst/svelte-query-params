@@ -5,15 +5,13 @@ import type { Adapter } from "./adapters/types.ts";
 
 /** Use this over valibot AnySchema type as we need to widen the type of `schema` to be any string */
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-type AnySchema<TOutput = any> = BaseSchema<any, TOutput> & { schema: string };
-
-type ZodValidator = z.ZodType;
-
-type ValibotValidator = AnySchema;
-
-export type Validator = FunctionValidator | ZodValidator | ValibotValidator;
-
+export type AnySchema<TOutput = any> = BaseSchema<any, TOutput> & {
+	schema: string;
+};
+export type ValibotValidator = AnySchema;
 export type FunctionValidator<TOut = unknown> = (value?: string) => TOut;
+export type ZodValidator = z.ZodType;
+export type Validator = FunctionValidator | ZodValidator | ValibotValidator;
 
 export type inferFromValidator<TValidator extends Validator> =
 	TValidator extends ZodValidator

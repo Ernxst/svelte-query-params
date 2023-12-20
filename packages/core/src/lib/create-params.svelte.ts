@@ -80,12 +80,12 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		 * Listening for popstate only works when back/forward button pressed,
 		 * so we track things ourselves
 		 */
-		windowObj.history.replaceState = function (...args) {
+		windowObj.history.replaceState = (...args) => {
 			replaceState(...args);
 			updateQueryParams();
 		};
 
-		windowObj.history.pushState = function (...args) {
+		windowObj.history.pushState = (...args) => {
 			pushState(...args);
 			updateQueryParams();
 		};

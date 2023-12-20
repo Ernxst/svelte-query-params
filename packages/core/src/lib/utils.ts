@@ -90,7 +90,7 @@ export function debounce<TFn extends (...args: any[]) => any>(
 
 	let timeoutId: ReturnType<typeof setTimeout>;
 
-	return function (...args: Parameters<TFn>) {
+	return (...args: Parameters<TFn>) => {
 		clearTimeout(timeoutId);
 
 		timeoutId = setTimeout(() => {

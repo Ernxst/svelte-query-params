@@ -62,7 +62,6 @@ export function mapValues<TKeys extends string, TValues, TReturn>(
 	);
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function debounce<TFn extends (...args: any[]) => any>(
 	func: TFn,
 	delay: number

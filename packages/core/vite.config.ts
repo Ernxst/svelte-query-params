@@ -9,7 +9,6 @@ export default defineConfig({
 					compilerOptions: {
 						legacy: { componentApi: true },
 					},
-					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			  }) as any)
 			: sveltekit(),
 	],

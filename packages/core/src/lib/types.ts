@@ -4,7 +4,6 @@ import type { z } from "zod";
 import type { Adapter } from "./adapters/types.ts";
 
 /** Use this over valibot AnySchema type as we need to widen the type of `schema` to be any string */
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export type AnySchema<TOutput = any> = BaseSchema<any, TOutput> & {
 	schema: string;
 };

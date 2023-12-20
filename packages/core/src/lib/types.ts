@@ -12,8 +12,15 @@ export type ValibotValidator<TInput = any, TOutput = TInput> = {
 		output: TOutput;
 	};
 };
-export type FunctionValidator<TOut = any> = (value?: unknown) => TOut;
+export type FunctionValidator<TOut extends object = any> = (
+	value?: unknown
+) => TOut;
+export type FunctionValueValidator<TOut = any> = (value?: string) => TOut;
 export type ZodValidator = z.ZodType;
+export type ValueValidator =
+	| FunctionValueValidator
+	| ZodValidator
+	| ValibotValidator;
 export type Validator = FunctionValidator | ZodValidator | ValibotValidator;
 
 export type inferFromValidator<TValidator extends Validator> =
@@ -23,9 +30,11 @@ export type inferFromValidator<TValidator extends Validator> =
 		? Output<TValidator>
 		: TValidator extends FunctionValidator
 		? ReturnType<TValidator>
+		: TValidator extends FunctionValueValidator
+		? ReturnType<TValidator>
 		: never;
 
-export type QuerySchema = Validator | Record<string, Validator>;
+export type QuerySchema = Validator | Record<string, ValueValidator>;
 
 type Empty = Record<string, never>;
 

@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { EventHandler } from "svelte/elements";
   import { useQueryParams } from "./params";
-  import { string } from "zod";
 
   const [params, helpers] = useQueryParams();
 

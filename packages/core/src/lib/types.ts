@@ -1,14 +1,18 @@
 /// <reference lib="dom" />
-import type { BaseSchema, Output } from "valibot";
+import type { Output } from "valibot";
 import type { z } from "zod";
 import type { Adapter } from "./adapters/types.ts";
 
-/** Use this over valibot AnySchema type as we need to widen the type of `schema` to be any string */
-export type AnySchema<TOutput = any> = BaseSchema<any, TOutput> & {
-	schema: string;
+// Valibot types are rubbish, do it ourselves
+export type ValibotValidator<TInput = any, TOutput = TInput> = {
+	async: any;
+	_parse(input: unknown, info?: any): any;
+	_types?: {
+		input: TInput;
+		output: TOutput;
+	};
 };
-export type ValibotValidator = AnySchema;
-export type FunctionValidator<TOut = unknown> = (value?: string) => TOut;
+export type FunctionValidator<TOut = any> = (value?: unknown) => TOut;
 export type ZodValidator = z.ZodType;
 export type Validator = FunctionValidator | ZodValidator | ValibotValidator;
 
@@ -21,11 +25,19 @@ export type inferFromValidator<TValidator extends Validator> =
 		? ReturnType<TValidator>
 		: never;
 
-export type QuerySchema = Record<string, Validator>;
+export type QuerySchema = Validator | Record<string, Validator>;
 
-export type inferShape<TShape extends QuerySchema> = {
-	[K in keyof TShape]: inferFromValidator<TShape[K]>;
-} & {};
+type Empty = Record<string, never>;
+
+export type inferShape<TShape extends QuerySchema> = TShape extends Validator
+	? inferFromValidator<TShape>
+	: TShape extends Empty
+	? Empty
+	: TShape extends Record<string, Validator>
+	? {
+			[K in keyof TShape]: inferFromValidator<TShape[K]>;
+	  } & {}
+	: never;
 
 /**
  * @param search Includes the `?` prefix

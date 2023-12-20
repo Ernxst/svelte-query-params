@@ -68,8 +68,8 @@ Then you can use this hook in your Svelte components:
   console.log(params.q); // Current 'q' value
 
   // Set query parameters
-  params.page = 1;
-  params.q = "example";
+  helpers.page = 1;
+  helpers.q = "example";
 
   // Raw query params from the browser, all as strings
   helpers.raw;
@@ -123,6 +123,8 @@ const useQueryParams = createUseQueryParams({
   q: z.string()
 });
 ```
+
+But you can if you want.
 
 Note that it is possible to mix and match the schemas if needed:
 

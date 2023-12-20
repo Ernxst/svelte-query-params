@@ -124,6 +124,8 @@ const useQueryParams = createUseQueryParams({
 });
 ```
 
+But you can if you want.
+
 Note that it is possible to mix and match the schemas if needed:
 
 ```javascript

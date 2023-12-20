@@ -120,7 +120,7 @@
 	},
 	"dependencies": {
 		"@sveltejs/kit": "^1.27.6",
-		"svelte": "^5.0.0-next.13",
+		"svelte": "^5.0.0-next.26",
 		"valibot": "^0.17.0",
 		"zod": "^3.22.2"
 	},

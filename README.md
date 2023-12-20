@@ -61,42 +61,42 @@ Then you can use this hook in your Svelte components:
 <script>
   import { useQueryParams } from "$lib/params"; // Import assuming SvelteKit
 
-  const params = useQueryParams();
+  const [params, helpers] = useQueryParams();
 
   // Access query parameters
   console.log(params.page); // Current 'page' value
   console.log(params.q); // Current 'q' value
 
   // Set query parameters
-  params.page = 1;
-  params.q = "example";
+  helpers.page = 1;
+  helpers.q = "example";
 
   // Raw query params from the browser, all as strings
-  params.raw;
+  helpers.raw;
 
-  // Parsed query params and nothing else
-  params.query;
+  // All query params, including those that were not set in schema
+  helpers.all;
 
   // Readonly search string, with the ? prefix
-  params.search;
+  helpers.search;
 
   // Update all query parameters in bulk
-  params.update({ page: 2, q: 'shoes' });
+  helpers.update({ page: 2, q: 'shoes' });
 
   // Apply partial updates to query params
-  params.update({ page: 3 });
+  helpers.update({ page: 3 });
 
   // Remove query parameters
-  params.remove("q");
+  helpers.remove("q");
 
   // Unsubscribe from popstate events
-  params.unsubscribe();
+  helpers.unsubscribe();
 
   // Access query keys
-  params.keys();
+  helpers.keys();
 
   // Access entries:
-  params.entries();
+  helpers.entries();
 </script>
 
 <p>
@@ -104,7 +104,7 @@ Then you can use this hook in your Svelte components:
 </p>
 
 <!-- Bind the 'q' query param to the input -->
-<input name="search" bind:value={params.q}>
+<input name="search" bind:value={helpers.q}>
 ```
 
 ## Validators

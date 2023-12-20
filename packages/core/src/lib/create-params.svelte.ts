@@ -2,10 +2,10 @@
 import { tick } from "svelte";
 import { dom } from "./adapters/dom";
 import type {
-	Params,
-	QueryParams,
+	QueryHelpers,
 	QueryParamsOptions,
 	QuerySchema,
+	UseQueryHook,
 	inferShape,
 } from "./types";
 import { debounce, mapValues, parseQueryParams } from "./utils";
@@ -13,12 +13,12 @@ import { debounce, mapValues, parseQueryParams } from "./utils";
 /**
  * This returns a function (a hook) rather than a reactive object as the
  * reactivity is lost when importing the underlying reactive object around
- * @returns A hook, returning a reactive {@linkcode QueryParams} instance
+ * @returns A hook, returning a reactive {@linkcode QueryHelpers} instance
  */
 export function createUseQueryParams<TShape extends QuerySchema>(
 	validators: TShape,
 	options: QueryParamsOptions = {}
-): () => QueryParams<inferShape<TShape>> {
+): UseQueryHook<inferShape<TShape>> {
 	const {
 		debounce: delay = 0,
 		windowObj = typeof window === "undefined" ? undefined : window,
@@ -43,7 +43,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		return Object.fromEntries(queryParams.entries());
 	}
 
-	const updateUrl = debounce(async () => {
+	const updateBrowserUrl = debounce(async () => {
 		await tick();
 
 		if (adapter.isBrowser()) {
@@ -66,15 +66,15 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			// We need to assign it so it updates, property updates do nothing
 			raw = { ...raw, [key]: serialise(value) };
 		}
-		updateUrl();
+
+		updateBrowserUrl();
 	}
 
-	let replaceState: History["replaceState"];
-	let pushState: History["pushState"];
+	let unsubscribe = () => {};
 
 	if (windowObj) {
-		replaceState = windowObj.history.replaceState.bind(windowObj.history);
-		pushState = windowObj.history.pushState.bind(windowObj.history);
+		const replaceState = windowObj.history.replaceState.bind(windowObj.history);
+		const pushState = windowObj.history.pushState.bind(windowObj.history);
 
 		/**
 		 * Listening for popstate only works when back/forward button pressed,
@@ -91,74 +91,79 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		};
 
 		windowObj.addEventListener("popstate", updateQueryParams);
+
+		unsubscribe = () => {
+			if (windowObj) {
+				windowObj.removeEventListener("popstate", updateQueryParams);
+				windowObj.history.pushState = pushState;
+				windowObj.history.replaceState = replaceState;
+			}
+		};
 	}
 
-	const reactive = {} as QueryParams<inferShape<TShape>>;
-	for (const key of Object.keys(validators)) {
-		Object.defineProperty(reactive, key, {
-			get() {
-				return query[key];
-			},
-			set(newValue) {
-				setQueryParam(key, newValue);
-			},
-		});
-	}
+	return () => {
+		const params = {} as inferShape<TShape>;
 
-	Object.defineProperties(reactive, {
-		raw: {
-			get() {
-				return raw;
-			},
-		},
-		query: {
-			get() {
-				return query;
-			},
-		},
-		search: {
-			get() {
-				return search;
-			},
-		},
-	});
+		/** This makes the properties reactive without manual getters/setters */
+		for (const key of Object.keys(validators)) {
+			Object.defineProperty(params, key, {
+				enumerable: true,
+				get() {
+					return query[key];
+				},
+				set(newValue) {
+					setQueryParam(key, newValue);
+				},
+			});
+		}
 
-	return () =>
-		Object.assign(reactive, {
-			keys() {
-				return Object.keys(validators);
-			},
+		return [
+			params,
+			{
+				get raw() {
+					return raw;
+				},
 
-			entries() {
-				return Object.entries(validators).map(([key]) => [key, query[key]]);
-			},
+				get query() {
+					return query;
+				},
 
-			set(params) {
-				raw = mapValues(params, serialise);
-				updateUrl();
-			},
+				get search() {
+					return search;
+				},
 
-			update(params) {
-				raw = { ...raw, ...mapValues(params, serialise) };
-				updateUrl();
-			},
+				get all() {
+					return { ...raw, ...query };
+				},
 
-			remove(...params) {
-				raw = Object.fromEntries(
-					Object.entries(raw).filter(([key]) => !params.includes(key))
-				);
-			},
+				keys() {
+					return Object.keys(validators);
+				},
 
-			unsubscribe() {
-				if (windowObj) {
-					windowObj.removeEventListener("popstate", updateQueryParams);
-					windowObj.history.pushState = pushState;
-					windowObj.history.replaceState = replaceState;
-				}
-			},
+				entries() {
+					return Object.entries(validators).map(([key]) => [key, query[key]]);
+				},
 
-			[Symbol.dispose]() {
-				this.unsubscribe();
+				set(params) {
+					raw = mapValues(params, serialise);
+					updateBrowserUrl();
+				},
+
+				update(params) {
+					raw = { ...raw, ...mapValues(params, serialise) };
+					updateBrowserUrl();
+				},
+
+				remove(...params) {
+					raw = Object.fromEntries(
+						Object.entries(raw).filter(([key]) => !params.includes(key))
+					);
+				},
+
+				unsubscribe() {
+					return unsubscribe();
+				},
 			},
-		} satisfies Omit<Params<inferShape<TShape>>, "query" | "raw" | "search">);
+		];
+	};
 }

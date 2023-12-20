@@ -71,10 +71,7 @@ export interface QueryParamsOptions {
 	adapter?: Adapter;
 }
 
-export type QueryParams<TShape extends Record<string, unknown>> = TShape &
-	Params<TShape>;
-
-export interface Params<TShape extends object> {
+export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	/**
 	 * The raw query params, parsed from {@linkcode windowObj.location.href}
 	 *
@@ -87,7 +84,7 @@ export interface Params<TShape extends object> {
 	 * Note: this may include query params not defined in your schema and will be
 	 * passed through as-is (as strings)
 	 */
-	readonly query: TShape;
+	readonly all: Record<string, string | string[]> & TShape;
 	/**
 	 * The query string, generated from the {@linkcode query} which may contain
 	 * query params not defined in your schema.
@@ -104,5 +101,12 @@ export interface Params<TShape extends object> {
 	/** Return the query keys. Unlike {@linkcode Object.keys}, this is type-safe */
 	keys(): (keyof TShape)[];
 	entries(): [keyof TShape, TShape[keyof TShape]][];
-	[Symbol.dispose]: () => void;
-}
+};
+
+export type QueryHook<TShape extends Record<string, unknown>> = [
+	TShape,
+	QueryHelpers<TShape>
+];
+
+export type UseQueryHook<TShape extends Record<string, unknown>> =
+	() => QueryHook<TShape>;

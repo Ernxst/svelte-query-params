@@ -40,26 +40,26 @@ describe("Type tests", () => {
 			test("should infer correct types", () => {
 				const useQueryParams = createUseQueryParams(schema);
 
-				const params = useQueryParams();
+				const [params, helpers] = useQueryParams();
 
 				expectTypeOf(params.id).toEqualTypeOf<number>();
 				expectTypeOf(params.q).toEqualTypeOf<string | undefined>();
-				expectTypeOf(params.query).toEqualTypeOf<{
+				expectTypeOf(params).toEqualTypeOf<{
 					id: number;
 					q: string | undefined;
 				}>();
-				expectTypeOf(params.keys()).toEqualTypeOf<("q" | "id")[]>();
-				expectTypeOf(params.entries()).toEqualTypeOf<
+				expectTypeOf(helpers.keys()).toEqualTypeOf<("q" | "id")[]>();
+				expectTypeOf(helpers.entries()).toEqualTypeOf<
 					["q" | "id", string | number | undefined][]
 				>();
 
-				expectTypeOf(params.set).toBeCallableWith({ id: 1, q: undefined });
-				expectTypeOf(params.set).toBeCallableWith({ id: 1, q: "string" });
-				expectTypeOf(params.update).toBeCallableWith({ id: 1, q: "string" });
-				expectTypeOf(params.update).toBeCallableWith({ id: 1, q: undefined });
-				expectTypeOf(params.update).toBeCallableWith({ q: "string" });
-				expectTypeOf(params.update).toBeCallableWith({ q: undefined });
-				expectTypeOf(params.remove).toBeCallableWith("id", "q");
+				expectTypeOf(helpers.set).toBeCallableWith({ id: 1, q: undefined });
+				expectTypeOf(helpers.set).toBeCallableWith({ id: 1, q: "string" });
+				expectTypeOf(helpers.update).toBeCallableWith({ id: 1, q: "string" });
+				expectTypeOf(helpers.update).toBeCallableWith({ id: 1, q: undefined });
+				expectTypeOf(helpers.update).toBeCallableWith({ q: "string" });
+				expectTypeOf(helpers.update).toBeCallableWith({ q: undefined });
+				expectTypeOf(helpers.remove).toBeCallableWith("id", "q");
 			});
 		});
 	}

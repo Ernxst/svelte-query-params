@@ -1,15 +1,15 @@
 <script lang="ts">
-	import type { QueryParams } from "../../types.ts";
+  import type { UseQueryHook } from "../../types.ts";
 
-	const { useQueryParams } = $props<{
-		useQueryParams: () => QueryParams<{ count: number; id: number }>;
-	}>();
+  const { useQueryParams } = $props<{
+    useQueryParams: UseQueryHook<{ count: number; id: number }>;
+  }>();
 
-	const params = useQueryParams();
+  const [params, helpers] = useQueryParams();
 
-	function updateOne() {
-		params.update({ count: params.count + 1 });
-	}
+  function updateOne() {
+    helpers.update({ count: params.count + 1 });
+  }
 </script>
 
 <input name="count" value={params.count} disabled type="number" />

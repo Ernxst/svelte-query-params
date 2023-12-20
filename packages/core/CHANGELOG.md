@@ -1,5 +1,11 @@
 # svelte-query-params
 
+## 0.1.0
+
+### Minor Changes
+
+- [`c9ecf16`](https://github.com/Ernxst/svelte-query-params/commit/c9ecf16df563e1af0b386e17d125f922a5ed83d6) Thanks [@Ernxst](https://github.com/Ernxst)! - Restructure API usage
+
 ## 0.0.2
 
 ### Patch Changes

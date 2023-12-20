@@ -3,35 +3,11 @@
 	"organizeImports": {
 		"enabled": true
 	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true
-		},
-		"include": [
-			"examples/**/*",
-			"packages/**/*",
-			"package.json",
-			"tsconfig.json"
-		],
-		"ignore": [
-			".DS_Store",
-			".turbo",
-			".svelte-kit/",
-			".idea/",
-			"node_modules/",
-			"coverage/",
-			"build/",
-			"dist/"
-		]
+	"vcs": {
+		"useIgnoreFile": true
 	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab",
-		"indentWidth": 2,
-		"lineWidth": 80,
+	"files": {
 		"ignore": [
-			".gitignore",
 			".DS_Store",
 			".turbo",
 			".svelte-kit/",
@@ -40,11 +16,25 @@
 			"coverage/",
 			"build/",
 			"dist/",
-			"*.log",
-			"*.log*",
-			"yarn.lock",
-			"bun.lockb"
+			"vite.config.ts.*",
+			"vitest.config.ts.*",
+			"tsup.config.ts.*"
 		]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "off"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 80
 	},
 	"javascript": {
 		"formatter": {

@@ -6,6 +6,7 @@
 .turbo
 build
 tsconfig.vitest-temp.json
+yarn.lock
 
 # Logs
 

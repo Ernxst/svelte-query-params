@@ -12,6 +12,8 @@
 			".turbo",
 			".svelte-kit/",
 			".idea/",
+			"yarn.lock",
+			"bun.lockb",
 			"node_modules/",
 			"coverage/",
 			"build/",

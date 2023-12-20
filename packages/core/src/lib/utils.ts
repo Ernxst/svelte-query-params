@@ -3,11 +3,12 @@ import type {
 	QuerySchema,
 	ValibotValidator,
 	Validator,
+	ValueValidator,
 	ZodValidator,
 	inferShape,
 } from "./types.ts";
 
-function parseObject(schemas: Record<string, Validator>, input: object) {
+function parseObject(schemas: Record<string, ValueValidator>, input: object) {
 	const clone: any = {};
 	const keys = new Set([...Object.keys(input), ...Object.keys(schemas)]);
 
@@ -24,7 +25,11 @@ function parseObject(schemas: Record<string, Validator>, input: object) {
 	return clone;
 }
 
-function parseValue(key: string, schema: Validator, value?: string) {
+function parseValue(
+	key: string,
+	schema: ValueValidator | Validator,
+	value?: string
+) {
 	if (typeof schema === "function") return schema(value);
 	if (isZodSchema(schema)) return schema.parse(value);
 	if (isValibotSchema(schema)) return parse(schema, value);

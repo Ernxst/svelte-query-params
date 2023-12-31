@@ -104,7 +104,7 @@ Then you can use this hook in your Svelte components:
 </p>
 
 <!-- Bind the 'q' query param to the input -->
-<input name="search" bind:value={helpers.q}>
+<input name="search" bind:value={params.q}>
 ```
 
 ## Validators

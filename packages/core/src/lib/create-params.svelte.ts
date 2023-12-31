@@ -101,13 +101,14 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		};
 	}
 
-	return () => {
+	return function useQueryParams() {
 		const params = {} as inferShape<TShape>;
 
 		/** This makes the properties reactive without manual getters/setters */
 		for (const key of Object.keys(validators)) {
 			Object.defineProperty(params, key, {
 				enumerable: true,
+				configurable: true,
 				get() {
 					return query[key];
 				},

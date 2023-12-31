@@ -68,8 +68,8 @@ Then you can use this hook in your Svelte components:
   console.log(params.q); // Current 'q' value
 
   // Set query parameters
-  helpers.page = 1;
-  helpers.q = "example";
+  params.page = 1;
+  params.q = "example";
 
   // Raw query params from the browser, all as strings
   helpers.raw;

@@ -81,6 +81,7 @@
 	},
 	"main": "dist/index.svelte.cjs",
 	"module": "dist/index.svelte.js",
+	"svelte": "dist/index.svelte.js",
 	"types": "dist/index.svelte.d.ts",
 	"files": ["dist", "README.md"],
 	"engines": {

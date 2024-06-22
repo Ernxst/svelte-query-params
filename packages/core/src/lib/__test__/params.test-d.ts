@@ -40,7 +40,7 @@ describe("Type tests", () => {
 			test("should infer correct types", () => {
 				const useQueryParams = createUseQueryParams(schema);
 
-				const [params, helpers] = useQueryParams();
+				const [params, helpers] = useQueryParams(window.location);
 
 				expectTypeOf(params.id).toEqualTypeOf<number>();
 				expectTypeOf(params.q).toEqualTypeOf<string | undefined>();

@@ -28,9 +28,7 @@
 		"test": "turbo run test",
 		"test:types": "turbo run test:types",
 		"----------------------------------------------------------------------------------": "",
-		"prepublishOnly": "bun run build",
-		"release": "bun run build && changeset publish",
-		"version": "changeset version && bun install && bun run format"
+		"release": "changeset publish"
 	},
 	"dependencies": {
 		"publint": "0.2.8",

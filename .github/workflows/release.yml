@@ -2,18 +2,16 @@ name: 📤 Release
 
 on:
   push:
-    branches:
-      - main
-      - next
+    branches: [main, next]
+  pull_request:
+    branches: [main, next]
 
-defaults:
-  run:
-    shell: bash
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  FORCE_COLOR: true
+   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+   TURBO_REMOTE_ONLY: true
 
 jobs:
   release:
@@ -27,18 +25,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
       - name: 📤 Install Bun
         uses: oven-sh/setup-bun@v1
-
-      - uses: actions/setup-node@v2
         with:
-          node-version: 18
-
+          bun-version: latest
+          
       - name: 📤 Install dependencies
         run: bun install
 
@@ -49,12 +45,9 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: bun run version
-          publish: bunx changeset publish
+          publish: bun run release
           commit: 'chore(ci): release'
           title: 'chore(ci): release'
         env:
-          # Needs access to push to main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Needs access to publish to npm
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

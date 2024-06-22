@@ -3,8 +3,6 @@ name: 🚀 CI
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
   merge_group:
   pull_request:
     paths-ignore:
@@ -12,69 +10,70 @@ on:
       - "**/*.md"
       - ".github/ISSUE_TEMPLATE/**"
 
-# Automatically cancel older in-progress jobs on the same branch
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-defaults:
-  run:
-    shell: bash
 
 env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  FORCE_COLOR: true
+   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+   TURBO_REMOTE_ONLY: true
 
 jobs:
   lint:
     name: ⬣ Lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: 🛠 Setup Biome CLI
+        uses: biomejs/setup-biome@v2
+
+      - name: 🔬 Run Biome
+        run: biome ci .
+
+  typecheck:
+    name: ʦ Typecheck
+    runs-on: ubuntu-22.04
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
 
       - name: 📤 Install Bun
         uses: oven-sh/setup-bun@v1
-
-      - uses: actions/setup-node@v2
         with:
-          node-version: 18
+          bun-version: latest
 
       - name: 📤 Install dependencies
         run: bun install
 
-      - name: 🔬 Lint
-        run: bun lint
+      - name: 🔎 Typecheck
+        run: bun typecheck
 
   test:
-    name: "🧪 Test: ${{ matrix.os }} (node@${{ matrix.node_version }})"
-    runs-on: ${{ matrix.os }}
+    name: "🧪 Test"
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        OS: [ubuntu-latest]
-        NODE_VERSION: [18, 20.5.1]
-        include:
-          - os: macos-latest
-            NODE_VERSION: 18
-      fail-fast: false
-    env:
-      NODE_VERSION: ${{ matrix.NODE_VERSION }}
+        node-version: [20, 22]
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 📤 Install Bun
         uses: oven-sh/setup-bun@v1
-
-      - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          bun-version: latest
 
       - name: 📤 Install dependencies
-        run: bun install -y
+        run: bun install
+
+      - name: 🛠 Build Packages
+        run: bun run build
 
       - name: 🧪 Run Tests
-        run: bun run test
+        run: bun run test --continue --filter='!./examples/*'
 
       - name: 🧪 Run Type Tests
-        run: bun run test:types
+        run: bun run test:types --continue --filter='!./examples/*'

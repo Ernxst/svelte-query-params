@@ -120,8 +120,8 @@ export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	/** Manually unset unregister all event listeners */
 	unsubscribe(): void;
 	/** Return the query keys. Unlike {@linkcode Object.keys}, this is type-safe */
-	keys(): IterableIterator<keyof TShape>;
-	entries(): IterableIterator<[keyof TShape, TShape[keyof TShape]]>;
+	keys(): Array<keyof TShape>;
+	entries(): Array<[keyof TShape, TShape[keyof TShape]]>;
 };
 
 export type QueryHook<TShape extends Record<string, unknown>> = [

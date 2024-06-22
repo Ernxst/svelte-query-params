@@ -1,4 +1,3 @@
-/// <reference lib="dom" />
 import { tick } from "svelte";
 import { dom } from "./adapters/dom";
 import type {

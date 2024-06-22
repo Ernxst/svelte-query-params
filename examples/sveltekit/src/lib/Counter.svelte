@@ -1,4 +1,5 @@
 <script lang="ts">
+import { goto } from "$app/navigation";
 import type { EventHandler } from "svelte/elements";
 import { useQueryParams } from "./params";
 
@@ -19,7 +20,7 @@ const submit: EventHandler<SubmitEvent, HTMLFormElement> =
 			params.set(key, String(value));
 		}
 
-		window.history.pushState(null, "", `?${params}`);
+		goto(`?${params}`);
 	};
 </script>
 

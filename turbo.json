@@ -16,6 +16,10 @@
 			"dependsOn": ["^typecheck"]
 		},
 		"test": {},
-		"test:types": {}
+		"test:types": {},
+		"test:watch": {
+			"cache": false,
+			"persistent": true
+		}
 	}
 }

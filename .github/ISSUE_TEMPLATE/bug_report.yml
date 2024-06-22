@@ -14,11 +14,11 @@ body:
       placeholder: Bug description
     validations:
       required: true
-  - type: input
+  - type: textarea
     id: reproduction
     attributes:
       label: Reproduction
-      description: A [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) is **required**, otherwise the issue might be closed without further notice. [**Why & How?**](https://antfu.me/posts/why-reproductions-are-required)
+      description: Please provide a link to [StackBlitz](https://stackblitz.com/fork/github/Ernxst/svelte-query-params/tree/main/examples/basic?initialPath=__svelte-query-params__/) (you can also use [examples](https://github.com/Ernxst/svelte-query-params/tree/main/examples)) or a github repo that can reproduce the problem you ran into. A [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) is required unless you are absolutely sure that the issue is obvious and the provided information is enough to understand the problem. If a report is vague (e.g. just a generic error message) and has no reproduction, it will receive a "needs reproduction" label. If no reproduction is provided after 3 days, it will be auto-closed.
       placeholder: Reproduction
     validations:
       required: true
@@ -26,8 +26,8 @@ body:
     id: system-info
     attributes:
       label: System Info
-      description: Output of `npx envinfo --system --binaries --browsers`
-      render: Shell
+      description: Output of `npx envinfo --system --npmPackages 'svelte-query-params' --binaries --browsers`
+      render: shell
       placeholder: System, Binaries, Browsers
     validations:
       required: true
@@ -41,7 +41,6 @@ body:
         - yarn
         - pnpm
         - bun
-        - n/a
     validations:
       required: true
   - type: checkboxes
@@ -50,13 +49,15 @@ body:
       label: Validations
       description: Before submitting the issue, please make sure you do the following
       options:
-        - label: Follow our [Code of Conduct](https://github.com/Ernxst/query-builder/.github/blob/main/CODE_OF_CONDUCT.md)
+        - label: Follow our [Code of Conduct](https://github.com/Ernxst/svelte-query-params/blob/main/CODE_OF_CONDUCT.md)
           required: true
-        - label: Read the [Contributing Guide](https://github.com/Ernxst/query-builder/blob/main/CONTRIBUTING.md).
+        - label: Read the [Contributing Guidelines](https://github.com/Ernxst/svelte-query-params/blob/main/CONTRIBUTING.md).
           required: true
-        - label: Check that there isn't already an issue that reports the same bug to avoid creating a duplicate.
+        - label: Read the [docs](https://github.com/Ernxst/svelte-query-params/blob/main/docs).
           required: true
-        - label: Check that this is a concrete bug. For Q&A, please open a GitHub Discussion instead.
+        - label: Check that there isn't [already an issue](https://github.com/Ernxst/svelte-query-params/issues) that reports the same bug to avoid creating a duplicate.
           required: true
-        - label: The provided reproduction is a [minimal reproducible](https://stackoverflow.com/help/minimal-reproducible-example) of the bug.
+        - label: Check that this is a concrete bug. For Q&A open a [GitHub Discussion](https://github.com/Ernxst/svelte-query-params/discussions).
+          required: true
+        - label: The provided reproduction is a [minimal reproducible example](https://stackoverflow.com/help/minimal-reproducible-example) of the bug.
           required: true

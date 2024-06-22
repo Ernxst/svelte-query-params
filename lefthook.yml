@@ -1,0 +1,10 @@
+commit-msg:
+  commands:
+    "lint commit message":
+      run: bun commitlint --edit {1}
+
+pre-commit:
+  parallel: true
+  commands:
+    "lint and format":
+      run: bun biome check --apply --no-errors-on-unmatched --files-ignore-unknown=true {staged_files} && git update-index --again

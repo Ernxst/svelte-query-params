@@ -50,8 +50,8 @@ export type inferShape<TShape extends QuerySchema> = TShape extends Validator
  * @param search Includes the `?` prefix
  */
 export type QueryUpdater = (search: string, hash: string) => void;
-export type QueryFetcher = () => { search: string; hash: string };
 export type Serializer = (value: unknown) => string;
+export type URLLike = URL | Location;
 
 export type WindowLike = Pick<
 	typeof window,
@@ -130,4 +130,7 @@ export type QueryHook<TShape extends Record<string, unknown>> = [
 ];
 
 export type UseQueryHook<TShape extends Record<string, unknown>> =
-	() => QueryHook<TShape>;
+	/**
+	 * @param url The current URL
+	 */
+	(url: URLLike) => QueryHook<TShape>;

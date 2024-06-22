@@ -7,7 +7,7 @@ const {
 	useQueryParams: UseQueryHook<{ count: number }>;
 } = $props();
 
-const [params] = useQueryParams();
+const [params] = useQueryParams(window.location);
 </script>
 
 <input name="number" bind:value={params.count} type="number" />

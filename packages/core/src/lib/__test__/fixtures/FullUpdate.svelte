@@ -7,7 +7,7 @@ const {
 	useQueryParams: UseQueryHook<{ count: number; id: number }>;
 } = $props();
 
-const [params, helpers] = useQueryParams();
+const [params, helpers] = useQueryParams(window.location);
 
 function updateAll() {
 	helpers.set({ count: params.count + 1, id: params.id + 1 });

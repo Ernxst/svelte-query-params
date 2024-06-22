@@ -14,24 +14,20 @@ describe("createUseQueryParams", () => {
 	const user = userEvent.setup();
 	const replaceState = history.replaceState.bind(history);
 
-	beforeEach(() => {
-		replaceState({}, "", "?");
-	});
-
 	describe("when a value is bound to an input", () => {
 		const useQueryParams = createUseQueryParams({
 			count: z.coerce.number().optional().default(0),
 		});
 
 		beforeEach(() => {
-			const [params] = useQueryParams();
+			const [params] = useQueryParams(window.location);
 			params.count = 0;
 
 			render(Input, { useQueryParams });
 		});
 
 		test("should update browser params when input is changed", async () => {
-			const [params, helpers] = useQueryParams();
+			const [params, helpers] = useQueryParams(window.location);
 			const input = screen.getByRole("spinbutton");
 
 			await user.type(input, "123");
@@ -46,7 +42,7 @@ describe("createUseQueryParams", () => {
 		});
 
 		test("should update input when search params updated externally", async () => {
-			const [params, helpers] = useQueryParams();
+			const [params, helpers] = useQueryParams(window.location);
 			const input = screen.getByRole("spinbutton");
 
 			window.history.replaceState({}, "", "?count=123");
@@ -82,14 +78,14 @@ describe("createUseQueryParams", () => {
 				count: z.coerce.number().optional().default(0),
 			});
 
-			const [params] = useQueryParams();
+			const [params] = useQueryParams(window.location);
 			params.count = 0;
 
 			render(Button, { useQueryParams });
 		});
 
 		test("should update params and browser params", async () => {
-			const [params, helpers] = useQueryParams();
+			const [params, helpers] = useQueryParams(window.location);
 			const button = screen.getByRole("button");
 
 			await user.click(button);
@@ -114,14 +110,14 @@ describe("createUseQueryParams", () => {
 				id: z.coerce.number().optional().default(0),
 			});
 
-			const [_params, helpers] = useQueryParams();
+			const [_params, helpers] = useQueryParams(window.location);
 			helpers.set({ count: 0, id: 0 });
 		});
 
 		test("should apply full updates", async () => {
 			render(FullUpdate, { useQueryParams });
 
-			const [params, helpers] = useQueryParams();
+			const [params, helpers] = useQueryParams(window.location);
 			const [countInput, idInput] = screen.getAllByRole("spinbutton");
 			const button = screen.getByRole("button");
 
@@ -146,7 +142,7 @@ describe("createUseQueryParams", () => {
 		test("should apply partial updates", async () => {
 			render(PartialUpdate, { useQueryParams });
 
-			const [params, helpers] = useQueryParams();
+			const [params, helpers] = useQueryParams(window.location);
 			const [countInput, idInput] = screen.getAllByRole("spinbutton");
 			const button = screen.getByRole("button");
 
@@ -183,7 +179,7 @@ describe("createUseQueryParams", () => {
 		});
 
 		test("should maintain unknown query params", async () => {
-			const [params, helpers] = useQueryParams();
+			const [params, helpers] = useQueryParams(window.location);
 			const input = screen.getByRole("spinbutton");
 
 			await user.type(input, "123");

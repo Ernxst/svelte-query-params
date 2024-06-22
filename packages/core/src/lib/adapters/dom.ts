@@ -26,10 +26,12 @@ export function dom(options: DomAdapterOptions = {}): Adapter {
 
 	return {
 		isBrowser: () => typeof window !== "undefined",
-		getBrowserUrl: () => windowObj.location,
-		updateBrowserUrl: (search, hash) => update(null, "", `${search}${hash}`),
-		// Client-side only adapter
-		getServerUrl: () => ({ hash: "", search: "" }),
-		updateServerUrl: () => {},
+		browser: {
+			read: () => windowObj.location,
+			save: (search, hash) => update(null, "", `${search}${hash}`),
+		},
+		server: {
+			save: () => {},
+		},
 	};
 }

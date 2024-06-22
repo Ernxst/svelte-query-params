@@ -1,7 +1,5 @@
 import { browser, building } from "$app/environment";
 import { goto } from "$app/navigation";
-import { page } from "$app/stores";
-import { get } from "svelte/store";
 import type { Adapter } from "./types.ts";
 
 interface SvelteKitAdapterOptions {
@@ -11,26 +9,32 @@ interface SvelteKitAdapterOptions {
 	replace?: boolean;
 }
 
+const DUMMY_URL = new URL("https://kit.svelte.dev");
+
 export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 	const { replace = false } = options;
 	return {
 		isBrowser: () => browser,
-		getBrowserUrl: () => {
-			// Query params aren't pre-renderable
-			if (building) return { hash: "", search: "" };
-			return window.location;
+		browser: {
+			read() {
+				// Query params aren't pre-renderable
+				if (building) return DUMMY_URL;
+				return window.location;
+			},
+			save(search, hash) {
+				goto(`${search}${hash}`, {
+					keepFocus: true,
+					noScroll: true,
+					replaceState: replace,
+				});
+			},
 		},
-		updateBrowserUrl: (search, hash) =>
-			goto(`${search}${hash}`, {
-				keepFocus: true,
-				noScroll: true,
-				replaceState: replace,
-			}),
-		getServerUrl: () => {
-			// Query params aren't pre-renderable
-			if (building) return { hash: "", search: "" };
-			return get(page).url;
+		server: {
+			save(_search, _hash) {
+				// TODO: Currently causes infinite redirects
+				// if (building) return;
+				// redirect(307, `${search}${hash}`);
+			},
 		},
-		updateServerUrl: (_search, _hash) => {},
 	};
 }

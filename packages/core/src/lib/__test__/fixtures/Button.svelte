@@ -7,7 +7,7 @@ const {
 	useQueryParams: UseQueryHook<{ count: number }>;
 } = $props();
 
-const [params] = useQueryParams();
+const [params] = useQueryParams(window.location);
 
 function increment() {
 	params.count += 1;

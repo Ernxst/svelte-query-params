@@ -60,8 +60,9 @@ Then you can use this hook in your Svelte components:
 ```svelte
 <script>
   import { useQueryParams } from "$lib/params"; // Import assuming SvelteKit
+  import { page } from "$app/stores";
 
-  const [params, helpers] = useQueryParams();
+  const [params, helpers] = useQueryParams($page.url); // You must pass the URL
 
   // Access query parameters
   console.log(params.page); // Current 'page' value
@@ -179,13 +180,12 @@ As mentioned previously, adapters control how the URL is fetched and updated, bo
 
 - `isBrowser: () => boolean` - Returns `true` when are in the browser, and `false` otherwise.
 
-- `getServerUrl() => { hash: string, search: string }` - Get the server-side hash and search strings.
+- `server` - A property with the following methods:
+  - `save(search: string, hash: string) => void` - Update the server URL. Note that the `search` string has the `?` prefixed and the `hash` string has the `#` prefixed.
 
-- `updateServerUrl(search: string, hash: string) => void` - Update the server-side URL. Note that the `search` string has the `?` prefixed and the `hash` string has the `#hash` prefixed.
-
-- `getBrowserUrl(search: string, hash: string) => { hash: string, search: string }` - Get the browser hash and search strings.
-
-- `updateBrowserUrl() => void` - Update the browser URL. Note that the `search` string has the `?` prefixed and the `hash` string has the `#hash` prefixed.
+- `browser` - A property with the following methods:
+  - `read() => URL | Location` - Retrieve the browser URL.
+  - `save(search: string, hash: string) => void` - Update the browser URL. Note that the `search` string has the `?` prefixed and the `hash` string has the `#` prefixed.
 
 To create your own adapter, you can import the `Adapter` type from `svelte-query-params/adapter` for intellisense, or use `defineAdapter` also exported by `svelte-query-params/adapter`:
 
@@ -224,8 +224,6 @@ const useQueryParams = createUseQueryParams({ ... }, {
 ### SvelteKit
 
 For use with SvelteKit, use this adapter, instead of the [`dom`](#dom) adapter for support for interacting with query params on the server.
-
-Currently, this uses the [`page`](https://kit.svelte.dev/docs/modules#$app-stores-page) store and will be rewritten once the SvelteKit team announce their alternative for Svelte 5.
 
 ```javascript
 import { createUseQueryParams } from "svelte-query-params";

@@ -8,6 +8,11 @@ import type {
 	inferShape,
 } from "./types.ts";
 
+export function fromURL({ search }: { search: string }) {
+	const params = new URLSearchParams(search);
+	return Object.fromEntries(params.entries());
+}
+
 function parseObject(schemas: Record<string, ValueValidator>, input: object) {
 	const clone: any = {};
 	const keys = new Set([...Object.keys(input), ...Object.keys(schemas)]);
@@ -51,26 +56,6 @@ export function parseQueryParams<TSchema extends QuerySchema>(
 	params: Record<string, string | undefined>,
 	schemas: TSchema
 ): inferShape<TSchema> {
-	/**
-	 * I think this might be the most hideous hack I've implemented yet.
-	 *
-	 * The issue is when validation fails, for some reason unknown to me, Svelte stops
-	 * reacting to the updates (it still calls the parser again, but the consumer
-	 * visible state does not change)
-	 *
-	 * I noticed this and added logs (below) and noticed it started working. Removing
-	 * the logs breaks it again. Not even a raw expression fixes it.
-	 *
-	 * So, we just make console.log a noop and then put it back so it isn't
-	 * logged to the console
-	 *
-	 * Maybe someone else can fix this
-	 */
-	const log = console.log;
-	console.log = () => {};
-	console.log({ params });
-	console.log = log;
-
 	if (typeof schemas === "function") return schemas(params);
 	if (isZodSchema(schemas)) return schemas.parse(params);
 	if (isValibotSchema(schemas)) return parse(schemas, params);

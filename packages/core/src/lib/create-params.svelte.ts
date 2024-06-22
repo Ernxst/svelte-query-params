@@ -7,7 +7,7 @@ import type {
 	UseQueryHook,
 	inferShape,
 } from "./types";
-import { debounce, mapValues, parseQueryParams } from "./utils";
+import { debounce, fromURL, mapValues, parseQueryParams } from "./utils";
 
 /**
  * This returns a function (a hook) rather than a reactive object as the
@@ -26,47 +26,24 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			typeof value === "string" ? value : JSON.stringify(value),
 	} = options;
 
-	let raw = $state(getQueryParams());
-
+	let raw = $state({});
 	const query = $derived(parseQueryParams(raw, validators));
-	const search = $derived(
-		Object.keys(query).length ? `?${new URLSearchParams(query)}` : ""
-	);
+	const search = $derived(`?${new URLSearchParams(query)}`);
 
-	function getQueryParams() {
-		const getParams = adapter.isBrowser()
-			? adapter.getBrowserUrl
-			: adapter.getServerUrl;
-		const { search } = getParams();
-		const queryParams = new URLSearchParams(search);
-		return Object.fromEntries(queryParams.entries());
+	function readFromBrowser() {
+		raw = fromURL(adapter.browser.read());
 	}
 
-	const updateBrowserUrl = debounce(async () => {
-		await tick();
-
-		if (adapter.isBrowser()) {
-			adapter.updateBrowserUrl(search, adapter.getBrowserUrl().hash);
-		} else {
-			adapter.updateServerUrl(search, adapter.getServerUrl().hash);
-		}
+	const persistToBrowser = debounce((search: string, hash: string) => {
+		return tick().then(() => adapter.browser.save(search, hash));
 	}, delay);
 
-	function updateQueryParams() {
-		raw = getQueryParams();
-	}
-
-	function setQueryParam(key: string, value: unknown) {
-		if (value === undefined) {
-			// We need to assign it so it updates, property updates do nothing
-			const { [key]: _, ...rest } = raw;
-			raw = rest;
-		} else {
-			// We need to assign it so it updates, property updates do nothing
-			raw = { ...raw, [key]: serialise(value) };
-		}
-
-		updateBrowserUrl();
+	function persistParams(hash: string) {
+		adapter.isBrowser()
+			? // By the time peristParams is called in the browser, a hash may have changed due to reactivity
+				persistToBrowser(search, adapter.browser.read().hash)
+			: // We don't have this problem on the server
+				adapter.server.save(search, hash);
 	}
 
 	let unsubscribe = () => {};
@@ -81,29 +58,29 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		 */
 		windowObj.history.replaceState = (...args) => {
 			replaceState(...args);
-			updateQueryParams();
+			readFromBrowser();
 		};
 
 		windowObj.history.pushState = (...args) => {
 			pushState(...args);
-			updateQueryParams();
+			readFromBrowser();
 		};
 
-		windowObj.addEventListener("popstate", updateQueryParams);
+		windowObj.addEventListener("popstate", readFromBrowser);
 
 		unsubscribe = () => {
 			if (windowObj) {
-				windowObj.removeEventListener("popstate", updateQueryParams);
+				windowObj.removeEventListener("popstate", readFromBrowser);
 				windowObj.history.pushState = pushState;
 				windowObj.history.replaceState = replaceState;
 			}
 		};
 	}
 
-	return function useQueryParams() {
+	return function useQueryParams(url) {
+		raw = fromURL({ search: url.search });
 		const params = {} as inferShape<TShape>;
 
-		/** This makes the properties reactive without manual getters/setters */
 		for (const key of Object.keys(validators)) {
 			Object.defineProperty(params, key, {
 				enumerable: true,
@@ -112,7 +89,8 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 					return query[key];
 				},
 				set(newValue) {
-					setQueryParam(key, newValue);
+					raw = { ...raw, [key]: serialise(newValue) };
+					persistParams(url.hash);
 				},
 			});
 		}
@@ -146,12 +124,12 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 
 				set(params) {
 					raw = mapValues(params, serialise);
-					updateBrowserUrl();
+					persistParams(url.hash);
 				},
 
 				update(params) {
 					raw = { ...raw, ...mapValues(params, serialise) };
-					updateBrowserUrl();
+					persistParams(url.hash);
 				},
 
 				remove(...params) {

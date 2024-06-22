@@ -95,7 +95,7 @@
 		"typecheck": "svelte-kit sync && svelte-check",
 		"--------------------------------------------------------------------------------": "",
 		"test": "vitest run",
-		"test:types": "vitest typecheck",
+		"test:types": "vitest run --typecheck",
 		"test:watch": "vitest",
 		"---------------------------------------------------------------------------------": "",
 		"postinstall": "svelte-kit sync"

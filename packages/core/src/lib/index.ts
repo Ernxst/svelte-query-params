@@ -14,4 +14,5 @@ export type {
 	ZodValidator,
 	inferFromValidator,
 	inferShape,
+	WindowLike,
 } from "./types.ts";

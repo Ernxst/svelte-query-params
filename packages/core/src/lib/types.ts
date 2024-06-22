@@ -102,7 +102,7 @@ export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	/**
 	 * Similar to {@linkcode raw}, but any params specified in your validators
 	 * will have been parsed - all other values are passed through as-is.
-	 * 
+	 *
 	 * Note: this may include query params not defined in your schema.
 	 */
 	readonly all: Record<string, string> & TShape;

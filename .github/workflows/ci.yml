@@ -30,6 +30,9 @@ jobs:
       - name: 🛠 Setup Biome CLI
         uses: biomejs/setup-biome@v2
 
+      - name: 🛠 Format Code
+        run: biome format . --write
+
       - name: 🔬 Run Biome
         run: biome ci .
 

@@ -19,7 +19,7 @@ function parseObject(schemas: Record<string, ValueValidator>, input: object) {
 			key in schemas && schemas[key]
 				? parseValue(key, schemas[key], value)
 				: /** Value wasn't defined in the schema, pass through as-is */
-				  value;
+					value;
 	}
 
 	return clone;

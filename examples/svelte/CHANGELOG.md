@@ -1,5 +1,12 @@
 # @examples/svelte
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [142bd13]
+  - svelte-query-params@0.2.0
+
 ## 0.0.2
 
 ### Patch Changes

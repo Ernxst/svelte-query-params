@@ -1,5 +1,13 @@
 # svelte-query-params
 
+## 0.2.0
+
+### Minor Changes
+
+- 142bd13: (breaking): Upgrade minimum supported node, SvelteKit and Valibot versions
+
+  - Most of this release is updating its internals with no updates to existing behaviour, excluding the version requirements above
+
 ## 0.1.0
 
 ### Minor Changes

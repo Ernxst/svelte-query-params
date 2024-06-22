@@ -11,13 +11,13 @@
 	},
 	"dependencies": {
 		"svelte-query-params": "workspace:*",
-		"zod": "^3.22.2"
+		"zod": "3.23.8"
 	},
 	"devDependencies": {
-		"@sveltejs/kit": "^1.27.6",
-		"@sveltejs/adapter-static": "2.0.3",
-		"svelte": "^5.0.0-next.4",
-		"tslib": "2.6.2",
-		"vite": "5.0.0"
+		"@sveltejs/kit": "2.5.17",
+		"@sveltejs/adapter-static": "3.0.2",
+		"svelte": "^5.0.0-next.1",
+		"tslib": "2.6.3",
+		"vite": "5.3.1"
 	}
 }

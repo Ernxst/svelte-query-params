@@ -85,7 +85,7 @@
 	"types": "dist/index.svelte.d.ts",
 	"files": ["dist", "README.md"],
 	"engines": {
-		"node": ">=v18.14.1"
+		"node": ">=v20.0.0"
 	},
 	"scripts": {
 		"build": "tsup",
@@ -100,9 +100,9 @@
 		"postinstall": "svelte-kit sync"
 	},
 	"peerDependencies": {
-		"@sveltejs/kit": "^1.27.6",
+		"@sveltejs/kit": "^2.0.0",
 		"svelte": "^5.0.0-next.1",
-		"valibot": "^0.17.0",
+		"valibot": "^0.31.0",
 		"zod": "^3.22.2"
 	},
 	"peerDependenciesMeta": {
@@ -120,20 +120,20 @@
 		}
 	},
 	"dependencies": {
-		"@sveltejs/kit": "^1.27.6",
-		"svelte": "^5.0.0-next.26",
-		"valibot": "^0.17.0",
+		"@sveltejs/kit": "^2.0.0",
+		"svelte": "^5.0.0-next.1",
+		"valibot": "^0.31.0",
 		"zod": "^3.22.2"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-static": "2.0.3",
-		"@sveltejs/vite-plugin-svelte": "3.0.0",
-		"@testing-library/svelte": "4.0.5",
-		"@testing-library/user-event": "14.5.1",
-		"jsdom": "22.1.0",
-		"tslib": "2.6.2",
-		"vite": "5.0.0",
-		"vitest": "0.34.6",
-		"vitest-dom": "0.1.1"
+		"@sveltejs/adapter-static": "3.0.2",
+		"@sveltejs/vite-plugin-svelte": "3.1.1",
+		"@testing-library/jest-dom": "6.4.6",
+		"@testing-library/svelte": "5.1.0",
+		"@testing-library/user-event": "14.5.2",
+		"jsdom": "24.1.0",
+		"tslib": "2.6.3",
+		"vite": "5.3.1",
+		"vitest": "1.6.0"
 	}
 }

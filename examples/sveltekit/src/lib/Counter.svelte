@@ -1,26 +1,26 @@
 <script lang="ts">
-  import type { EventHandler } from "svelte/elements";
-  import { useQueryParams } from "./params";
+import type { EventHandler } from "svelte/elements";
+import { useQueryParams } from "./params";
 
-  const [params, helpers] = useQueryParams();
+const [params, helpers] = useQueryParams();
 
-  function increment() {
-    params.count += 1;
-  }
+function increment() {
+	params.count += 1;
+}
 
-  const submit: EventHandler<SubmitEvent, HTMLFormElement> =
-    async function submit(event) {
-      event.preventDefault();
+const submit: EventHandler<SubmitEvent, HTMLFormElement> =
+	async function submit(event) {
+		event.preventDefault();
 
-      const params = new URLSearchParams(window.location.search);
-      const form = event.target as HTMLFormElement;
-      const data = new FormData(form);
-      [...data.entries()].forEach(([key, value]) =>
-        params.set(key, String(value)),
-      );
+		const params = new URLSearchParams(window.location.search);
+		const form = event.target as HTMLFormElement;
+		const data = new FormData(form);
+		for (const [key, value] of data.entries()) {
+			params.set(key, String(value));
+		}
 
-      window.history.pushState(null, "", `?${params}`);
-    };
+		window.history.pushState(null, "", `?${params}`);
+	};
 </script>
 
 <pre>

@@ -1,15 +1,17 @@
 <script lang="ts">
-  import type { UseQueryHook } from "$lib";
+import type { UseQueryHook } from "$lib";
 
-  const { useQueryParams } = $props<{
-    useQueryParams: UseQueryHook<{ count: number }>;
-  }>();
+const {
+	useQueryParams,
+}: {
+	useQueryParams: UseQueryHook<{ count: number }>;
+} = $props();
 
-  const [params] = useQueryParams();
+const [params] = useQueryParams();
 
-  function increment() {
-    params.count += 1;
-  }
+function increment() {
+	params.count += 1;
+}
 </script>
 
 <button onclick={increment}>

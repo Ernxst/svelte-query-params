@@ -1,11 +1,13 @@
 <script lang="ts">
-  import type { UseQueryHook } from "../../types";
+import type { UseQueryHook } from "../../types";
 
-  const { useQueryParams } = $props<{
-    useQueryParams: UseQueryHook<{ count: number }>;
-  }>();
+const {
+	useQueryParams,
+}: {
+	useQueryParams: UseQueryHook<{ count: number }>;
+} = $props();
 
-  const [params] = useQueryParams();
+const [params] = useQueryParams();
 </script>
 
 <input name="number" bind:value={params.count} type="number" />

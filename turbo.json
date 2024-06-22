@@ -1,23 +1,18 @@
 {
 	"$schema": "https://turborepo.org/schema.json",
 	"globalDependencies": ["tsconfig.json", "tsconfig.base.json"],
-	"pipeline": {
+	"globalPassThroughEnv": ["CI", "NODE_ENV", "REMOTE_CONTAINERS", "RUNNER_OS"],
+	"ui": "stream",
+	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
-			"outputs": ["dist/**/*", "build/**/*"],
-			"outputMode": "new-only"
+			"outputs": ["dist/**", ".sveltekit/**"]
 		},
 		"dev": {
 			"cache": false,
 			"persistent": true
 		},
-		"test": {
-			"env": ["RUNNER_OS", "NODE_VERSION"],
-			"outputMode": "new-only"
-		},
-		"test:types": {
-			"env": ["RUNNER_OS", "NODE_VERSION"],
-			"outputMode": "new-only"
-		}
+		"test": {},
+		"test:types": {}
 	}
 }

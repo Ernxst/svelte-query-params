@@ -12,6 +12,9 @@
 			"cache": false,
 			"persistent": true
 		},
+		"typecheck": {
+			"dependsOn": ["^typecheck"]
+		},
 		"test": {},
 		"test:types": {}
 	}

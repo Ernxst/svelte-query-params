@@ -19,6 +19,7 @@
 		"-------------------------------------------------------------------------------": "",
 		"dev": "turbo run dev --filter='./packages/*'",
 		"build": "turbo run build --filter='./packages/*'",
+		"typecheck": "turbo run typecheck --filter='./packages/*'",
 		"--------------------------------------------------------------------------------": "",
 		"lint": "biome lint .",
 		"lint:fix": "biome check . --write",

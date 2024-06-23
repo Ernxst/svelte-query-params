@@ -1,19 +1,13 @@
 /// <reference lib="dom" />
-import type { BaseIssue, BaseSchema, InferOutput } from "valibot";
+import type { BaseSchema, InferOutput } from "valibot";
 import type { z } from "zod";
 import type { Adapter } from "./adapters/types.ts";
-
-// Valibot types are rubbish, do it ourselves
-export type ValibotValidator<
-	TInput = any,
-	TOutput = TInput,
-	TIssue extends BaseIssue<any> = any,
-> = BaseSchema<TInput, TOutput, TIssue>;
 
 export type FunctionValidator<TOut extends object = any> = (
 	value?: unknown
 ) => TOut;
 export type FunctionValueValidator<TOut = any> = (value?: string) => TOut;
+export type ValibotValidator = BaseSchema<any, any, any>;
 export type ZodValidator = z.ZodType;
 export type ValueValidator =
 	| FunctionValueValidator

@@ -1,5 +1,6 @@
 import { browser, building } from "$app/environment";
 import { goto } from "$app/navigation";
+import { redirect } from "@sveltejs/kit";
 import type { Adapter } from "./types.ts";
 
 export interface SvelteKitAdapterOptions {
@@ -30,10 +31,9 @@ export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 			},
 		},
 		server: {
-			save(_search, _hash) {
-				// TODO: Currently causes infinite redirects
-				// if (building) return;
-				// redirect(307, `${search}${hash}`);
+			save(search, hash) {
+				if (building) return;
+				redirect(307, `${search}${hash}`);
 			},
 		},
 	};

@@ -7,7 +7,13 @@ import type {
 	UseQueryHook,
 	inferShape,
 } from "./types";
-import { debounce, fromURL, mapValues, parseQueryParams } from "./utils";
+import {
+	debounce,
+	mapValues,
+	objectToQueryString,
+	parseQueryParams,
+	parseSearchString,
+} from "./utils";
 
 /**
  * This returns a function (a hook) rather than a reactive object as the
@@ -26,24 +32,33 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			typeof value === "string" ? value : JSON.stringify(value),
 	} = options;
 
-	let raw = $state({});
+	let raw = $state<Record<string, string>>({});
 	const query = $derived(parseQueryParams(raw, validators));
-	const search = $derived(`?${new URLSearchParams(query)}`);
 
 	function readFromBrowser() {
-		raw = fromURL(adapter.browser.read());
+		raw = parseSearchString(adapter.browser.read().search);
 	}
 
 	const persistToBrowser = debounce((search: string, hash: string) => {
 		return tick().then(() => adapter.browser.save(search, hash));
 	}, delay);
 
-	function persistParams(hash: string) {
+	function persistParams() {
+		/**
+		 * The derived values above aren't updated by the time this method is called,
+		 * so we must recompute it.
+		 *
+		 * We could do things in an effect, but you can't run effects on the server.
+		 * Can't do a `tick` because we throw a redirect when updating server url
+		 * which makes SvelteKit throw an async error instead of redirecting
+		 */
+		const query = parseQueryParams(raw, validators);
+		const search = objectToQueryString(query);
 		adapter.isBrowser()
 			? // By the time peristParams is called in the browser, a hash may have changed due to reactivity
 				persistToBrowser(search, adapter.browser.read().hash)
 			: // We don't have this problem on the server
-				adapter.server.save(search, hash);
+				adapter.server.save(search, "");
 	}
 
 	let unsubscribe = () => {};
@@ -78,7 +93,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	}
 
 	return function useQueryParams(url) {
-		raw = fromURL({ search: url.search });
+		raw = parseSearchString(url.search);
 		const params = {} as inferShape<TShape>;
 
 		for (const key of Object.keys(validators)) {
@@ -89,8 +104,11 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 					return query[key];
 				},
 				set(newValue) {
-					raw = { ...raw, [key]: serialise(newValue) };
-					persistParams(url.hash);
+					const value = serialise(newValue);
+					if (value !== raw[key]) {
+						raw = { ...raw, [key]: value };
+						persistParams();
+					}
 				},
 			});
 		}
@@ -107,7 +125,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 				},
 
 				get search() {
-					return search;
+					return objectToQueryString(query);
 				},
 
 				get all() {
@@ -124,12 +142,18 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 
 				set(params) {
 					raw = mapValues(params, serialise);
-					persistParams(url.hash);
+					persistParams();
 				},
 
 				update(params) {
-					raw = { ...raw, ...mapValues(params, serialise) };
-					persistParams(url.hash);
+					for (const [key, newValue] of Object.entries(params)) {
+						const value = serialise(newValue);
+						if (value !== raw[key]) {
+							raw = { ...raw, ...mapValues(params, serialise) };
+							persistParams();
+							break;
+						}
+					}
 				},
 
 				remove(...params) {

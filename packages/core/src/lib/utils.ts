@@ -8,9 +8,13 @@ import type {
 	inferShape,
 } from "./types.ts";
 
-export function fromURL({ search }: { search: string }) {
+export function parseSearchString(search: string) {
 	const params = new URLSearchParams(search);
 	return Object.fromEntries(params.entries());
+}
+
+export function objectToQueryString(init: Record<string, string>) {
+	return `?${new URLSearchParams(init)}`;
 }
 
 function parseObject(schemas: Record<string, ValueValidator>, input: object) {

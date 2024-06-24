@@ -19,7 +19,7 @@ export default defineConfig({
 	entryPoints: {
 		"index.svelte": "src/lib/index.ts",
 		"adapters/index": "src/lib/adapters/index.ts",
-		"adapters/dom/index": "src/lib/adapters/dom.ts",
+		"adapters/browser/index": "src/lib/adapters/browser.ts",
 		"adapters/sveltekit/index": "src/lib/adapters/sveltekit.ts",
 	},
 });

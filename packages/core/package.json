@@ -56,15 +56,15 @@
 				"import": "./dist/adapters/index.cjs"
 			}
 		},
-		"./adapters/dom": {
-			"svelte": "./dist/adapters/dom/index.js",
+		"./adapters/browser": {
+			"svelte": "./dist/adapters/browser/index.js",
 			"import": {
-				"types": "./dist/adapters/dom/index.d.ts",
-				"default": "./dist/adapters/dom/index.js"
+				"types": "./dist/adapters/browser/index.d.ts",
+				"default": "./dist/adapters/browser/index.js"
 			},
 			"require": {
-				"types": "./dist/adapters/dom/index.d.cts",
-				"import": "./dist/adapters/dom/index.cjs"
+				"types": "./dist/adapters/browser/index.d.cts",
+				"import": "./dist/adapters/browser/index.cjs"
 			}
 		},
 		"./adapters/sveltekit": {

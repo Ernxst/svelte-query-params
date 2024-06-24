@@ -1,5 +1,5 @@
 import { tick } from "svelte";
-import { dom } from "./adapters/dom";
+import { browser } from "./adapters/browser";
 import type {
 	QueryHelpers,
 	QueryParamsOptions,
@@ -27,7 +27,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	const {
 		debounce: delay = 0,
 		windowObj = typeof window === "undefined" ? undefined : window,
-		adapter = dom({ windowObj }),
+		adapter = browser({ windowObj }),
 		serialise = (value) =>
 			typeof value === "string" ? value : JSON.stringify(value),
 	} = options;

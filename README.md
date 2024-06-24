@@ -164,7 +164,7 @@ objects into strings, which will then be encoded internally.
 
 | `debounce`   |     `0`    | (Optional) The delay in milliseconds before updating the browser URL when the reactive object is updated. This is useful in situations where URL updates happen frequently, e.g., on every keystroke. Note that this only affects the browser URL - the reactive object will always update immediately.                                                          |
 | `serialise`  | `JSON.stringify` | (Optional) Control how query params are serialized to the browser. Note that this is **NOT** for encoding values into URI components - it serializes objects into strings, which will then be encoded internally. |
-| `adapter`    | `dom`   | (Optional) Provide a custom adapter that controls fetching/updating the browser query params on both the server and in the browser.                                                                |
+| `adapter`    | `browser`   | (Optional) Provide a custom adapter that controls fetching/updating the browser query params on both the server and in the browser.                                                                |
 
 ```javascript
 import { createUseQueryParams } from "svelte-query-params";
@@ -204,10 +204,10 @@ in the browser i.e., fetching the URL on the browser returns an empty search str
 
 ```javascript
 import { createUseQueryParams } from "svelte-query-params";
-import { dom } from "svelte-query-params/adapters/dom";
+import { browser } from "svelte-query-params/adapters/browser";
 
 const useQueryParams = createUseQueryParams({ ... }, { 
-  adapter: dom({ ... })  
+  adapter: browser({ ... })  
 })
 ```
 
@@ -223,7 +223,7 @@ const useQueryParams = createUseQueryParams({ ... }, {
 
 ### SvelteKit
 
-For use with SvelteKit, use this adapter, instead of the [`dom`](#dom) adapter for support for interacting with query params on the server.
+For use with SvelteKit, use this adapter, instead of the [`browser`](#browser) adapter for support for interacting with query params on the server.
 
 ```javascript
 import { createUseQueryParams } from "svelte-query-params";

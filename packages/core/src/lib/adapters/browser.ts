@@ -2,7 +2,7 @@
 import type { QueryParamsOptions } from "../types.ts";
 import type { Adapter } from "./types.ts";
 
-export interface DomAdapterOptions
+export interface BrowserAdapterOptions
 	extends Pick<QueryParamsOptions, "windowObj"> {
 	/**
 	 * If `true`, the browser URL will be updated using
@@ -14,9 +14,10 @@ export interface DomAdapterOptions
 	replace?: boolean;
 }
 
-// Called it the dom adapter as there's noting svelte about it
-
-export function dom(options: DomAdapterOptions = {}): Adapter {
+/**
+ * Browser only adapter, does nothing when on the server
+ */
+export function browser(options: BrowserAdapterOptions = {}): Adapter {
 	const { windowObj = window, replace = false } = options;
 
 	/** Get the function ahead of time so we don't need an if statement every call */

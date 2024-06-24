@@ -55,10 +55,8 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		const query = parseQueryParams(raw, validators);
 		const search = objectToQueryString(query);
 		adapter.isBrowser()
-			? // By the time peristParams is called in the browser, a hash may have changed due to reactivity
-				persistToBrowser(search, adapter.browser.read().hash)
-			: // We don't have this problem on the server
-				adapter.server.save(search, "");
+			? persistToBrowser(search, adapter.browser.read().hash)
+			: adapter.server.save(search);
 	}
 
 	let unsubscribe = () => {};

@@ -9,9 +9,13 @@ export interface Adapter {
 	server: ServerAdapter;
 }
 
-export interface BaseAdapter {
+export interface BrowserAdapter {
 	/**
-	 * A function to update the URL.
+	 * A function to retrieve the URL when in the browser
+	 */
+	read: () => URLLike;
+	/**
+	 * A function to update the browser URL.
 	 *
 	 * Note: The first param includes the `?` prefix and the second param
 	 * includes the `#` if there is a hash
@@ -19,11 +23,11 @@ export interface BaseAdapter {
 	save: (search: string, hash: string) => void;
 }
 
-export interface BrowserAdapter extends BaseAdapter {
+export interface ServerAdapter {
 	/**
-	 * A function to retrieve the URL when in the browser
+	 * A function to update the server URL.
+	 *
+	 * Note: The first param includes the `?
 	 */
-	read: () => URLLike;
+	save: (search: string) => void;
 }
-
-export interface ServerAdapter extends BaseAdapter {}

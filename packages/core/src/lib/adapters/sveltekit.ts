@@ -31,9 +31,9 @@ export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 			},
 		},
 		server: {
-			save(search, hash) {
+			save(search) {
 				if (building) return;
-				redirect(307, `${search}${hash}`);
+				redirect(307, search);
 			},
 		},
 	};

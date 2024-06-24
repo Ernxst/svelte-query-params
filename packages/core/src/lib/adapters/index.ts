@@ -4,7 +4,6 @@ export type {
 	Adapter,
 	BrowserAdapter,
 	ServerAdapter,
-	BaseAdapter,
 } from "./types.ts";
 
 export function defineAdapter(adapter: Adapter): Adapter {

@@ -181,7 +181,7 @@ As mentioned previously, adapters control how the URL is fetched and updated, bo
 - `isBrowser: () => boolean` - Returns `true` when are in the browser, and `false` otherwise.
 
 - `server` - A property with the following methods:
-  - `save(search: string, hash: string) => void` - Update the server URL. Note that the `search` string has the `?` prefixed and the `hash` string has the `#` prefixed.
+  - `save(search: string) => void` - Update the server URL. Note that the `search` string has the `?` prefixed.
 
 - `browser` - A property with the following methods:
   - `read() => URL | Location` - Retrieve the browser URL.

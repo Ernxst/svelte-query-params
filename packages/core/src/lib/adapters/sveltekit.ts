@@ -2,7 +2,7 @@ import { browser, building } from "$app/environment";
 import { goto } from "$app/navigation";
 import type { Adapter } from "./types.ts";
 
-interface SvelteKitAdapterOptions {
+export interface SvelteKitAdapterOptions {
 	/**
 	 * @default false
 	 */

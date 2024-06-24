@@ -1,4 +1,3 @@
-/// <reference lib="dom" />
 import type { QueryParamsOptions } from "../types.ts";
 import type { Adapter } from "./types.ts";
 

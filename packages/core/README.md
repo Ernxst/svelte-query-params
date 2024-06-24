@@ -145,26 +145,14 @@ const useQueryParams = createUseQueryParams({
 
 `createUseQueryParams` takes an options object as the second argument, with the following properties:
 
-- `windowObj`: (Optional) Provide a custom implementation of [`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window). It must implement:
-  - [`Window.prototype.location`](https://developer.mozilla.org/en-US/docs/Web/API/Window/location)
-  - [`Window.prototype.history`](https://developer.mozilla.org/en-US/docs/Web/API/Window/history)
-  - [`EventTarget.prototype.addEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)
-  - [`EventTarget.prototype.removeEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)
+| Option      | Default           | Description                                                                                                                                                                                                                           |
+|-------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `windowObj` | `window`          | (Optional) Provide a custom implementation of [`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window). It must implement: [`Window.prototype.location`](https://developer.mozilla.org/en-US/docs/Web/API/Window/location), [`Window.prototype.history`](https://developer.mozilla.org/en-US/docs/Web/API/Window/history), [`EventTarget.prototype.addEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) and [`EventTarget.prototype.removeEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener). |
+| `debounce`  | `0`               | (Optional) The delay in milliseconds before updating the browser URL when the reactive object is updated. This is useful in situations where URL updates happen frequently, e.g., on every keystroke. Note that this only affects the browser URL - the reactive object will always update immediately.                                                          |
+| `serialise` | `JSON.stringify`  | (Optional) Control how query params are serialized to the URL. Note that this is **NOT** for encoding values into URI components - it serializes objects into strings, which will then be encoded internally. This is used for serialising complex objects like dates.                                                                                                                              |
+| `adapter`   | [`browser`](#browser)        | (Optional) Provide a custom adapter that controls fetching/updating query params on both the server and in the browser.                                                                                                    |
 
-- `debounce`: (Optional) The delay in milliseconds before updating the browser URL when the reactive object is updated. This is useful in situations where URL updates happen frequently, e.g., on every keystroke. Note that this only affects the browser URL - the reactive object will always update immediately.
-
-- `serialise`: (Optional) Control how query params are serialised to the browser. Note that this is **NOT** for encoding values into URI components - it serialises
-objects into strings, which will then be encoded internally.
-
-- `adapter`: (Optional) Provide a custom adapter which controls fetching/updating the browser query params on both the server and in the browser.
-
-| Option       | Default |Description                                                                                                                                                                          |
-|--------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `windowObj`  | `window` | (Optional) Provide a custom implementation of [`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window). It must implement: [`Window.prototype.location`](https://developer.mozilla.org/en-US/docs/Web/API/Window/location), [`Window.prototype.history`](https://developer.mozilla.org/en-US/docs/Web/API/Window/history),  [`EventTarget.prototype.addEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) and [`EventTarget.prototype.removeEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)  |
-
-| `debounce`   |     `0`    | (Optional) The delay in milliseconds before updating the browser URL when the reactive object is updated. This is useful in situations where URL updates happen frequently, e.g., on every keystroke. Note that this only affects the browser URL - the reactive object will always update immediately.                                                          |
-| `serialise`  | `JSON.stringify` | (Optional) Control how query params are serialized to the browser. Note that this is **NOT** for encoding values into URI components - it serializes objects into strings, which will then be encoded internally. |
-| `adapter`    | `browser`   | (Optional) Provide a custom adapter that controls fetching/updating the browser query params on both the server and in the browser.                                                                |
+### Example
 
 ```javascript
 import { createUseQueryParams } from "svelte-query-params";

@@ -197,7 +197,7 @@ export const myAdapter: Adapter = { ... }
 export const myAdapter = defineAdapter({ ... });
 ```
 
-### DOM
+### Browser
 
 This is the default adapter when no adapter is specified and can only be used
 in the browser i.e., fetching the URL on the browser returns an empty search string and hash and updating the query params on the server is a no-op.
@@ -211,7 +211,7 @@ const useQueryParams = createUseQueryParams({ ... }, {
 })
 ```
 
-#### DOM Adapter Options
+#### Browser Adapter Options
 
 - `windowObj`: (Optional) Provide a custom implementation of [`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window). It must implement:
   - [`Window.prototype.location`](https://developer.mozilla.org/en-US/docs/Web/API/Window/location)

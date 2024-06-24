@@ -1,4 +1,3 @@
-/// <reference lib="dom" />
 import type { BaseSchema, InferOutput } from "valibot";
 import type { z } from "zod";
 import type { Adapter } from "./adapters/types.ts";

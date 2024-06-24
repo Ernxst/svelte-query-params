@@ -2,7 +2,7 @@
 import type { EventHandler } from "svelte/elements";
 import { useQueryParams } from "./params";
 
-const [params, helpers] = useQueryParams();
+const [params, helpers] = useQueryParams(window.location);
 
 function increment() {
 	params.count += 1;

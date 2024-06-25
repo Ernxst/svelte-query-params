@@ -98,10 +98,6 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 					return raw;
 				},
 
-				get query() {
-					return query;
-				},
-
 				get search() {
 					return objectToQueryString(query);
 				},

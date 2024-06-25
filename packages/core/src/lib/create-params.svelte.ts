@@ -5,6 +5,7 @@ import type {
 	QueryParamsOptions,
 	QuerySchema,
 	UseQueryHook,
+	WindowLike,
 	inferShape,
 } from "./types";
 import {
@@ -59,35 +60,10 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			: adapter.server.save(search);
 	}
 
-	let unsubscribe = () => {};
+	let unsubscribe: () => void;
 
 	if (windowObj) {
-		const replaceState = windowObj.history.replaceState.bind(windowObj.history);
-		const pushState = windowObj.history.pushState.bind(windowObj.history);
-
-		/**
-		 * Listening for popstate only works when back/forward button pressed,
-		 * so we track things ourselves
-		 */
-		windowObj.history.replaceState = (...args) => {
-			replaceState(...args);
-			readFromBrowser();
-		};
-
-		windowObj.history.pushState = (...args) => {
-			pushState(...args);
-			readFromBrowser();
-		};
-
-		windowObj.addEventListener("popstate", readFromBrowser);
-
-		unsubscribe = () => {
-			if (windowObj) {
-				windowObj.removeEventListener("popstate", readFromBrowser);
-				windowObj.history.pushState = pushState;
-				windowObj.history.replaceState = replaceState;
-			}
-		};
+		unsubscribe = addWindowListener(windowObj, readFromBrowser);
 	}
 
 	return function useQueryParams(url) {
@@ -109,6 +85,10 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 					}
 				},
 			});
+		}
+
+		if (typeof window !== "undefined" && !unsubscribe) {
+			unsubscribe = addWindowListener(window, readFromBrowser);
 		}
 
 		return [
@@ -161,9 +141,37 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 				},
 
 				unsubscribe() {
-					return unsubscribe();
+					return unsubscribe?.();
 				},
 			},
 		];
+	};
+}
+
+function addWindowListener(windowObj: WindowLike, update: () => void) {
+	// TODO: Need to handle when window.location.search is re-assigned
+	const replaceState = windowObj.history.replaceState.bind(windowObj.history);
+	const pushState = windowObj.history.pushState.bind(windowObj.history);
+
+	/**
+	 * Listening for popstate only works when back/forward button pressed,
+	 * so we track things ourselves
+	 */
+	windowObj.history.replaceState = (...args) => {
+		replaceState(...args);
+		update();
+	};
+
+	windowObj.history.pushState = (...args) => {
+		pushState(...args);
+		update();
+	};
+
+	windowObj.addEventListener("popstate", update);
+
+	return () => {
+		windowObj.removeEventListener("popstate", update);
+		windowObj.history.pushState = pushState;
+		windowObj.history.replaceState = replaceState;
 	};
 }

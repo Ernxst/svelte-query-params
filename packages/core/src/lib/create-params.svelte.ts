@@ -100,7 +100,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 				},
 
 				get search() {
-					return objectToQueryString(query);
+					return objectToQueryString(raw);
 				},
 
 				get all() {

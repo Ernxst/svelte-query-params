@@ -15,7 +15,7 @@ export interface BrowserAdapter {
 	 */
 	read: () => URLLike;
 	/**
-	 * A function to update the browser URL.
+	 * A function to update the browser query params and hash.
 	 *
 	 * Note: The first param includes the `?` prefix and the second param
 	 * includes the `#` if there is a hash
@@ -25,7 +25,7 @@ export interface BrowserAdapter {
 
 export interface ServerAdapter {
 	/**
-	 * A function to update the server URL.
+	 * A function to update the server query params.
 	 *
 	 * Note: The first param includes the `?
 	 */

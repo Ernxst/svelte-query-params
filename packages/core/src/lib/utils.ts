@@ -17,21 +17,16 @@ export function objectToQueryString(init: Record<string, string>) {
 	return `?${new URLSearchParams(init)}`;
 }
 
-function parseObject(schemas: Record<string, ValueValidator>, input: object) {
-	const clone: any = {};
-	const keys = new Set([...Object.keys(input), ...Object.keys(schemas)]);
-
-	for (const key of keys) {
-		const value = (input as any)[key];
-
-		clone[key] =
-			key in schemas && schemas[key]
-				? parseValue(key, schemas[key], value)
-				: /** Value wasn't defined in the schema, pass through as-is */
-					value;
-	}
-
-	return clone;
+function parseObject(
+	schemas: Record<string, ValueValidator>,
+	input: Record<string, string>
+): any {
+	return Object.fromEntries(
+		Object.entries(schemas).map(([key, schema]) => [
+			key,
+			parseValue(key, schema, input[key]),
+		])
+	);
 }
 
 function parseValue(
@@ -57,7 +52,7 @@ function isValibotSchema(obj: any): obj is ValibotValidator {
 }
 
 export function parseQueryParams<TSchema extends QuerySchema>(
-	params: Record<string, string | undefined>,
+	params: Record<string, string>,
 	schemas: TSchema
 ): inferShape<TSchema> {
 	if (typeof schemas === "function") return schemas(params);

@@ -5,7 +5,7 @@ import { usePagination } from "$lib/hooks/pagination";
 const [params] = usePagination($page.url);
 
 const nextPage = () => {
-	params.page = Math.max(params.page + 1, 10);
+	params.page = Math.min(params.page + 1, 10);
 };
 
 const prevPage = () => {
@@ -13,6 +13,6 @@ const prevPage = () => {
 };
 </script>
 
-<button onclick={prevPage}>Previous</button>
-<button onclick={nextPage}>Next</button>
+<button onclick={prevPage} disabled={params.page === 1}>Previous</button>
+<button onclick={nextPage} disabled={params.page === 10}>Next</button>
 <p>Current Page: {params.page}</p>

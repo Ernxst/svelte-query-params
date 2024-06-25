@@ -39,13 +39,8 @@ export type inferShape<TShape extends QuerySchema> = TShape extends Validator
 				} & {}
 			: never;
 
-/**
- * @param search Includes the `?` prefix
- */
-export type QueryUpdater = (search: string, hash: string) => void;
 export type Serializer = (value: unknown) => string;
 export type URLLike = URL | Location;
-
 export type WindowLike = Pick<
 	typeof window,
 	"location" | "history" | "addEventListener" | "removeEventListener"

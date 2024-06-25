@@ -92,3 +92,20 @@ export function debounce<TFn extends (...args: any[]) => any>(
 		}, delay);
 	};
 }
+
+export function diff(obj1: Record<string, any>, obj2: Record<string, any>) {
+	const keys1 = Object.keys(obj1);
+	const keys2 = Object.keys(obj2);
+
+	if (keys1.length !== keys2.length) {
+		return true;
+	}
+
+	for (const key of keys1) {
+		if (obj1[key] !== obj2[key]) {
+			return true;
+		}
+	}
+
+	return false;
+}

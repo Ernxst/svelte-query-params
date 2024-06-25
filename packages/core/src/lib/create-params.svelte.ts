@@ -10,6 +10,7 @@ import type {
 } from "./types";
 import {
 	debounce,
+	diff,
 	mapValues,
 	objectToQueryString,
 	parseQueryParams,
@@ -116,8 +117,11 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 				},
 
 				set(params) {
-					raw = mapValues(params, serialise);
-					persistParams();
+					const updated = mapValues(params, serialise);
+					if (diff(raw, updated)) {
+						raw = updated;
+						persistParams();
+					}
 				},
 
 				update(params) {

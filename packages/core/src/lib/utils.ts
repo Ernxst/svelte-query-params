@@ -43,12 +43,28 @@ function parseValue(
 	);
 }
 
-function isZodSchema(obj: any): obj is ZodValidator {
-	return typeof obj === "object" && obj && "parse" in obj && "safeParse" in obj;
+function isZodSchema(obj: QuerySchema): obj is ZodValidator {
+	return (
+		typeof obj === "object" &&
+		obj &&
+		"parse" in obj &&
+		"safeParse" in obj &&
+		typeof obj.parse === "function" &&
+		typeof obj.safeParse === "function"
+	);
 }
 
-function isValibotSchema(obj: any): obj is ValibotValidator {
-	return typeof obj === "object" && obj && "async" in obj && "_parse" in obj;
+function isValibotSchema(obj: QuerySchema): obj is ValibotValidator {
+	return (
+		typeof obj === "object" &&
+		obj &&
+		"async" in obj &&
+		"kind" in obj &&
+		"_run" in obj &&
+		obj.kind === "schema" &&
+		typeof obj.async === "boolean" &&
+		typeof obj._run === "function"
+	);
 }
 
 export function parseQueryParams<TSchema extends QuerySchema>(

@@ -22,3 +22,4 @@
 - The search string from the helpers now includes all query params, not just params defined in validators
 - Ensure all search params are persisted to browser/server, not just params defined in validators
 - The parsed query was allowing values not defined in validators to passthrough, now fixed
+- Fix valibot schema check now that minimum valibot version has been upgraded

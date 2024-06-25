@@ -40,7 +40,7 @@ export type inferShape<TShape extends QuerySchema> = TShape extends Validator
 			: never;
 
 export type Serializer = (value: unknown) => string;
-export type URLLike = URL | Location;
+export type URLLike = Pick<URL, "search" | "hash">;
 export type WindowLike = Pick<
 	typeof window,
 	"location" | "history" | "addEventListener" | "removeEventListener"

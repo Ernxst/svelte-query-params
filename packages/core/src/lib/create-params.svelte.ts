@@ -35,6 +35,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 
 	let raw = $state<Record<string, string>>({});
 	const query = $derived(parseQueryParams(raw, validators));
+	const merged = $derived({ ...raw, ...query });
 
 	function readFromBrowser() {
 		raw = parseSearchString(adapter.browser.read().search);
@@ -70,7 +71,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		raw = parseSearchString(url.search);
 		const params = {} as inferShape<TShape>;
 
-		for (const key of Object.keys(validators)) {
+		for (const key of Object.keys(query)) {
 			Object.defineProperty(params, key, {
 				enumerable: true,
 				configurable: true,
@@ -103,15 +104,15 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 				},
 
 				get all() {
-					return { ...raw, ...query };
+					return merged;
 				},
 
 				keys() {
-					return Object.keys(validators);
+					return Object.keys(query);
 				},
 
 				entries() {
-					return Object.entries(validators).map(([key]) => [key, query[key]]);
+					return Object.entries(query).map(([key]) => [key, query[key]]);
 				},
 
 				set(params) {

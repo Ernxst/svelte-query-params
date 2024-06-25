@@ -47,16 +47,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	}, delay);
 
 	function persistParams() {
-		/**
-		 * The derived values above aren't updated by the time this method is called,
-		 * so we must recompute it.
-		 *
-		 * We could do things in an effect, but you can't run effects on the server.
-		 * Can't do a `tick` because we throw a redirect when updating server url
-		 * which makes SvelteKit throw an async error instead of redirecting
-		 */
-		const query = parseQueryParams(raw, validators);
-		const search = objectToQueryString(query);
+		const search = objectToQueryString(raw);
 		adapter.isBrowser()
 			? persistToBrowser(search, adapter.browser.read().hash)
 			: adapter.server.save(search);

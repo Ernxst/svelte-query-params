@@ -141,7 +141,6 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 }
 
 function addWindowListener(windowObj: WindowLike, update: () => void) {
-	// TODO: Need to handle when window.location.search is re-assigned
 	const replaceState = windowObj.history.replaceState.bind(windowObj.history);
 	const pushState = windowObj.history.pushState.bind(windowObj.history);
 

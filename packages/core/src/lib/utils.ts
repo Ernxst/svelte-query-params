@@ -38,8 +38,9 @@ function parseValue(
 	if (isZodSchema(schema)) return schema.parse(value);
 	if (isValibotSchema(schema)) return parse(schema, value);
 
+	const name = (schema as any).constructor.name;
 	throw new Error(
-		`Unknown schema type (${typeof schema}) for field: "${key}" (value: ${value})`
+		`Unknown validator type (${name}) for param "${key}" (value: ${value})`
 	);
 }
 

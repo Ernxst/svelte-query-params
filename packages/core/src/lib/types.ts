@@ -62,8 +62,8 @@ export interface QueryParamsOptions {
 	 * Add a delay (in ms) before updating the browser URL. This is useful in
 	 * situations where URL updates happen frequently, e.g., on every keystroke.
 	 *
-	 * Note this does not affect the query params rune - this will always be
-	 * updated optimistically.
+	 * Note this does not affect the reactive query params object - this will
+	 * always be updated immediately.
 	 *
 	 * @default 0
 	 */

@@ -1,10 +1,10 @@
 # Svelte Query Params
 
-The easiest way to reactively manage query params in Svelte _and_ SvelteKit applications, both on the server and in the browser. Built on Svelte 5 [runes](https://svelte-5-preview.vercel.app/docs/runes) and integrates with existing validation libraries to parse, coerce and transform query params into the data your application needs.
+The easiest way to reactively manage query params in Svelte _and_ SvelteKit applications, both on the server and in the browser. Built for Svelte 5 and integrates with existing validation libraries to parse, coerce and transform query params into the data your application needs.
 
 ## Installation
 
-Since Svelte Query Params uses runes, [`svelte^5`](https://svelte-5-preview.vercel.app/docs/introduction) is required:
+[`svelte^5`](https://svelte-5-preview.vercel.app/docs/introduction) is required:
 
 ```bash
 npm install svelte-query-params svelte@next
@@ -26,7 +26,7 @@ By default, `svelte-query-params` uses [`URLSearchParams`](https://developer.moz
 
 ## Features
 
-- **Reactivity**: The library leverages Svelte's new runes reactivity system, providing a reactive object that reflects the current state of query parameters.
+- **Reactivity**: The library providies a reactive object that reflects the current state of query parameters.
 
 - **Browser and Server Support**: The utility is designed to work seamlessly in both browser and server environments.
 

@@ -16,6 +16,13 @@
 			"dependsOn": ["^typecheck"]
 		},
 		"test": {},
+		"test:e2e": {
+			"outputs": [
+				"tests/e2e/report/**",
+				"tests/e2e/blob-report/**",
+				"tests/e2e/results/**"
+			]
+		},
 		"test:types": {},
 		"test:watch": {
 			"cache": false,

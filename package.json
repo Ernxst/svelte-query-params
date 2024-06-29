@@ -27,6 +27,7 @@
 		"format": "biome format . --write",
 		"---------------------------------------------------------------------------------": "",
 		"test": "turbo run test",
+		"test:e2e": "turbo run test:e2e",
 		"test:types": "turbo run test:types",
 		"test:watch": "turbo run test:watch",
 		"----------------------------------------------------------------------------------": "",

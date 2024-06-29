@@ -85,3 +85,36 @@ jobs:
 
       - name: 🧪 Run Type Tests
         run: bun run test:types --continue --filter='!./examples/*'
+
+  playwright:
+    name: "🧪 Playwright"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: 📤 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.13.1
+
+      - name: 📤 Install Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: 📤 Install dependencies
+        run: bun install
+
+      - name: 📤 Install Playwright browsers
+        run: bunx playwright install --with-deps
+        working-directory: packages/core
+        
+      - name: 🧪 Run Playwright tests
+        run: bun test:e2e --continue -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}

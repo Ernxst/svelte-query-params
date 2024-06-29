@@ -3,9 +3,9 @@ import type { z } from "zod";
 import type { Adapter } from "./adapters/types.ts";
 
 export type FunctionValidator<TOut extends object = any> = (
-	value?: unknown
+	value: Query
 ) => TOut;
-export type FunctionValueValidator<TOut = any> = (value?: string) => TOut;
+export type FunctionValueValidator<TOut = any> = (value?: QueryValue) => TOut;
 export type ValibotValidator = BaseSchema<any, any, any>;
 export type ZodValidator = z.ZodType;
 export type ValueValidator =
@@ -28,6 +28,8 @@ export type inferFromValidator<TValidator extends Validator> =
 export type QuerySchema = Validator | Record<string, ValueValidator>;
 
 type Empty = Record<string, never>;
+export type QueryValue = string | string[];
+export type Query = Record<string, QueryValue>;
 
 export type inferShape<TShape extends QuerySchema> = TShape extends Validator
 	? inferFromValidator<TShape>
@@ -86,17 +88,20 @@ export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	 * Note: this may include query params not defined in your schema. Values will
 	 * not have been parsed even if you have specified so in your validators.
 	 */
-	readonly raw: Record<string, string>;
+	readonly raw: Query;
 	/**
 	 * Similar to {@linkcode raw}, but any params specified in your validators
 	 * will have been parsed - all other values are passed through as-is.
 	 *
 	 * Note: this may include query params not defined in your schema.
 	 */
-	readonly all: Record<string, string> & TShape;
+	readonly all: Query & TShape;
 	/**
 	 * The query string, generated from the {@linkcode query} which may contain
-	 * query params not defined in your schema. This always starts with a `?`.
+	 * query params not defined in your schema.
+	 *
+	 * If there are query parameters, this will always string with `?`; if there
+	 * are no query params, this will be the empty string.
 	 */
 	readonly search: string;
 	/** Replace _ALL_ query params, triggering a reactive and browser update */

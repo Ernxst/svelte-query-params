@@ -16,17 +16,23 @@
 	},
 	"keywords": [
 		"reactive",
+		"search",
 		"search-params",
 		"search params",
 		"search-parameters",
 		"search parameters",
 		"query",
+		"querystring",
 		"query parameters",
 		"query-parameters",
 		"query params",
 		"query-params",
 		"svelte",
-		"sveltekit"
+		"sveltejs",
+		"sveltekit",
+		"ssr",
+		"browser",
+		"url"
 	],
 	"sideEffects": false,
 	"publishConfig": {

@@ -78,6 +78,11 @@ export interface QueryParamsOptions {
 	 */
 	serialise?: Serializer;
 
+	/**
+	 * Adapter to control URL peristence. Defaults to the `browser` adapter. You
+	 * **must** pass the `sveltekit` adapter when using SvelteKit with SSR,
+	 * otherwise your app may break!
+	 */
 	adapter?: Adapter;
 }
 
@@ -87,6 +92,11 @@ export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	 *
 	 * Note: this may include query params not defined in your schema. Values will
 	 * not have been parsed even if you have specified so in your validators.
+	 *
+	 * Also note that if you've defined an optional property in your validators
+	 * with a default value, it will `undefined` here - without applying the
+	 * default - if the value isn't set in the URL. It will, however, be
+	 * available (with the default) in {@linkcode QueryHelpers.all}
 	 */
 	readonly raw: Query;
 	/**
@@ -97,10 +107,10 @@ export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	 */
 	readonly all: Query & TShape;
 	/**
-	 * The query string, generated from the {@linkcode query} which may contain
-	 * query params not defined in your schema.
+	 * The query string, generated from the {@linkcode QueryHelpers.raw} query
+	 * which may contain query params not defined in your schema.
 	 *
-	 * If there are query parameters, this will always string with `?`; if there
+	 * If there are query params, this will always start with `?`; if there
 	 * are no query params, this will be the empty string.
 	 */
 	readonly search: string;
@@ -112,8 +122,16 @@ export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	remove(...params: (keyof TShape)[]): void;
 	/** Manually unset unregister all event listeners */
 	unsubscribe(): void;
-	/** Return the query keys. Unlike {@linkcode Object.keys}, this is type-safe */
+	/**
+	 * Return the parsed query keys. This only includes the keys from your
+	 * validators. Unlike {@linkcode Object.keys}, this is type-safe.
+	 */
 	keys(): Array<keyof TShape>;
+	/**
+	 * Type-safe version of {@linkcode Object.entries}. Like
+	 * {@linkcode QueryHelpers.keys}, this only contains entries from from your
+	 * validators.
+	 */
 	entries(): Array<[keyof TShape, TShape[keyof TShape]]>;
 };
 

@@ -24,6 +24,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 		debounce: delay = 0,
 		windowObj = typeof window === "undefined" ? undefined : window,
 		adapter = browser({ windowObj }),
+		// TODO: Do we need a deserialiser ?
 		serialise = (value) =>
 			typeof value === "string" ? value : JSON.stringify(value),
 	} = options;

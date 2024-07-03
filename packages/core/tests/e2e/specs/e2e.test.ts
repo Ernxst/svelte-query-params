@@ -14,11 +14,11 @@ test.describe
 			const title = page.getByRole("heading", { level: 1 });
 			const [home, users] = await page.getByRole("tab").all();
 
-			expect(title).toHaveText("Users Page");
-			expect(home).not.toBeDisabled();
-			expect(home).toHaveAttribute("aria-selected", "false");
-			expect(users).toBeDisabled();
-			expect(users).toHaveAttribute("aria-selected", "true");
+			await expect(title).toHaveText("Users Page");
+			await expect(home).not.toBeDisabled();
+			await expect(home).toHaveAttribute("aria-selected", "false");
+			await expect(users).toBeDisabled();
+			await expect(users).toHaveAttribute("aria-selected", "true");
 		});
 
 		test("should prepopulate from url with a hash", async ({ page }) => {
@@ -26,13 +26,14 @@ test.describe
 
 			const title = page.getByRole("heading", { level: 1 });
 			const [home, users] = await page.getByRole("tab").all();
-			const url = location(page);
 
-			expect(title).toHaveText("Users Page");
-			expect(home).not.toBeDisabled();
-			expect(home).toHaveAttribute("aria-selected", "false");
-			expect(users).toBeDisabled();
-			expect(users).toHaveAttribute("aria-selected", "true");
+			await expect(title).toHaveText("Users Page");
+			await expect(home).not.toBeDisabled();
+			await expect(home).toHaveAttribute("aria-selected", "false");
+			await expect(users).toBeDisabled();
+			await expect(users).toHaveAttribute("aria-selected", "true");
+
+			const url = location(page);
 			expect(url.hash).toEqual("#hash");
 		});
 
@@ -41,33 +42,33 @@ test.describe
 			const title = page.getByRole("heading", { level: 1 });
 			const [home, users] = await page.getByRole("tab").all();
 
-			expect(title).toHaveText("Home Page");
-			expect(home).toBeDisabled();
-			expect(home).toHaveAttribute("aria-selected", "true");
-			expect(users).not.toBeDisabled();
-			expect(users).toHaveAttribute("aria-selected", "false");
+			await expect(title).toHaveText("Home Page");
+			await expect(home).toBeDisabled();
+			await expect(home).toHaveAttribute("aria-selected", "true");
+			await expect(users).not.toBeDisabled();
+			await expect(users).toHaveAttribute("aria-selected", "false");
 
 			await users.click();
-			const url = location(page);
 
+			await expect(title).toHaveText("Users Page");
+			await expect(home).not.toBeDisabled();
+			await expect(home).toHaveAttribute("aria-selected", "false");
+			await expect(users).toBeDisabled();
+			await expect(users).toHaveAttribute("aria-selected", "true");
+
+			const url = location(page);
 			expect(url.search).toEqual("?tab=users");
-			expect(title).toHaveText("Users Page");
-			expect(home).not.toBeDisabled();
-			expect(home).toHaveAttribute("aria-selected", "false");
-			expect(users).toBeDisabled();
-			expect(users).toHaveAttribute("aria-selected", "true");
 		});
 
 		test("should maintain hash", async ({ page }) => {
 			await page.goto("/tabs#some-hash");
-			const [home, users] = await page.getByRole("tab").all();
+			const [_home, users] = await page.getByRole("tab").all();
 			const url = location(page);
 
 			expect(url.hash).toEqual("#some-hash");
 
 			await users.click();
-
-			expect(page).toHaveURL("/tabs?tab=users#some-hash");
+			await expect(page).toHaveURL("/tabs?tab=users#some-hash");
 		});
 	});
 
@@ -80,10 +81,10 @@ test.describe
 			const subtitle = page.getByRole("heading", { level: 2 });
 			const [prev, next] = await page.getByRole("button").all();
 
-			expect(title).toHaveText("Current Page: 4");
-			expect(subtitle).toHaveText("Page Size: 10");
-			expect(prev).not.toBeDisabled();
-			expect(next).not.toBeDisabled();
+			await expect(title).toHaveText("Current Page: 4");
+			await expect(subtitle).toHaveText("Page Size: 10");
+			await expect(prev).not.toBeDisabled();
+			await expect(next).not.toBeDisabled();
 		});
 
 		test("should prepopulate from url with a hash", async ({ page }) => {
@@ -92,13 +93,14 @@ test.describe
 			const title = page.getByRole("heading", { level: 1 });
 			const subtitle = page.getByRole("heading", { level: 2 });
 			const [prev, next] = await page.getByRole("button").all();
-			const url = location(page);
 
+			await expect(title).toHaveText("Current Page: 4");
+			await expect(subtitle).toHaveText("Page Size: 10");
+			await expect(prev).not.toBeDisabled();
+			await expect(next).not.toBeDisabled();
+
+			const url = location(page);
 			expect(url.hash).toEqual("#hash");
-			expect(title).toHaveText("Current Page: 4");
-			expect(subtitle).toHaveText("Page Size: 10");
-			expect(prev).not.toBeDisabled();
-			expect(next).not.toBeDisabled();
 		});
 
 		test("should update query params", async ({ page }) => {
@@ -111,12 +113,13 @@ test.describe
 			expect(next).not.toBeDisabled();
 
 			await next.click();
-			const url = location(page);
 
+			await expect(title).toHaveText("Current Page: 2");
+			await expect(next).not.toBeDisabled();
+			await expect(prev).not.toBeDisabled();
+
+			const url = location(page);
 			expect(url.search).toEqual("?page=2");
-			expect(title).toHaveText("Current Page: 2");
-			expect(next).not.toBeDisabled();
-			expect(prev).not.toBeDisabled();
 		});
 
 		test("should maintain hash", async ({ page }) => {
@@ -128,7 +131,7 @@ test.describe
 
 			await next.click();
 
-			expect(page).toHaveURL("/pagination?page=2#some-hash");
+			await expect(page).toHaveURL("/pagination?page=2#some-hash");
 		});
 	});
 
@@ -163,8 +166,8 @@ test.describe
 			const url = location(page);
 
 			expect(url.search).toEqual("?count=10");
-			expect(title).toHaveText("Count: 10");
-			expect(subtitle).toHaveText("Count: 10");
+			await expect(title).toHaveText("Count: 10");
+			await expect(subtitle).toHaveText("Count: 10");
 		});
 
 		test("should maintain hash", async ({ page }) => {
@@ -175,7 +178,7 @@ test.describe
 
 			expect(url.hash).toEqual("#some-hash");
 			expect(url.search).toEqual("?count=10");
-			expect(title).toHaveText("Count: 10");
-			expect(subtitle).toHaveText("Count: 10");
+			await expect(title).toHaveText("Count: 10");
+			await expect(subtitle).toHaveText("Count: 10");
 		});
 	});

@@ -23,7 +23,8 @@ export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 				return window.location;
 			},
 			save(search, hash) {
-				goto(`${search}${hash}`, {
+				const searchString = search.length ? search : "?";
+				goto(`${searchString}${hash}`, {
 					keepFocus: true,
 					noScroll: true,
 					replaceState: replace,

@@ -28,7 +28,8 @@ export function browser(options: BrowserAdapterOptions = {}): Adapter {
 		isBrowser: () => typeof window !== "undefined",
 		browser: {
 			read: () => windowObj.location,
-			save: (search, hash) => update(null, "", `${search}${hash}`),
+			save: (search, hash) =>
+				update(null, "", `${search.length ? search : "?"}${hash}`),
 		},
 		server: {
 			save: () => {},

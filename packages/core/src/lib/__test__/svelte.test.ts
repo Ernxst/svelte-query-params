@@ -14,15 +14,17 @@ describe("createUseQueryParams", () => {
 	const user = userEvent.setup();
 	const replaceState = history.replaceState.bind(history);
 
+	beforeEach(() => {
+		// reset window location for each test
+		replaceState({}, "", "?");
+	});
+
 	describe("when a value is bound to an input", () => {
 		const useQueryParams = createUseQueryParams({
 			count: z.coerce.number().optional().default(0),
 		});
 
 		beforeEach(() => {
-			const [params] = useQueryParams(window.location);
-			params.count = 0;
-
 			render(Input, { useQueryParams });
 		});
 
@@ -78,9 +80,6 @@ describe("createUseQueryParams", () => {
 				count: z.coerce.number().optional().default(0),
 			});
 
-			const [params] = useQueryParams(window.location);
-			params.count = 0;
-
 			render(Button, { useQueryParams });
 		});
 
@@ -109,9 +108,6 @@ describe("createUseQueryParams", () => {
 				count: z.coerce.number().optional().default(0),
 				id: z.coerce.number().optional().default(0),
 			});
-
-			const [_params, helpers] = useQueryParams(window.location);
-			helpers.set({ count: 0, id: 0 });
 		});
 
 		test("should apply full updates", async () => {
@@ -148,7 +144,7 @@ describe("createUseQueryParams", () => {
 
 			await user.click(button);
 
-			expect(window.location.search).toEqual("?count=1&id=0");
+			expect(window.location.search).toEqual("?count=1");
 			expect(countInput).toHaveValue(1);
 			expect(idInput).toHaveValue(0);
 
@@ -160,8 +156,8 @@ describe("createUseQueryParams", () => {
 			]);
 
 			expect(params).toEqual({ count: 1, id: 0 });
-			expect(helpers.raw).toEqual({ count: "1", id: "0" });
-			expect(helpers.search).toEqual("?count=1&id=0");
+			expect(helpers.raw).toEqual({ count: "1" });
+			expect(helpers.search).toEqual("?count=1");
 		});
 	});
 

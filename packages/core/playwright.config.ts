@@ -8,6 +8,9 @@ function playwrightDir(partialPath: string) {
 const CI = !!process.env.CI;
 
 export default defineConfig({
+	expect: {
+		timeout: CI ? 10000 : 2000,
+	},
 	testDir: playwrightDir("specs"),
 	outputDir: playwrightDir("results"),
 	webServer: {

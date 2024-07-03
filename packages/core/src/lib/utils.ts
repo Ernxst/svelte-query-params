@@ -1,25 +1,17 @@
 import { parse } from "valibot";
 import type {
+	Query,
 	QuerySchema,
+	QueryValue,
 	ValibotValidator,
-	Validator,
 	ValueValidator,
 	ZodValidator,
 	inferShape,
 } from "./types.ts";
 
-export function parseSearchString(search: string) {
-	const params = new URLSearchParams(search);
-	return Object.fromEntries(params.entries());
-}
-
-export function objectToQueryString(init: Record<string, string>) {
-	return `?${new URLSearchParams(init)}`;
-}
-
 function parseObject(
 	schemas: Record<string, ValueValidator>,
-	input: Record<string, string>
+	input: Query
 ): any {
 	return Object.fromEntries(
 		Object.entries(schemas).map(([key, schema]) => [
@@ -29,11 +21,7 @@ function parseObject(
 	);
 }
 
-function parseValue(
-	key: string,
-	schema: ValueValidator | Validator,
-	value?: string
-) {
+function parseValue(key: string, schema: ValueValidator, value?: QueryValue) {
 	if (typeof schema === "function") return schema(value);
 	if (isZodSchema(schema)) return schema.parse(value);
 	if (isValibotSchema(schema)) return parse(schema, value);
@@ -69,7 +57,7 @@ function isValibotSchema(obj: QuerySchema): obj is ValibotValidator {
 }
 
 export function parseQueryParams<TSchema extends QuerySchema>(
-	params: Record<string, string>,
+	params: Query,
 	schemas: TSchema
 ): inferShape<TSchema> {
 	if (typeof schemas === "function") return schemas(params);
@@ -103,21 +91,4 @@ export function debounce<TFn extends (...args: any[]) => any>(
 			func(...args);
 		}, delay);
 	};
-}
-
-export function diff(obj1: Record<string, any>, obj2: Record<string, any>) {
-	const keys1 = Object.keys(obj1);
-	const keys2 = Object.keys(obj2);
-
-	if (keys1.length !== keys2.length) {
-		return true;
-	}
-
-	for (const key of keys1) {
-		if (obj1[key] !== obj2[key]) {
-			return true;
-		}
-	}
-
-	return false;
 }

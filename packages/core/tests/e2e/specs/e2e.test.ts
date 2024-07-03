@@ -189,15 +189,15 @@ test.describe("array values", () => {
 
 		const [optionsList, resultsList] = await page.getByRole("list").all();
 		const options = await optionsList.getByRole("checkbox").all();
+
+		await expect(options[0]).toBeChecked();
+		await expect(options[1]).toBeChecked();
+		await expect(options[2]).not.toBeChecked();
+		await expect(resultsList.getByRole("listitem")).toHaveCount(2);
+
 		const selectedCategories = await resultsList.getByRole("listitem").all();
-
-		expect(options[0]).toBeChecked();
-		expect(options[1]).toBeChecked();
-		expect(options[2]).not.toBeChecked();
-
-		expect(selectedCategories).toHaveLength(2);
-		expect(selectedCategories[0]).toHaveText("electronics");
-		expect(selectedCategories[1]).toHaveText("books");
+		await expect(selectedCategories[0]).toHaveText("electronics");
+		await expect(selectedCategories[1]).toHaveText("books");
 	});
 
 	test("should prepopulate from url with a hash", async ({ page }) => {
@@ -205,15 +205,16 @@ test.describe("array values", () => {
 			"/multiselect?categories=electronics&categories=books#hash"
 		);
 
-		const [_otionsList, resultsList] = await page.getByRole("list").all();
-		const selectedCategories = await resultsList.getByRole("listitem").all();
+		await expect(page).toHaveURL(
+			"multiselect?categories=electronics&categories=books#hash"
+		);
 
-		expect(selectedCategories).toHaveLength(2);
+		const [_otionsList, resultsList] = await page.getByRole("list").all();
+		await expect(resultsList.getByRole("listitem")).toHaveCount(2);
+
+		const selectedCategories = await resultsList.getByRole("listitem").all();
 		await expect(selectedCategories[0]).toHaveText("electronics");
 		await expect(selectedCategories[1]).toHaveText("books");
-
-		const url = location(page);
-		expect(url.hash).toEqual("#hash");
 	});
 
 	test("should add to array param", async ({ page }) => {
@@ -221,9 +222,8 @@ test.describe("array values", () => {
 
 		const [optionsList, resultsList] = await page.getByRole("list").all();
 		const options = await optionsList.getByRole("checkbox").all();
-		let selectedCategories = await resultsList.getByRole("listitem").all();
+		await expect(resultsList.getByRole("listitem")).toHaveCount(0);
 
-		expect(selectedCategories).toHaveLength(0);
 		await expect(options[0]).not.toBeChecked();
 		await expect(options[1]).not.toBeChecked();
 		await expect(options[2]).not.toBeChecked();
@@ -231,9 +231,8 @@ test.describe("array values", () => {
 		await options[0].click();
 		await options[2].click();
 
-		selectedCategories = await resultsList.getByRole("listitem").all();
-
-		expect(selectedCategories).toHaveLength(2);
+		await expect(resultsList.getByRole("listitem")).toHaveCount(2);
+		const selectedCategories = await resultsList.getByRole("listitem").all();
 		await expect(selectedCategories[0]).toHaveText("books");
 		await expect(selectedCategories[1]).toHaveText("toys");
 
@@ -246,9 +245,9 @@ test.describe("array values", () => {
 
 		const [optionsList, resultsList] = await page.getByRole("list").all();
 		const options = await optionsList.getByRole("checkbox").all();
-		let selectedCategories = await resultsList.getByRole("listitem").all();
+		await expect(resultsList.getByRole("listitem")).toHaveCount(2);
 
-		expect(selectedCategories).toHaveLength(2);
+		let selectedCategories = await resultsList.getByRole("listitem").all();
 		await expect(options[0]).toBeChecked();
 		await expect(options[1]).toBeChecked();
 		await expect(options[2]).not.toBeChecked();
@@ -261,13 +260,11 @@ test.describe("array values", () => {
 		await expect(options[1]).toBeChecked();
 		await expect(options[2]).not.toBeChecked();
 
+		await expect(resultsList.getByRole("listitem")).toHaveCount(1);
 		selectedCategories = await resultsList.getByRole("listitem").all();
-
-		expect(selectedCategories).toHaveLength(1);
 		await expect(selectedCategories[0]).toHaveText("electronics");
 
-		let url = location(page);
-		expect(url.search).toEqual("?categories=electronics");
+		expect(location(page).search).toEqual("?categories=electronics");
 
 		await options[1].click();
 
@@ -275,10 +272,9 @@ test.describe("array values", () => {
 		await expect(options[1]).not.toBeChecked();
 		await expect(options[2]).not.toBeChecked();
 
-		url = location(page);
+		await expect(resultsList.getByRole("listitem")).toHaveCount(0);
 		selectedCategories = await resultsList.getByRole("listitem").all();
-		expect(selectedCategories).toHaveLength(0);
-		expect(url.search).toEqual("");
+		expect(location(page).search).toEqual("");
 
 		await options[0].click();
 
@@ -286,13 +282,11 @@ test.describe("array values", () => {
 		await expect(options[1]).not.toBeChecked();
 		await expect(options[2]).not.toBeChecked();
 
+		await expect(resultsList.getByRole("listitem")).toHaveCount(1);
 		selectedCategories = await resultsList.getByRole("listitem").all();
-
-		expect(selectedCategories).toHaveLength(1);
 		await expect(selectedCategories[0]).toHaveText("books");
 
-		url = location(page);
-		expect(url.search).toEqual("?categories=books");
+		expect(location(page).search).toEqual("?categories=books");
 
 		await options[1].click();
 
@@ -300,14 +294,14 @@ test.describe("array values", () => {
 		await expect(options[1]).toBeChecked();
 		await expect(options[2]).not.toBeChecked();
 
+		await expect(resultsList.getByRole("listitem")).toHaveCount(2);
 		selectedCategories = await resultsList.getByRole("listitem").all();
-
-		expect(selectedCategories).toHaveLength(2);
 		await expect(selectedCategories[0]).toHaveText("books");
 		await expect(selectedCategories[1]).toHaveText("electronics");
 
-		url = location(page);
-		expect(url.search).toEqual("?categories=books&categories=electronics");
+		expect(location(page).search).toEqual(
+			"?categories=books&categories=electronics"
+		);
 
 		await options[2].click();
 
@@ -315,15 +309,13 @@ test.describe("array values", () => {
 		await expect(options[1]).toBeChecked();
 		await expect(options[2]).toBeChecked();
 
+		await expect(resultsList.getByRole("listitem")).toHaveCount(3);
 		selectedCategories = await resultsList.getByRole("listitem").all();
-
-		expect(selectedCategories).toHaveLength(3);
 		await expect(selectedCategories[0]).toHaveText("books");
 		await expect(selectedCategories[1]).toHaveText("electronics");
 		await expect(selectedCategories[2]).toHaveText("toys");
 
-		url = location(page);
-		expect(url.search).toEqual(
+		expect(location(page).search).toEqual(
 			"?categories=books&categories=electronics&categories=toys"
 		);
 	});

@@ -36,6 +36,10 @@ By default, `svelte-query-params` uses [`URLSearchParams`](https://developer.moz
 
 - **Event Handling**: Automatically handles `popstate` events for accurate synchronisation with browser history.
 
+- **Serialisation**: Control how query params are serialised into strings to the browser
+
+- **Multi-value params**: Supports multi-value query parameters with ease
+
 ## Usage
 
 In some lib file e.g., `src/lib/params.ts`:
@@ -138,6 +142,47 @@ const useQueryParams = createUseQueryParams({
   page: (value) => typeof value === "number" && value > 0,
   sort: string(),
   q: z.string()
+});
+```
+
+### Array Values
+
+With a function validator, you may receive the param as either a string, an array of strings, or undefined. As a result, you must handle all three cases to support multi-value params:
+
+```javascript
+const validators = {
+  categories: (value) => {
+    if (!value) return []
+    return Array.isArray(value) ? value : [value]
+  }
+}
+```
+
+With Zod, you need to handle the case where there's either 0 or 1 query param value as this library will not infer this as an array beforehand. You must define your array parameter like:
+
+```javascript
+import { z } from "zod";
+
+z.object({
+	categories: z
+		.union([z.string().array(), z.string()])
+		.default([])
+		.transform((c) => (Array.isArray(c) ? c : [c])),
+})
+```
+
+The union between a string and array of strings handles 1 or more query params; a default is set to the empty array to allow the parameter to be omitted from the URL and it's transformed at the end to convert the single value param into an array.
+
+In the same manner, with Valibot:
+
+```javascript
+import * as v from "valibot";
+
+v.object({
+	categories: v.pipe(
+		v.optional(v.union([v.array(v.string()), v.string()]), []),
+		v.transform((c) => (Array.isArray(c) ? c : [c]))
+	),
 });
 ```
 

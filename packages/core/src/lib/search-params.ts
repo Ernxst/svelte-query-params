@@ -31,7 +31,7 @@ export class ReactiveSearchParams extends reactive_URLSearchParams {
 	}
 
 	clear() {
-		for (const key of this.keys()) {
+		for (const key of this.uniqueKeys) {
 			this.delete(key);
 		}
 	}

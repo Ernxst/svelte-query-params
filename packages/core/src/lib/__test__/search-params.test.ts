@@ -87,9 +87,25 @@ describe("ReactiveSearchParams", () => {
 		test("should clear keys", () => {
 			const params = new ReactiveSearchParams({ id: "1" });
 			expect([...params.keys()]).toEqual(["id"]);
+			expect([...params.uniqueKeys]).toEqual(["id"]);
 
 			params.clear();
+
 			expect([...params.keys()]).toHaveLength(0);
+			expect([...params.uniqueKeys]).toHaveLength(0);
+		});
+
+		test("should clear keys with array values", () => {
+			const params = new ReactiveSearchParams({ id: "1" });
+			params.set("names", ["john", "jane"]);
+
+			expect([...params.keys()]).toEqual(["id", "names", "names"]);
+			expect([...params.uniqueKeys]).toEqual(["id", "names"]);
+
+			params.clear();
+
+			expect([...params.keys()]).toHaveLength(0);
+			expect([...params.uniqueKeys]).toHaveLength(0);
 		});
 	});
 

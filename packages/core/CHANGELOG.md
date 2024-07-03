@@ -1,5 +1,11 @@
 # svelte-query-params
 
+## 0.2.3
+
+### Patch Changes
+
+- b079db4: Add support for multi-value params
+
 ## 0.2.2
 
 ### Patch Changes

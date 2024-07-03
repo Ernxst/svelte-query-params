@@ -3,6 +3,7 @@ import { page } from "$app/stores";
 import { useMultiSelectFilters } from "./_hooks/multi-select";
 
 const [q, helpers] = useMultiSelectFilters($page.url);
+const CATEGORIES = ["books", "electronics", "toys"];
 
 function updateCategories(category: string) {
 	const categories = q.categories.includes(category)
@@ -13,26 +14,23 @@ function updateCategories(category: string) {
 </script>
 
 <ul>
-  <li>
-    <label>
-      <input
-        type="checkbox"
-        value="books"
-        onchange={() => updateCategories("books")}
-        checked={q.categories.includes("books")}
-      />
-      Books
-    </label>
-  </li>
-  <li>
-    <label>
-      <input
-        type="checkbox"
-        value="electronics"
-        onchange={() => updateCategories("electronics")}
-        checked={q.categories.includes("electronics")}
-      />
-      Electronics
-    </label>
-  </li>
+  {#each CATEGORIES as category}
+    <li>
+      <label>
+        <input
+          type="checkbox"
+          value={category}
+          onchange={() => updateCategories(category)}
+          checked={q.categories.includes(category)}
+        />
+        {category}
+      </label>
+    </li>
+  {/each}
+</ul>
+
+<ul>
+  {#each q.categories as category}
+    <li>{category}</li>
+  {/each}
 </ul>

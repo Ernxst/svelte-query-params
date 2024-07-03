@@ -1,6 +1,8 @@
 export { createUseQueryParams } from "./create-params.svelte.ts";
 export type {
 	FunctionValidator,
+	Query,
+	QueryValue,
 	QueryHelpers,
 	QueryParamsOptions,
 	QueryHook,

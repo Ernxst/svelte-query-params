@@ -1,5 +1,6 @@
 import { tick } from "svelte";
 import { browser } from "./adapters/browser";
+import { ReactiveSearchParams } from "./search-params";
 import type {
 	QueryHelpers,
 	QueryParamsOptions,
@@ -8,14 +9,7 @@ import type {
 	WindowLike,
 	inferShape,
 } from "./types";
-import {
-	debounce,
-	diff,
-	mapValues,
-	objectToQueryString,
-	parseQueryParams,
-	parseSearchString,
-} from "./utils";
+import { debounce, mapValues, parseQueryParams } from "./utils";
 
 /**
  * This returns a function (a hook) rather than a reactive object as the
@@ -34,12 +28,11 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			typeof value === "string" ? value : JSON.stringify(value),
 	} = options;
 
-	let raw = $state<Record<string, string>>({});
-	const query = $derived(parseQueryParams(raw, validators));
-	const merged = $derived({ ...raw, ...query });
+	const searchParams = new ReactiveSearchParams();
+	const parsedQuery = $derived(parseQueryParams(searchParams.raw, validators));
 
 	function readFromBrowser() {
-		raw = parseSearchString(adapter.browser.read().search);
+		searchParams.setFromSearch(adapter.browser.read().search);
 	}
 
 	const persistToBrowser = debounce((search: string, hash: string) => {
@@ -47,10 +40,13 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	}, delay);
 
 	function persistParams() {
-		const search = objectToQueryString(raw);
 		adapter.isBrowser()
-			? persistToBrowser(search, adapter.browser.read().hash)
-			: adapter.server.save(search);
+			? persistToBrowser(searchParams.search, adapter.browser.read().hash)
+			: adapter.server.save(searchParams.search);
+	}
+
+	function serialiseValue(value: unknown) {
+		return Array.isArray(value) ? value.map(serialise) : serialise(value);
 	}
 
 	let unsubscribe: () => void;
@@ -60,20 +56,20 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 	}
 
 	return function useQueryParams(url) {
-		raw = parseSearchString(url.search);
+		searchParams.setFromSearch(url.search);
 		const params = {} as inferShape<TShape>;
 
-		for (const key of Object.keys(query)) {
+		for (const key of Object.keys(parsedQuery)) {
 			Object.defineProperty(params, key, {
 				enumerable: true,
 				configurable: true,
 				get() {
-					return query[key];
+					return parsedQuery[key];
 				},
 				set(newValue) {
-					const value = serialise(newValue);
-					if (value !== raw[key]) {
-						raw = { ...raw, [key]: value };
+					const value = serialiseValue(newValue);
+					if (searchParams.changed(key, value)) {
+						searchParams.setFromObject({ [key]: value });
 						persistParams();
 					}
 				},
@@ -84,52 +80,51 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 			unsubscribe = addWindowListener(window, readFromBrowser);
 		}
 
+		// TODO: This is needed to write default values to the url, do we want this?
+		// searchParams.setFromObject(parsedQuery);
+
 		return [
 			params,
 			{
 				get raw() {
-					return raw;
+					return searchParams.raw;
 				},
 
 				get search() {
-					return objectToQueryString(raw);
+					return searchParams.search;
 				},
 
 				get all() {
-					return merged;
+					return { ...searchParams.raw, ...parsedQuery };
 				},
 
 				keys() {
-					return Object.keys(query);
+					return Object.keys(parsedQuery);
 				},
 
 				entries() {
-					return Object.entries(query).map(([key]) => [key, query[key]]);
+					return Object.entries(parsedQuery);
 				},
 
 				set(params) {
-					const updated = mapValues(params, serialise);
-					if (diff(raw, updated)) {
-						raw = updated;
+					const updated = mapValues(params, serialiseValue);
+					if (!searchParams.equals(updated)) {
+						searchParams.clear();
+						searchParams.setFromObject(updated);
 						persistParams();
 					}
 				},
 
 				update(params) {
-					for (const [key, newValue] of Object.entries(params)) {
-						const value = serialise(newValue);
-						if (value !== raw[key]) {
-							raw = { ...raw, ...mapValues(params, serialise) };
-							persistParams();
-							break;
-						}
+					const updated = mapValues(params, serialiseValue);
+					if (!searchParams.equals(updated)) {
+						searchParams.setFromObject(updated);
+						persistParams();
 					}
 				},
 
 				remove(...params) {
-					raw = Object.fromEntries(
-						Object.entries(raw).filter(([key]) => !params.includes(key))
-					);
+					params.map((param) => searchParams.delete(param as string));
 				},
 
 				unsubscribe() {

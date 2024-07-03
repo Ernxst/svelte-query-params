@@ -17,8 +17,8 @@ export interface BrowserAdapter {
 	/**
 	 * A function to update the browser query params and hash.
 	 *
-	 * Note: The first param includes the `?` prefix and the second param
-	 * includes the `#` if there is a hash
+	 * @param search The search string - includes the `?` prefix if there are query params, otherwise an empty string
+	 * @param hash The fragment  - includes the `#` prefix if there is a hash, otherwise an empty string
 	 */
 	save: (search: string, hash: string) => void;
 }
@@ -27,7 +27,7 @@ export interface ServerAdapter {
 	/**
 	 * A function to update the server query params.
 	 *
-	 * Note: The first param includes the `?
+	 * @param search The search string - includes the `?` prefix if there are query params, otherwise an empty string
 	 */
 	save: (search: string) => void;
 }

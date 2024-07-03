@@ -3,9 +3,9 @@ import type { z } from "zod";
 import type { Adapter } from "./adapters/types.ts";
 
 export type FunctionValidator<TOut extends object = any> = (
-	value?: unknown
+	value: Query
 ) => TOut;
-export type FunctionValueValidator<TOut = any> = (value?: string) => TOut;
+export type FunctionValueValidator<TOut = any> = (value?: QueryValue) => TOut;
 export type ValibotValidator = BaseSchema<any, any, any>;
 export type ZodValidator = z.ZodType;
 export type ValueValidator =
@@ -28,6 +28,8 @@ export type inferFromValidator<TValidator extends Validator> =
 export type QuerySchema = Validator | Record<string, ValueValidator>;
 
 type Empty = Record<string, never>;
+export type QueryValue = string | string[];
+export type Query = Record<string, QueryValue>;
 
 export type inferShape<TShape extends QuerySchema> = TShape extends Validator
 	? inferFromValidator<TShape>
@@ -60,8 +62,8 @@ export interface QueryParamsOptions {
 	 * Add a delay (in ms) before updating the browser URL. This is useful in
 	 * situations where URL updates happen frequently, e.g., on every keystroke.
 	 *
-	 * Note this does not affect the query params rune - this will always be
-	 * updated optimistically.
+	 * Note this does not affect the reactive query params object - this will
+	 * always be updated immediately.
 	 *
 	 * @default 0
 	 */
@@ -76,6 +78,11 @@ export interface QueryParamsOptions {
 	 */
 	serialise?: Serializer;
 
+	/**
+	 * Adapter to control URL peristence. Defaults to the `browser` adapter. You
+	 * **must** pass the `sveltekit` adapter when using SvelteKit with SSR,
+	 * otherwise your app may break!
+	 */
 	adapter?: Adapter;
 }
 
@@ -85,18 +92,26 @@ export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	 *
 	 * Note: this may include query params not defined in your schema. Values will
 	 * not have been parsed even if you have specified so in your validators.
+	 *
+	 * Also note that if you've defined an optional property in your validators
+	 * with a default value, it will `undefined` here - without applying the
+	 * default - if the value isn't set in the URL. It will, however, be
+	 * available (with the default) in {@linkcode QueryHelpers.all}
 	 */
-	readonly raw: Record<string, string>;
+	readonly raw: Query;
 	/**
 	 * Similar to {@linkcode raw}, but any params specified in your validators
 	 * will have been parsed - all other values are passed through as-is.
 	 *
 	 * Note: this may include query params not defined in your schema.
 	 */
-	readonly all: Record<string, string> & TShape;
+	readonly all: Query & TShape;
 	/**
-	 * The query string, generated from the {@linkcode query} which may contain
-	 * query params not defined in your schema. This always starts with a `?`.
+	 * The query string, generated from the {@linkcode QueryHelpers.raw} query
+	 * which may contain query params not defined in your schema.
+	 *
+	 * If there are query params, this will always start with `?`; if there
+	 * are no query params, this will be the empty string.
 	 */
 	readonly search: string;
 	/** Replace _ALL_ query params, triggering a reactive and browser update */
@@ -107,8 +122,16 @@ export type QueryHelpers<TShape extends Record<string, unknown>> = {
 	remove(...params: (keyof TShape)[]): void;
 	/** Manually unset unregister all event listeners */
 	unsubscribe(): void;
-	/** Return the query keys. Unlike {@linkcode Object.keys}, this is type-safe */
+	/**
+	 * Return the parsed query keys. This only includes the keys from your
+	 * validators. Unlike {@linkcode Object.keys}, this is type-safe.
+	 */
 	keys(): Array<keyof TShape>;
+	/**
+	 * Type-safe version of {@linkcode Object.entries}. Like
+	 * {@linkcode QueryHelpers.keys}, this only contains entries from from your
+	 * validators.
+	 */
 	entries(): Array<[keyof TShape, TShape[keyof TShape]]>;
 };
 

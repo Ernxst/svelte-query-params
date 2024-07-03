@@ -22,15 +22,15 @@ describe("Type tests", () => {
 		{
 			name: "function validators",
 			schema: {
-				id: (value: string | undefined) => Number(value),
-				q: (value: string | undefined) => value,
+				id: (value: string | string[] | undefined) => Number(value),
+				q: (value: string | string[] | undefined) => value,
 			},
 		},
 		{
-			name: "mixes and matched",
+			name: "mix and match",
 			schema: {
 				id: z.number(),
-				q: (value: string | undefined) => value,
+				q: (value: string | string[] | undefined) => value,
 			},
 		},
 	];

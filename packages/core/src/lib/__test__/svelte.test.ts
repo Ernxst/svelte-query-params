@@ -25,9 +25,6 @@ describe("createUseQueryParams", () => {
 		});
 
 		beforeEach(() => {
-			const [params] = useQueryParams(window.location);
-			params.count = 0;
-
 			render(Input, { useQueryParams });
 		});
 
@@ -82,9 +79,6 @@ describe("createUseQueryParams", () => {
 			useQueryParams = createUseQueryParams({
 				count: z.coerce.number().optional().default(0),
 			});
-
-			const [params] = useQueryParams(window.location);
-			params.count = 0;
 
 			render(Button, { useQueryParams });
 		});

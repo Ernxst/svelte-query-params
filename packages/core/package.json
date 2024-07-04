@@ -88,10 +88,7 @@
 	"module": "dist/index.svelte.js",
 	"svelte": "dist/index.svelte.js",
 	"types": "dist/index.svelte.d.ts",
-	"files": [
-		"dist",
-		"README.md"
-	],
+	"files": ["dist", "README.md"],
 	"engines": {
 		"node": ">=v20.0.0"
 	},

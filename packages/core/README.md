@@ -22,6 +22,8 @@ yarn add svelte-query-params svelte@next
 bun install svelte-query-params svelte@next
 ```
 
+`svelte` requires a version of `5.0.0-next.169` or newer as it [renamed a public API](https://github.com/sveltejs/svelte/releases/tag/svelte%405.0.0-next.169) that this library uses.
+
 By default, `svelte-query-params` uses [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) to handle interpreting the location string, which means it does not decode `null` and has limited handling of other more advanced URL parameter configurations. If you want access to those features, add a third-party library like query-string and tell [svelte-query-params to use it](#options).
 
 ## Features

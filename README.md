@@ -22,6 +22,8 @@ yarn add svelte-query-params svelte@next
 bun install svelte-query-params svelte@next
 ```
 
+`svelte` requires a version of `5.0.0-next.169` or newer as it [renamed a public API](https://github.com/sveltejs/svelte/releases/tag/svelte%405.0.0-next.169) that this library uses.
+
 By default, `svelte-query-params` uses [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) to handle interpreting the location string, which means it does not decode `null` and has limited handling of other more advanced URL parameter configurations. If you want access to those features, add a third-party library like query-string and tell [svelte-query-params to use it](#options).
 
 ## Features
@@ -164,10 +166,10 @@ With Zod, you need to handle the case where there's either 0 or 1 query param va
 import { z } from "zod";
 
 z.object({
-	categories: z
-		.union([z.string().array(), z.string()])
-		.default([])
-		.transform((c) => (Array.isArray(c) ? c : [c])),
+  categories: z
+    .union([z.string().array(), z.string()])
+    .default([])
+    .transform((c) => (Array.isArray(c) ? c : [c])),
 })
 ```
 
@@ -179,10 +181,10 @@ In the same manner, with Valibot:
 import * as v from "valibot";
 
 v.object({
-	categories: v.pipe(
-		v.optional(v.union([v.array(v.string()), v.string()]), []),
-		v.transform((c) => (Array.isArray(c) ? c : [c]))
-	),
+  categories: v.pipe(
+    v.optional(v.union([v.array(v.string()), v.string()]), []),
+    v.transform((c) => (Array.isArray(c) ? c : [c]))
+  ),
 });
 ```
 

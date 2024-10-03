@@ -1,10 +1,7 @@
-import { URLSearchParams as reactive_URLSearchParams } from "svelte/reactivity";
+import { SvelteURLSearchParams } from "svelte/reactivity";
 import type { Query } from "./types";
 
-// TODO: export from svelte/reactivity was renamed in this release:
-// https://github.com/sveltejs/svelte/releases/tag/svelte%405.0.0-next.169
-// Will need to bump minimum svelte version when changing this (should probably wait for rc)
-export class ReactiveSearchParams extends reactive_URLSearchParams {
+export class ReactiveSearchParams extends SvelteURLSearchParams {
 	get raw() {
 		const raw: Query = {};
 

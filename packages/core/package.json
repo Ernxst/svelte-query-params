@@ -1,7 +1,7 @@
 {
 	"name": "svelte-query-params",
 	"type": "module",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "A lightweight, dead-simple, type-safe reactive query parameter store built for Svelte 5.",
 	"author": "Ernest Nkansah-Badu <ernestjbadu@outlook.com>",
 	"license": "MIT",
@@ -88,7 +88,10 @@
 	"module": "dist/index.svelte.js",
 	"svelte": "dist/index.svelte.js",
 	"types": "dist/index.svelte.d.ts",
-	"files": ["dist", "README.md"],
+	"files": [
+		"dist",
+		"README.md"
+	],
 	"engines": {
 		"node": ">=v20.0.0"
 	},

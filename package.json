@@ -7,6 +7,7 @@
 		"@biomejs/biome",
 		"@sveltejs/kit",
 		"esbuild",
+		"lefthook",
 		"svelte-query-params"
 	],
 	"workspaces": ["examples/*", "packages/*"],

@@ -1,11 +1,5 @@
 # svelte-query-params
 
-## 0.2.5
-
-### Patch Changes
-
-- 869ffcd: fix: persist changes when removing params
-
 ## 0.2.4
 
 ### Patch Changes

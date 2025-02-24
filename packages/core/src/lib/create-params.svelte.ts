@@ -125,6 +125,7 @@ export function createUseQueryParams<TShape extends QuerySchema>(
 
 				remove(...params) {
 					params.map((param) => searchParams.delete(param as string));
+					persistParams();
 				},
 
 				unsubscribe() {

@@ -8,7 +8,7 @@
 	"homepage": "https://github.com/Ernxst/svelte-query-params",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Ernxst/svelte-query-params.git",
+		"url": "git+https://github.com/Ernxst/svelte-query-params.git",
 		"directory": "packages/core"
 	},
 	"bugs": {
@@ -88,10 +88,7 @@
 	"module": "dist/index.svelte.js",
 	"svelte": "dist/index.svelte.js",
 	"types": "dist/index.svelte.d.ts",
-	"files": [
-		"dist",
-		"README.md"
-	],
+	"files": ["dist", "README.md"],
 	"engines": {
 		"node": ">=v20.0.0"
 	},

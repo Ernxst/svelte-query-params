@@ -320,3 +320,54 @@ test.describe("array values", () => {
 		);
 	});
 });
+
+test.describe("navigation", () => {
+	test("should keep every keystroke when typing quickly", async ({ page }) => {
+		const text = "abcdefghijklmnopqrstuvwxyz0123456789";
+		await page.goto("/typing");
+		const input = page.getByRole("searchbox");
+		await input.focus();
+		await page.keyboard.type(text);
+
+		await expect(page).toHaveURL(`/typing?q=${text}`);
+		await expect(input).toHaveValue(text);
+		await expect(page.locator("#store")).toHaveText(text);
+	});
+
+	test("should follow back and forward navigation", async ({ page }) => {
+		await page.goto("/tabs");
+		const title = page
+			.getByRole("heading", { level: 1 })
+			.and(page.locator(":visible"));
+		const [_home, users] = await page.getByRole("tab").all();
+
+		await users.click();
+		await expect(page).toHaveURL("/tabs?tab=users");
+		await expect(title).toHaveText("Users Page");
+
+		await page.goBack();
+		await expect(page).toHaveURL("/tabs");
+		await expect(title).toHaveText("Home Page");
+
+		await page.goForward();
+		await expect(page).toHaveURL("/tabs?tab=users");
+		await expect(title).toHaveText("Users Page");
+	});
+
+	test("should read params in a universal load function", async ({ page }) => {
+		const errors: string[] = [];
+		page.on("pageerror", (error) => errors.push(error.message));
+		page.on("console", (message) => {
+			if (message.type() === "error") errors.push(message.text());
+		});
+
+		await page.goto("/universal-load?n=3");
+		const count = page.locator("#n");
+		await expect(count).toHaveText("3");
+
+		await page.getByRole("link", { name: "five" }).click();
+		await expect(count).toHaveText("5");
+		await expect(page).toHaveURL("/universal-load?n=5");
+		expect(errors).toEqual([]);
+	});
+});

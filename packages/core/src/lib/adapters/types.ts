@@ -15,6 +15,14 @@ export interface BrowserAdapter {
 	 */
 	read: () => URLLike;
 	/**
+	 * Set this when {@linkcode read} is backed by reactive state, such as
+	 * SvelteKit's `page.url`. The query params then re-read the URL whenever it
+	 * changes, and the browser's history methods are left alone.
+	 *
+	 * @default false
+	 */
+	reactive?: boolean;
+	/**
 	 * A function to update the browser query params and hash.
 	 *
 	 * @param search The search string - includes the `?` prefix if there are query params, otherwise an empty string

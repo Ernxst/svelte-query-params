@@ -9,6 +9,9 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'Ernxst' }}
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/labeler@v4
         with:

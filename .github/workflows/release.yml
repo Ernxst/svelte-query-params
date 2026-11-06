@@ -41,11 +41,11 @@ jobs:
 
       - name: 🪢 Create Release Pull Request
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2.1.2
         with:
-          publish: bun run release
-          commit: 'chore(ci): release'
-          title: 'chore(ci): release'
+          publish-script: bun run release
+          commit-message: 'chore(ci): release'
+          pr-title: 'chore(ci): release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN:${{ secrets.NPM_TOKEN }}

@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { UseQueryHook } from "$lib";
+import type { UseQueryHook } from "../../index";
 
 const {
 	useQueryParams,

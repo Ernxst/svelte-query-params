@@ -1,5 +1,5 @@
-import { ReactiveSearchParams } from "$lib/search-params";
 import { describe, expect, test } from "vitest";
+import { ReactiveSearchParams } from "../search-params";
 
 describe("ReactiveSearchParams", () => {
 	describe("raw", () => {

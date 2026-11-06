@@ -1,8 +1,8 @@
 <script>
-import { page } from "$app/stores";
+import { page } from "$app/state";
 import { usePagination } from "./_hooks/pagination";
 
-const [q] = usePagination($page.url);
+const [q] = usePagination(page.url);
 
 const nextPage = () => {
 	q.page = Math.min(q.page + 1, 10);

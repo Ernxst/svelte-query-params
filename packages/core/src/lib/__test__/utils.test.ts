@@ -1,7 +1,7 @@
-import { debounce, mapValues, parseQueryParams } from "$lib/utils";
 import * as v from "valibot";
 import { assert, beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
+import { debounce, mapValues, parseQueryParams } from "../utils";
 
 describe("parseQueryParams", () => {
 	test("should throw error for unknown validator type", () => {

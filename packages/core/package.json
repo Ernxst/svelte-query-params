@@ -88,10 +88,7 @@
 	"module": "dist/index.svelte.js",
 	"svelte": "dist/index.svelte.js",
 	"types": "dist/index.svelte.d.ts",
-	"files": [
-		"dist",
-		"README.md"
-	],
+	"files": ["dist", "README.md"],
 	"engines": {
 		"node": ">=v20.0.0"
 	},
@@ -110,8 +107,8 @@
 		"postinstall": "svelte-kit sync"
 	},
 	"peerDependencies": {
-		"@sveltejs/kit": "^2.0.0",
-		"svelte": "^5.0.0-next.169",
+		"@sveltejs/kit": "^3.0.0",
+		"svelte": "^5.0.0",
 		"valibot": "^0.31.0",
 		"zod": "^3.22.2"
 	},
@@ -130,23 +127,24 @@
 		}
 	},
 	"dependencies": {
-		"@sveltejs/kit": "^2.0.0",
-		"svelte": "^5.0.0-next.1",
 		"valibot": "^0.31.0",
 		"zod": "^3.22.2"
 	},
 	"devDependencies": {
 		"@playwright/test": "1.45.0",
-		"@sveltejs/adapter-auto": "3.2.2",
-		"@sveltejs/vite-plugin-svelte": "3.1.1",
-		"@testing-library/jest-dom": "6.4.6",
-		"@testing-library/svelte": "5.1.0",
+		"@sveltejs/adapter-auto": "8.0.0",
+		"@sveltejs/kit": "3.1.1",
+		"@sveltejs/vite-plugin-svelte": "7.3.1",
+		"@testing-library/jest-dom": "7.0.1",
+		"@testing-library/svelte": "5.4.2",
 		"@testing-library/user-event": "14.5.2",
-		"@types/node": "20.14.9",
+		"@types/node": "26.6.6",
 		"jsdom": "24.1.0",
-		"svelte-check": "3.8.1",
+		"svelte": "5.57.3",
+		"svelte-check": "4.7.8",
 		"tslib": "2.6.3",
-		"vite": "5.3.1",
-		"vitest": "1.6.0"
+		"typescript": "6.0.3",
+		"vite": "8.3.6",
+		"vitest": "5.1.0"
 	}
 }

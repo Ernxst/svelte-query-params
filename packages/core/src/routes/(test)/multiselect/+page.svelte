@@ -1,8 +1,8 @@
 <script lang="ts">
-import { page } from "$app/stores";
+import { page } from "$app/state";
 import { useMultiSelectFilters } from "./_hooks/multi-select";
 
-const [q, helpers] = useMultiSelectFilters($page.url);
+const [q, helpers] = useMultiSelectFilters(page.url);
 const CATEGORIES = ["books", "electronics", "toys"];
 
 function updateCategories(category: string) {

@@ -2,15 +2,15 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
 	format: ["esm", "cjs"],
-	dts: true,
+	// tsup 8 sets `baseUrl`, which TypeScript 6 deprecates
+	dts: { compilerOptions: { ignoreDeprecations: "6.0" } },
 	sourcemap: false,
 	bundle: true,
 	clean: true,
 	splitting: false,
 	external: [
-		"$app/stores",
 		"$app/navigation",
-		"$app/environment",
+		"$app/env",
 		"svelte",
 		"zod",
 		"valibot",

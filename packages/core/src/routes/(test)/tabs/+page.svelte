@@ -1,8 +1,8 @@
 <script lang="ts">
-import { page } from "$app/stores";
+import { page } from "$app/state";
 import { useTabs } from "./_hooks/tabs";
 
-const [q] = useTabs($page.url);
+const [q] = useTabs(page.url);
 const onHomeTab = $derived(q.tab === "home");
 const onUserTab = $derived(q.tab === "users");
 </script>

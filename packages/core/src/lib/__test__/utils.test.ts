@@ -1,7 +1,12 @@
 import * as v from "valibot";
 import { assert, beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
-import { debounce, mapValues, parseQueryParams } from "../utils";
+import {
+	SchemaValidationError,
+	debounce,
+	mapValues,
+	parseQueryParams,
+} from "../utils";
 
 describe("parseQueryParams", () => {
 	test("should throw error for unknown validator type", () => {
@@ -151,5 +156,58 @@ describe("debounce", () => {
 		debounced();
 
 		expect(fn).toHaveBeenCalledTimes(2);
+	});
+});
+
+describe("parseQueryParams with Standard Schema", () => {
+	test("should throw a SchemaValidationError carrying the schema's issues", () => {
+		const schema = z.object({ id: z.coerce.number().int() });
+
+		const error = (() => {
+			try {
+				parseQueryParams({ id: "abc" }, schema);
+			} catch (e) {
+				return e;
+			}
+		})();
+
+		assert(error instanceof SchemaValidationError);
+		expect(error.issues).toHaveLength(1);
+		expect(error.issues[0]?.path).toEqual(["id"]);
+	});
+
+	test("should throw for a record entry that fails validation", () => {
+		expect(() =>
+			parseQueryParams(
+				{ id: "abc" },
+				{ id: v.pipe(v.string(), v.transform(Number), v.integer()) }
+			)
+		).toThrowError(SchemaValidationError);
+	});
+
+	test("should reject an async schema", () => {
+		const schema = {
+			"~standard": {
+				version: 1,
+				vendor: "test",
+				validate: async (value: unknown) => ({ value }),
+			},
+		} as const;
+
+		expect(() => parseQueryParams({ id: "1" }, schema)).toThrowError(
+			"Async schemas are not supported"
+		);
+	});
+
+	test("should treat a function carrying `~standard` as a schema", () => {
+		const schema = Object.assign((value: unknown) => ({ wrong: value }), {
+			"~standard": {
+				version: 1,
+				vendor: "test",
+				validate: (value: any) => ({ value: { id: Number(value.id) } }),
+			},
+		} as const);
+
+		expect(parseQueryParams({ id: "7" }, schema)).toEqual({ id: 7 });
 	});
 });

@@ -10,11 +10,11 @@ export type {
 	QuerySchema,
 	Serializer,
 	FunctionValueValidator,
-	ValibotValidator,
+	SchemaValidator,
 	Validator,
-	ZodValidator,
 	inferFromValidator,
 	inferShape,
 	WindowLike,
 	URLLike,
 } from "./types.ts";
+export { SchemaValidationError } from "./utils.ts";

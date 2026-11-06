@@ -116,9 +116,11 @@ Then you can use this hook in your Svelte components:
 
 ## Validators
 
-`svelte-query-params` supports [`zod`](https://github.com/colinhacks/zod), [`valibot`](https://github.com/colinhacks/zod) and function validators to define the schema for query params. Therefore, you do not need to learn an extra API for validating data.
+`svelte-query-params` accepts any [Standard Schema](https://standardschema.dev) library, such as [`zod`](https://github.com/colinhacks/zod), [`valibot`](https://github.com/fabian-hiller/valibot) and [`arktype`](https://github.com/arktypeio/arktype), as well as function validators, to define the schema for query params. Therefore, you do not need to learn an extra API for validating data, and the library installs none of them for you.
 
-When using `zod` or `valibot`, you do not need to wrap your schema
+Schemas must validate synchronously, because params are validated inside a reactive `$derived`. When a value fails validation, a `SchemaValidationError` is thrown, with the schema's `issues` on it.
+
+When using a schema library, you do not need to wrap your schema
 in zod `z.object({ ... })` or valibot `object`:
 
 ```javascript

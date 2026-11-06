@@ -45,6 +45,6 @@
 		"@commitlint/config-conventional": "19.2.2",
 		"@vitest/coverage-v8": "5.1.0",
 		"lefthook": "1.6.18",
-		"turbo": "2.0.4"
+		"turbo": "2.11.10"
 	}
 }

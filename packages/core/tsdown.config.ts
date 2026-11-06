@@ -1,21 +1,21 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from "tsdown";
 
 export default defineConfig({
 	format: ["esm", "cjs"],
-	// tsup 8 sets `baseUrl`, which TypeScript 6 deprecates
-	dts: { compilerOptions: { ignoreDeprecations: "6.0" } },
+	dts: true,
 	sourcemap: false,
-	bundle: true,
 	clean: true,
-	splitting: false,
-	external: [
-		"$app/navigation",
-		"$app/state",
-		"$app/env",
-		"svelte",
-		"@sveltejs/kit",
-	],
-	entryPoints: {
+	fixedExtension: false,
+	deps: {
+		neverBundle: [
+			"$app/navigation",
+			"$app/state",
+			"$app/env",
+			"svelte",
+			"@sveltejs/kit",
+		],
+	},
+	entry: {
 		"index.svelte": "src/lib/index.ts",
 		"adapters/index": "src/lib/adapters/index.ts",
 		"adapters/browser/index": "src/lib/adapters/browser.ts",

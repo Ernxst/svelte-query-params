@@ -1,4 +1,4 @@
-import { browser, building } from "$app/environment";
+import { browser, building } from "$app/env";
 import { goto } from "$app/navigation";
 import { redirect } from "@sveltejs/kit";
 import type { Adapter } from "./types.ts";
@@ -24,11 +24,7 @@ export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 			},
 			save(search, hash) {
 				const searchString = search.length ? search : "?";
-				goto(`${searchString}${hash}`, {
-					keepFocus: true,
-					noScroll: true,
-					replaceState: replace,
-				});
+				goto(`${searchString}${hash}`, { reset: false, replace });
 			},
 		},
 		server: {

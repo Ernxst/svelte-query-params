@@ -1,6 +1,6 @@
-import { sveltekit } from "$lib/adapters/sveltekit";
-import { createUseQueryParams } from "$lib/create-params.svelte";
 import * as v from "valibot";
+import { sveltekit } from "../../../../lib/adapters/sveltekit";
+import { createUseQueryParams } from "../../../../lib/create-params.svelte";
 
 export type Tabs = v.InferOutput<typeof Tabs>;
 const Tabs = v.object({

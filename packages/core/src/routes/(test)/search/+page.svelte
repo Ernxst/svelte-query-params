@@ -1,8 +1,8 @@
 <script lang="ts">
-import { page } from "$app/stores";
+import { page } from "$app/state";
 import { useSearchFilters } from "./_hooks/search";
 
-const [q] = useSearchFilters($page.url);
+const [q] = useSearchFilters(page.url);
 </script>
 
 <input type="text" bind:value={q.q} placeholder="Search..." role="searchbox" />

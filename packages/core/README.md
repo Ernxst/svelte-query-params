@@ -65,10 +65,10 @@ Then you can use this hook in your Svelte components:
 
 ```svelte
 <script>
-  import { useQueryParams } from "$lib/params"; // Import assuming SvelteKit
-  import { page } from "$app/stores";
+  import { useQueryParams } from "#lib/params"; // Import assuming SvelteKit
+  import { page } from "$app/state";
 
-  const [params, helpers] = useQueryParams($page.url); // You must pass the URL
+  const [params, helpers] = useQueryParams(page.url); // You must pass the URL
 
   // Access query parameters
   console.log(params.page); // Current 'page' value

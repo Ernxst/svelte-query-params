@@ -1,4 +1,4 @@
-import { useQueryParams } from "$lib/params";
+import { useQueryParams } from "../lib/params";
 
 export function load({ url }) {
 	const [params] = useQueryParams(url);

@@ -1,7 +1,7 @@
+import { redirect } from "@sveltejs/kit";
 import { browser, building } from "$app/env";
 import { goto } from "$app/navigation";
 import { page } from "$app/state";
-import { redirect } from "@sveltejs/kit";
 import type { Adapter } from "./types.ts";
 
 export interface SvelteKitAdapterOptions {

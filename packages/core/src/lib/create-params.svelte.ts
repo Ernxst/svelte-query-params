@@ -2,12 +2,12 @@ import { tick, untrack } from "svelte";
 import { browser } from "./adapters/browser";
 import { ReactiveSearchParams } from "./search-params";
 import type {
+	inferShape,
 	QueryHelpers,
 	QueryParamsOptions,
 	QuerySchema,
 	UseQueryHook,
 	WindowLike,
-	inferShape,
 } from "./types";
 import { debounce, mapValues, parseQueryParams } from "./utils";
 

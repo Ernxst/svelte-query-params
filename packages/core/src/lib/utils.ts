@@ -1,11 +1,11 @@
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 import type {
+	inferShape,
 	Query,
 	QuerySchema,
 	QueryValue,
 	SchemaValidator,
 	ValueValidator,
-	inferShape,
 } from "./types.ts";
 
 export class SchemaValidationError extends Error {

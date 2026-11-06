@@ -8,7 +8,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
    TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
    TURBO_REMOTE_ONLY: true
 
 jobs:

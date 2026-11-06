@@ -4,14 +4,22 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+permissions:
+  issues: write
+
 jobs:
   close-issues:
     runs-on: ubuntu-latest
     steps:
-      - name: need reproduction
-        uses: actions-cool/issues-helper@v3
-        with:
-          actions: close-issues
-          token: ${{ secrets.GITHUB_TOKEN }}
-          labels: need reproduction
-          inactive-day: 3
+      - name: close issues awaiting a reproduction for 3 days
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cutoff=$(date -u -d '3 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          gh issue list --label "need reproduction" --state open --limit 100 \
+            --json number,updatedAt \
+            --jq ".[] | select(.updatedAt < \"$cutoff\") | .number" |
+            while read -r number; do
+              gh issue close "$number" --reason "not planned"
+            done

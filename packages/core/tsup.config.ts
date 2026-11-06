@@ -8,7 +8,13 @@ export default defineConfig({
 	bundle: true,
 	clean: true,
 	splitting: false,
-	external: ["$app/navigation", "$app/env", "svelte", "@sveltejs/kit"],
+	external: [
+		"$app/navigation",
+		"$app/state",
+		"$app/env",
+		"svelte",
+		"@sveltejs/kit",
+	],
 	entryPoints: {
 		"index.svelte": "src/lib/index.ts",
 		"adapters/index": "src/lib/adapters/index.ts",

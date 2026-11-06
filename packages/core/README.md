@@ -220,6 +220,7 @@ As mentioned previously, adapters control how the URL is fetched and updated, bo
 
 - `browser` - A property with the following methods:
   - `read() => URL | Location` - Retrieve the browser URL.
+  - `reactive?: boolean` - (Optional) Set this to `true` when `read()` is backed by reactive state, such as SvelteKit's `page.url`. The query params then re-read the URL whenever it changes, and `window.history` is left unpatched. Defaults to `false`.
   - `save(search: string, hash: string) => void` - Update the browser URL. Note that the `search` string has the `?` prefixed and the `hash` string has the `#` prefixed.
 
 To create your own adapter, you can import the `Adapter` type from `svelte-query-params/adapter` for intellisense, or use `defineAdapter` also exported by `svelte-query-params/adapter`:

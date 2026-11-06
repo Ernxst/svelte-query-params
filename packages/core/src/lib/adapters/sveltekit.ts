@@ -1,5 +1,6 @@
 import { browser, building } from "$app/env";
 import { goto } from "$app/navigation";
+import { page } from "$app/state";
 import { redirect } from "@sveltejs/kit";
 import type { Adapter } from "./types.ts";
 
@@ -17,10 +18,11 @@ export function sveltekit(options: SvelteKitAdapterOptions = {}): Adapter {
 	return {
 		isBrowser: () => browser,
 		browser: {
+			reactive: true,
 			read() {
 				// Query params aren't pre-renderable
 				if (building) return DUMMY_URL;
-				return window.location;
+				return page.url;
 			},
 			save(search, hash) {
 				const searchString = search.length ? search : "?";

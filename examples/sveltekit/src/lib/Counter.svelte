@@ -1,10 +1,10 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
-import { page } from "$app/stores";
+import { page } from "$app/state";
 import type { EventHandler } from "svelte/elements";
 import { useQueryParams } from "./params";
 
-const [params, helpers] = useQueryParams($page.url);
+const [params, helpers] = useQueryParams(page.url);
 
 function increment() {
 	params.count += 1;

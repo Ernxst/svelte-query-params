@@ -14,12 +14,12 @@
 		"zod": "3.23.8"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "3.1.1",
-		"@tsconfig/svelte": "5.0.4",
-		"svelte": "^5.0.0-next.1",
-		"svelte-check": "3.8.1",
+		"@sveltejs/vite-plugin-svelte": "7.3.1",
+		"@tsconfig/svelte": "5.0.8",
+		"svelte": "5.57.3",
+		"svelte-check": "4.7.8",
 		"tslib": "2.6.3",
-		"typescript": "5.5.2",
-		"vite": "5.3.1"
+		"typescript": "6.0.3",
+		"vite": "8.3.6"
 	}
 }

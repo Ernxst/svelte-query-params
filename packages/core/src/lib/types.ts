@@ -1,29 +1,27 @@
-import type { BaseSchema, InferOutput } from "valibot";
-import type { z } from "zod";
+import type { StandardSchemaV1 } from "@standard-schema/spec";
 import type { Adapter } from "./adapters/types.ts";
 
 export type FunctionValidator<TOut extends object = any> = (
 	value: Query
 ) => TOut;
 export type FunctionValueValidator<TOut = any> = (value?: QueryValue) => TOut;
-export type ValibotValidator = BaseSchema<any, any, any>;
-export type ZodValidator = z.ZodType;
-export type ValueValidator =
-	| FunctionValueValidator
-	| ZodValidator
-	| ValibotValidator;
-export type Validator = FunctionValidator | ZodValidator | ValibotValidator;
+/**
+ * Any [Standard Schema](https://standardschema.dev) implementation, such as
+ * zod, valibot or ArkType. It must validate synchronously.
+ */
+export type SchemaValidator = StandardSchemaV1<any, any>;
+export type ValueValidator = FunctionValueValidator | SchemaValidator;
+export type Validator = FunctionValidator | SchemaValidator;
 
+// Schemas are checked first: an ArkType schema is also a function
 export type inferFromValidator<TValidator extends Validator> =
-	TValidator extends ZodValidator
-		? z.infer<TValidator>
-		: TValidator extends ValibotValidator
-			? InferOutput<TValidator>
-			: TValidator extends FunctionValidator
+	TValidator extends SchemaValidator
+		? StandardSchemaV1.InferOutput<TValidator>
+		: TValidator extends FunctionValidator
+			? ReturnType<TValidator>
+			: TValidator extends FunctionValueValidator
 				? ReturnType<TValidator>
-				: TValidator extends FunctionValueValidator
-					? ReturnType<TValidator>
-					: never;
+				: never;
 
 export type QuerySchema = Validator | Record<string, ValueValidator>;
 

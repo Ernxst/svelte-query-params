@@ -1,13 +1,42 @@
-import { parse } from "valibot";
+import type { StandardSchemaV1 } from "@standard-schema/spec";
 import type {
 	Query,
 	QuerySchema,
 	QueryValue,
-	ValibotValidator,
+	SchemaValidator,
 	ValueValidator,
-	ZodValidator,
 	inferShape,
 } from "./types.ts";
+
+export class SchemaValidationError extends Error {
+	readonly issues: ReadonlyArray<StandardSchemaV1.Issue>;
+
+	constructor(issues: ReadonlyArray<StandardSchemaV1.Issue>) {
+		super(issues.map((issue) => issue.message).join("\n"));
+		this.name = "SchemaValidationError";
+		this.issues = issues;
+	}
+}
+
+function isSchema(obj: unknown): obj is SchemaValidator {
+	return (
+		(typeof obj === "object" || typeof obj === "function") &&
+		obj !== null &&
+		"~standard" in obj &&
+		typeof (obj["~standard"] as any)?.validate === "function"
+	);
+}
+
+function validate(schema: SchemaValidator, value: unknown) {
+	const result = schema["~standard"].validate(value);
+	if (result instanceof Promise) {
+		throw new TypeError(
+			"Async schemas are not supported: query params are validated synchronously"
+		);
+	}
+	if (result.issues) throw new SchemaValidationError(result.issues);
+	return result.value;
+}
 
 function parseObject(
 	schemas: Record<string, ValueValidator>,
@@ -22,9 +51,8 @@ function parseObject(
 }
 
 function parseValue(key: string, schema: ValueValidator, value?: QueryValue) {
+	if (isSchema(schema)) return validate(schema, value);
 	if (typeof schema === "function") return schema(value);
-	if (isZodSchema(schema)) return schema.parse(value);
-	if (isValibotSchema(schema)) return parse(schema, value);
 
 	const name = (schema as any).constructor.name;
 	throw new Error(
@@ -32,37 +60,12 @@ function parseValue(key: string, schema: ValueValidator, value?: QueryValue) {
 	);
 }
 
-function isZodSchema(obj: QuerySchema): obj is ZodValidator {
-	return (
-		typeof obj === "object" &&
-		obj &&
-		"parse" in obj &&
-		"safeParse" in obj &&
-		typeof obj.parse === "function" &&
-		typeof obj.safeParse === "function"
-	);
-}
-
-function isValibotSchema(obj: QuerySchema): obj is ValibotValidator {
-	return (
-		typeof obj === "object" &&
-		obj &&
-		"async" in obj &&
-		"kind" in obj &&
-		"_run" in obj &&
-		obj.kind === "schema" &&
-		typeof obj.async === "boolean" &&
-		typeof obj._run === "function"
-	);
-}
-
 export function parseQueryParams<TSchema extends QuerySchema>(
 	params: Query,
 	schemas: TSchema
 ): inferShape<TSchema> {
+	if (isSchema(schemas)) return validate(schemas, params);
 	if (typeof schemas === "function") return schemas(params);
-	if (isZodSchema(schemas)) return schemas.parse(params);
-	if (isValibotSchema(schemas)) return parse(schemas, params);
 
 	return parseObject(schemas, params);
 }

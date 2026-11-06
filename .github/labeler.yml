@@ -1,8 +1,11 @@
 # See https://github.com/actions/labeler
 
 🚨 action:
-  - .github/workflows/**
+  - changed-files:
+      - any-glob-to-any-file: .github/workflows/**
 
 test:
-  - packages/**/*.test.ts
-  - packages/**/*.spec.ts
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/**/*.test.ts
+          - packages/**/*.spec.ts

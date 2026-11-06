@@ -10,7 +10,10 @@
 		"lefthook",
 		"svelte-query-params"
 	],
-	"workspaces": ["examples/*", "packages/*"],
+	"workspaces": [
+		"examples/*",
+		"packages/*"
+	],
 	"packageManager": "bun@1.1.15",
 	"engines": {
 		"node": ">=22.22.2",
@@ -38,7 +41,7 @@
 		"typescript": "6.0.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.8.2",
+		"@biomejs/biome": "2.6.5",
 		"@changesets/changelog-github": "1.0.1",
 		"@changesets/cli": "3.0.3",
 		"@commitlint/cli": "21.2.4",

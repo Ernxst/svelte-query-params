@@ -13,7 +13,7 @@
 	"workspaces": ["examples/*", "packages/*"],
 	"packageManager": "bun@1.1.15",
 	"engines": {
-		"node": ">=20.0.0",
+		"node": ">=22.22.2",
 		"bun": ">=1.1.15"
 	},
 	"scripts": {

@@ -56,8 +56,7 @@ test.describe
 			await expect(users).toBeDisabled();
 			await expect(users).toHaveAttribute("aria-selected", "true");
 
-			const url = location(page);
-			expect(url.search).toEqual("?tab=users");
+			await expect.poll(() => location(page).search).toEqual("?tab=users");
 		});
 
 		test("should maintain hash", async ({ page }) => {
@@ -118,8 +117,7 @@ test.describe
 			await expect(next).not.toBeDisabled();
 			await expect(prev).not.toBeDisabled();
 
-			const url = location(page);
-			expect(url.search).toEqual("?page=2");
+			await expect.poll(() => location(page).search).toEqual("?page=2");
 		});
 
 		test("should maintain hash", async ({ page }) => {
@@ -236,8 +234,10 @@ test.describe("array values", () => {
 		await expect(selectedCategories[0]).toHaveText("books");
 		await expect(selectedCategories[1]).toHaveText("toys");
 
-		const url = location(page);
-		expect(url.search).toEqual("?categories=books&categories=toys");
+		await expect
+			.poll(() => location(page).search)
+			.toEqual("?categories=books&categories=toys");
+		await expect(resultsList.getByRole("listitem")).toHaveCount(2);
 	});
 
 	test("should remove from array param", async ({ page }) => {
@@ -264,7 +264,9 @@ test.describe("array values", () => {
 		selectedCategories = await resultsList.getByRole("listitem").all();
 		await expect(selectedCategories[0]).toHaveText("electronics");
 
-		expect(location(page).search).toEqual("?categories=electronics");
+		await expect
+			.poll(() => location(page).search)
+			.toEqual("?categories=electronics");
 
 		await options[1].click();
 
@@ -274,7 +276,7 @@ test.describe("array values", () => {
 
 		await expect(resultsList.getByRole("listitem")).toHaveCount(0);
 		selectedCategories = await resultsList.getByRole("listitem").all();
-		expect(location(page).search).toEqual("");
+		await expect.poll(() => location(page).search).toEqual("");
 
 		await options[0].click();
 
@@ -286,7 +288,7 @@ test.describe("array values", () => {
 		selectedCategories = await resultsList.getByRole("listitem").all();
 		await expect(selectedCategories[0]).toHaveText("books");
 
-		expect(location(page).search).toEqual("?categories=books");
+		await expect.poll(() => location(page).search).toEqual("?categories=books");
 
 		await options[1].click();
 
@@ -299,9 +301,9 @@ test.describe("array values", () => {
 		await expect(selectedCategories[0]).toHaveText("books");
 		await expect(selectedCategories[1]).toHaveText("electronics");
 
-		expect(location(page).search).toEqual(
-			"?categories=books&categories=electronics"
-		);
+		await expect
+			.poll(() => location(page).search)
+			.toEqual("?categories=books&categories=electronics");
 
 		await options[2].click();
 
@@ -315,9 +317,9 @@ test.describe("array values", () => {
 		await expect(selectedCategories[1]).toHaveText("electronics");
 		await expect(selectedCategories[2]).toHaveText("toys");
 
-		expect(location(page).search).toEqual(
-			"?categories=books&categories=electronics&categories=toys"
-		);
+		await expect
+			.poll(() => location(page).search)
+			.toEqual("?categories=books&categories=electronics&categories=toys");
 	});
 });
 

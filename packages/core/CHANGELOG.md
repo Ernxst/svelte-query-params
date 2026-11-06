@@ -1,5 +1,11 @@
 # svelte-query-params
 
+## 0.3.0
+
+### Minor Changes
+
+- 185233d: Require SvelteKit 3. The `sveltekit` adapter now imports `$app/env` and calls `goto` with `reset: false` in place of `keepFocus` and `noScroll`, so it no longer works on SvelteKit 2. The `svelte` peer range is now `^5.0.0`.
+
 ## 0.2.5
 
 ### Patch Changes

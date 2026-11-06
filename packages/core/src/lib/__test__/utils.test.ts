@@ -38,7 +38,7 @@ describe("parseQueryParams", () => {
 		{
 			type: "function",
 			schema: ({ id, name, email }: any) => {
-				return { id: Number.parseInt(id), name, email };
+				return { id: Number.parseInt(id, 10), name, email };
 			},
 		},
 		{
@@ -60,7 +60,7 @@ describe("parseQueryParams", () => {
 		{
 			type: "record of function",
 			schema: {
-				id: (id: any) => Number.parseInt(id),
+				id: (id: any) => Number.parseInt(id, 10),
 				name: (name: any) => name,
 				email: (email: any) => email,
 			},

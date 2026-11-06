@@ -4,25 +4,23 @@ The easiest way to reactively manage query params in Svelte _and_ SvelteKit appl
 
 ## Installation
 
-[`svelte^5`](https://svelte-5-preview.vercel.app/docs/introduction) is required:
+[`svelte^5`](https://svelte.dev/docs/svelte) is required, and [`@sveltejs/kit^3`](https://svelte.dev/docs/kit) if you use the [`sveltekit` adapter](#sveltekit):
 
 ```bash
-npm install svelte-query-params svelte@next
+npm install svelte-query-params svelte
 ```
 
 ```bash
-pnpm install svelte-query-params svelte@next
+pnpm add svelte-query-params svelte
 ```
 
 ```bash
-yarn add svelte-query-params svelte@next
+yarn add svelte-query-params svelte
 ```
 
 ```bash
-bun install svelte-query-params svelte@next
+bun add svelte-query-params svelte
 ```
-
-`svelte` requires a version of `5.0.0-next.169` or newer as it [renamed a public API](https://github.com/sveltejs/svelte/releases/tag/svelte%405.0.0-next.169) that this library uses.
 
 By default, `svelte-query-params` uses [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) to handle interpreting the location string, which means it does not decode `null` and has limited handling of other more advanced URL parameter configurations. If you want access to those features, add a third-party library like query-string and tell [svelte-query-params to use it](#options).
 

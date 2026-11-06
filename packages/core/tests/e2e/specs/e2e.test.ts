@@ -107,9 +107,9 @@ test.describe
 			const title = page.getByRole("heading", { level: 1 });
 			const [prev, next] = await page.getByRole("button").all();
 
-			expect(title).toHaveText("Current Page: 1");
-			expect(prev).toBeDisabled();
-			expect(next).not.toBeDisabled();
+			await expect(title).toHaveText("Current Page: 1");
+			await expect(prev).toBeDisabled();
+			await expect(next).not.toBeDisabled();
 
 			await next.click();
 

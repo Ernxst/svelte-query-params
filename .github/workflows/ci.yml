@@ -113,8 +113,13 @@ jobs:
         run: bun install
 
       - name: 📤 Install Playwright browsers
-        run: bunx playwright install --with-deps
+        run: |
+          for attempt in 1 2 3; do
+            timeout 180 bunx playwright install --with-deps && exit 0
+            echo "Attempt $attempt failed or timed out"
+          done
+          exit 1
         working-directory: packages/core
-        
+
       - name: 🧪 Run Playwright tests
         run: bun test:e2e --continue -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}

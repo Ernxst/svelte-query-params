@@ -35,8 +35,6 @@
 		"release": "changeset publish"
 	},
 	"dependencies": {
-		"publint": "0.2.8",
-		"tsup": "8.1.0",
 		"typescript": "6.0.3"
 	},
 	"devDependencies": {

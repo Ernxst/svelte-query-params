@@ -1,7 +1,7 @@
 <script lang="ts">
+import type { EventHandler } from "svelte/elements";
 import { goto } from "$app/navigation";
 import { page } from "$app/state";
-import type { EventHandler } from "svelte/elements";
 import { useQueryParams } from "./params";
 
 const [params, helpers] = useQueryParams(page.url);

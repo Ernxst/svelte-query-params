@@ -2,10 +2,10 @@ import * as v from "valibot";
 import { assert, beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 import {
-	SchemaValidationError,
 	debounce,
 	mapValues,
 	parseQueryParams,
+	SchemaValidationError,
 } from "../utils";
 
 describe("parseQueryParams", () => {
@@ -38,7 +38,7 @@ describe("parseQueryParams", () => {
 		{
 			type: "function",
 			schema: ({ id, name, email }: any) => {
-				return { id: Number.parseInt(id), name, email };
+				return { id: Number.parseInt(id, 10), name, email };
 			},
 		},
 		{
@@ -60,7 +60,7 @@ describe("parseQueryParams", () => {
 		{
 			type: "record of function",
 			schema: {
-				id: (id: any) => Number.parseInt(id),
+				id: (id: any) => Number.parseInt(id, 10),
 				name: (name: any) => name,
 				email: (email: any) => email,
 			},

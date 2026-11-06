@@ -1,38 +1,56 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
+	"$schema": "https://biomejs.dev/schemas/2.6.5/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignore": [
-			".DS_Store",
-			".turbo",
-			".svelte-kit/",
-			".idea/",
-			"yarn.lock",
-			"bun.lockb",
-			"node_modules/",
-			"coverage/",
-			"build/",
-			"dist/",
-			"static/",
-			"vite.config.ts.*",
-			"vitest.config.ts.*",
-			"tsup.config.ts.*"
+		"includes": [
+			"**",
+			"!**/.DS_Store",
+			"!**/.turbo",
+			"!**/.svelte-kit/",
+			"!**/.idea/",
+			"!**/yarn.lock",
+			"!**/bun.lockb",
+			"!**/node_modules/",
+			"!**/coverage/",
+			"!**/build/",
+			"!**/dist/",
+			"!**/static/",
+			"!**/vite.config.ts.*",
+			"!**/vitest.config.ts.*",
+			"!**/tsup.config.ts.*",
+			"!**/*.md",
+			"!**/*.yml",
+			"!**/*.yaml",
+			"!**/*.css"
 		]
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true,
+			"preset": "recommended",
 			"suspicious": {
 				"noExplicitAny": "off"
 			}
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["**/*.svelte"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedVariables": "off",
+						"noUnusedImports": "off"
+					}
+				}
+			}
+		}
+	],
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
